@@ -1,0 +1,21 @@
+<ion-header-bar class="bar-light bar-header">
+  <div class="buttons">
+    <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
+    </button>
+  </div>
+  <div class="searchContainer float_left" angucomplete pause="100" url="" searchfields="name" titlefield="name" minlength="1" dist="" ng-show="showSearchBox" localdata="places" callbackfn="selectedPlace()" selectedobject="dummy"></div>
+  <!--<button class="button button-icon ion-android-close input-button" ng-click="clearSearch()" ng-show="showSearchBox"></button>-->
+</ion-header-bar>
+
+<ion-content class="has-header" has-header="true" has-bouncing="true">
+  <div id="wrapper">
+    <div class="vertical-align-content center">
+      <img src="img/place1.png" id="categoryimg" ng-click="getlocation()">
+      <br><br>
+      <img src="img/place2.png" id="categoryimg" ng-click="getlocation()">
+      <br><br>
+      <img src="img/place3.png" id="categoryimg" ng-click="getlocation()">
+    </div>
+
+  </div>
+</ion-content>                                                       
