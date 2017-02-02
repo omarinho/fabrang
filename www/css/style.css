@@ -2,14 +2,14 @@
   width:97%;
   margin-left: auto ;
   margin-right: auto ;
-  display: block;
   font-family: "RobotoRegular";
   white-space: normal !important;
   height:100%;
+  background-color:#FFFFFF;
 }
 
 #signinct {
-  margin-top:25%;
+  margin-top:10%;
   width:100%;
 }
 
@@ -232,7 +232,6 @@ a, a:hover, a:active {
 }
 
 .vertical-align-content {
-  display: block;
   margin-top:25%;
 }
 

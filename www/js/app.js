@@ -1,7 +1,8 @@
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'angucomplete'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngIOS9UIWebViewPatch', 'ngCordova', 'angucomplete'])
 
 .run(
   function ($ionicPlatform, $state, $rootScope) {
+
     $ionicPlatform.ready(
       
       function() {
@@ -12,6 +13,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
         if (window.cordova && window.cordova.plugins.Keyboard) {
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+	  cordova.plugins.Keyboard.disableScroll(true);
         }
         
         if (window.StatusBar) {
