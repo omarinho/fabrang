@@ -68,6 +68,7 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('SignupCtrl', 
   function ($scope, $timeout, $ionicHistory, $state) {
 
+    $scope.user = {};
     $scope.activeslide = 0;
     $scope.slideon_0 = true;
     $scope.slideon_1 = false; 
@@ -141,23 +142,56 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('ForgotPasswordCtrl', 
   function ($scope, $state, $ionicHistory) {
 
+    $scope.fp = {};
     $scope.footerShow = false;
-    $scope.entercode = false;
+    $scope.optioncode = "phone";
     $scope.enterpassword = false;
+    $scope.step1 = true;
+    $scope.step2_1 = false;
+    $scope.step2_2 = false;
+    $scope.step3 = false;
+
+    $scope.hideAllSteps = function() {
+      $scope.step1 = false;
+      $scope.step2_1 = false;
+      $scope.step2_2 = false;
+      $scope.step3 = false;
+    }
 
     $scope.sendMeText = function() {
-      $scope.entercode = true;
+      $scope.optioncode = "phone";
       $scope.footerShow = true;
+      $scope.hideAllSteps();
+      $scope.fp.phone='';
+      $scope.step2_1 = true;
     }
 
     $scope.sendMeEmail = function() {
-      $scope.entercode = true;
+      $scope.optioncode = "email";
       $scope.footerShow = true;
+      $scope.hideAllSteps();
+      $scope.fp.email='';
+      $scope.step2_2 = true;
     }
     
     $scope.goNext = function() {
       if (!$scope.enterpassword) {
-        $scope.enterpassword = true;
+        if ( $scope.step2_1 ) {
+          $scope.hideAllSteps();
+          $scope.fp.code='';
+          $scope.step3 = true;
+        } 
+        else if ( $scope.step2_2 ) {
+          $scope.hideAllSteps();
+          $scope.fp.code='';
+          $scope.step3 = true;
+        } 
+        else if ( $scope.step3 ) {
+          $scope.hideAllSteps();
+          $scope.fp.password='';
+          $scope.fp.confirmpassword='';
+          $scope.enterpassword = true;
+        } 
       }
       else {
         $scope.enterpassword = false;
@@ -165,19 +199,39 @@ angular.module('starter.controllers', ['ngCordova'])
       }
     } 
     
-    $scope.gobackrp = function() {
-      if ( (!$scope.enterpassword) && (!$scope.entercode) ) {
+    $scope.goBackrp = function() {
+      if ( $scope.step1 ) {
         $ionicHistory.goBack();
       }
+      else if  ($scope.step2_1) {
+        $scope.footerShow = false;
+        $scope.hideAllSteps();
+        $scope.step1 = true;
+      } 
+      else if  ($scope.step2_2) {
+        $scope.footerShow = false;
+        $scope.hideAllSteps();
+        $scope.step1 = true;
+      } 
+      else if  ($scope.step3) {
+        $scope.hideAllSteps();
+        if ($scope.optioncode=="phone") { 
+          $scope.step2_1 = true;
+        }
+        if ($scope.optioncode=="email") { 
+          $scope.step2_2 = true;
+        }
+      } 
       else {
         if ($scope.enterpassword) {
           $scope.enterpassword = false;
-          $scope.entercode = true;
+          $scope.hideAllSteps();
+          $scope.step3 = true;
         }
         else {
-          if ($scope.entercode) {
-            $scope.entercode = false;
-          }
+          $scope.footerShow = false;
+          $scope.hideAllSteps();
+          $scope.step1 = true;
         }
       }
     } 
@@ -190,6 +244,10 @@ angular.module('starter.controllers', ['ngCordova'])
   function ($scope, $ionicModal, $ionicNavBarDelegate, $cordovaStatusbar, $state, $timeout) {
   
     $scope.showSearchBox = false;
+    $scope.homestyle={
+      "opacity": "1",
+      "background": "rgb(255,255,255)"
+    };
     
     /* Hardcoded data just for testing purposes - It will be replaced later by real API calls */
     $scope.places = [
@@ -522,6 +580,19 @@ angular.module('starter.controllers', ['ngCordova'])
       $state.go('store');
     }
     
+    $scope.showSearchOverlay = function() {
+      $scope.homestyle = {
+        "opacity": "0.5",
+        "background": "rgb(143,130,130)"
+      }
+    } 
+
+    $scope.hideSearchOverlay = function() {
+      $scope.homestyle={
+        "opacity": "1",
+        "background": "rgb(255,255,255)"
+      };
+    } 
   }
   
 )

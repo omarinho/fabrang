@@ -13,7 +13,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
         if (window.cordova && window.cordova.plugins.Keyboard) {
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-	  cordova.plugins.Keyboard.disableScroll(true);
+	        cordova.plugins.Keyboard.disableScroll(true);
         }
         
         if (window.StatusBar) {
@@ -83,14 +83,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           function(e) {
             var code = e.keyCode || e.which;
             if (code == 13) {
-              e.preventDefault()
-              $(':input:eq(' + ($(':input').index(this) + 1) + ')').focus();
+              e.preventDefault();
+              try {
+                $(':input:eq(' + ($(':input').index(this) + 1) + ')').focus();
+              }
+              catch(err) {
+                var dummy="dummy";
+              }
             }
-            if ($(this).val() != '') {
-              $('#label_' + $(this).attr("name")).show();
+            if ( !$(this).val() ) {
+              $('#label_' + $(this).attr("name")).hide();
             }
             else {
+              $('#label_' + $(this).attr("name")).show();
+            }
+          }
+        );
+        elem.bind('keydown', 
+          function(e) {
+            if ( !$(this).val() ) {
               $('#label_' + $(this).attr("name")).hide();
+            }
+            else {
+              $('#label_' + $(this).attr("name")).show();
             }
           }
         );
@@ -112,11 +127,57 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
               $scope.advance();
               $scope.$apply();
             }
-            if ($(this).val() != '') {
-              $('#label_' + $(this).attr("name")).show();
+            if ( !$(this).val() ) {
+              $('#label_' + $(this).attr("name")).hide();
             }
             else {
+              $('#label_' + $(this).attr("name")).show();
+            }
+          }
+        );
+        elem.bind('keyup', 
+          function(e) {
+            if ( !$(this).val() ) {
               $('#label_' + $(this).attr("name")).hide();
+            }
+            else {
+              $('#label_' + $(this).attr("name")).show();
+            }
+          }
+        );
+      }                
+    }
+  }
+)
+
+.directive('advancenextfp', 
+  function() {
+    return {
+      restrict: 'A',
+      link: function($scope,elem,attrs) {
+        elem.bind('keydown', 
+          function(e) {
+            var code = e.keyCode || e.which;
+            if (code == 9)  {
+              e.preventDefault();
+              $scope.goNext();
+              $scope.$apply();
+            }
+            if ( !$(this).val() ) {
+              $('#label_' + $(this).attr("name")).hide();
+            }
+            else {
+              $('#label_' + $(this).attr("name")).show();
+            }
+          }
+        );
+        elem.bind('keyup', 
+          function(e) {
+            if ( !$(this).val() ) {
+              $('#label_' + $(this).attr("name")).hide();
+            }
+            else {
+              $('#label_' + $(this).attr("name")).show();
             }
           }
         );
