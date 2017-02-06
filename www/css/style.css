@@ -253,3 +253,11 @@ a, a:hover, a:active {
 .searchContainer {  
   width:90%;
 }
+
+.nextb {
+  font-size:18px !important;
+  vertical-align:middle !important;
+  color:#FFFFFF !important;
+  font-weight:bold !important;
+  font-family: "RobotoRegular" !important;
+}

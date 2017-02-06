@@ -1,32 +1,30 @@
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngIOS9UIWebViewPatch', 'ngCordova', 'angucomplete'])
+angular.module('starter', ['ionic', 'starter.controllers', 'ngIOS9UIWebViewPatch', 'angucomplete'])
 
 .run(
-  function ($ionicPlatform, $state, $rootScope) {
+  function ($ionicPlatform) {
 
     $ionicPlatform.ready(
-      
       function() {
-
-        if(navigator && navigator.splashscreen) { 
+        
+        if (navigator && navigator.splashscreen) { 
           navigator.splashscreen.hide();
         }
 
         if (window.cordova && window.cordova.plugins.Keyboard) {
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-	        cordova.plugins.Keyboard.disableScroll(true);
+	  cordova.plugins.Keyboard.disableScroll(true);
         }
         
         if (window.StatusBar) {
           StatusBar.styleDefault();
-        }      
-
+        }
       }
     );
   }
 )
 
 .config(
-  function ($stateProvider, $urlRouterProvider) {
+  function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $stateProvider
       .state('signin', {
         cache: false,
@@ -50,7 +48,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
 
       .state('home', {
-        cache: false,
+        cache: true,
         url: "/home",
         templateUrl: "templates/home.html",
         controller: 'HomeCtrl'
@@ -71,6 +69,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
 
     $urlRouterProvider.otherwise("/");      
+    
+    $ionicConfigProvider.views.swipeBackEnabled(false);    
+	
   }
 )
 

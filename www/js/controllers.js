@@ -1,11 +1,15 @@
-angular.module('starter.controllers', ['ngCordova'])  
+angular.module('starter.controllers',['ngCordova'])  
 
 .run(
   
-  function($rootScope, $ionicHistory, $ionicPopup, $state) {
+  function($rootScope, $ionicHistory, $ionicPopup, $timeout) {
   
     $rootScope.goback = function() {
-      $ionicHistory.goBack();   
+       $timeout(
+          function() {
+		$ionicHistory.goBack();
+          }, 100
+        );	
     }
   
     $rootScope.alerti = function(text, title) {
@@ -22,11 +26,21 @@ angular.module('starter.controllers', ['ngCordova'])
     }
   }
   
-)                                                          
+)                                                         
 
 .controller('SigninCtrl', 
-  function ($scope, $state, $ionicLoading, $rootScope) {
+  function ($scope, $state, $ionicLoading, $rootScope, $ionicPlatform) {
+
+    $ionicLoading.show();
+    $ionicPlatform.ready(
+	function() {
+		$ionicLoading.show({delay:100});
+		$ionicLoading.hide();
+	}   
+    );
+
     $scope.user = {};
+
     $scope.login = function() {
       var msg = "";
       var re = /^([_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,5}))|(\d{6,}$)$/;
@@ -66,7 +80,15 @@ angular.module('starter.controllers', ['ngCordova'])
 )
 
 .controller('SignupCtrl', 
-  function ($scope, $timeout, $ionicHistory, $state) {
+  function ($scope, $timeout, $state, $rootScope, $ionicLoading, $ionicPlatform) {
+
+    $ionicLoading.show();
+    $ionicPlatform.ready(
+        function() {
+                $ionicLoading.show({delay:100});
+                $ionicLoading.hide();
+        }
+    );
 
     $scope.user = {};
     $scope.activeslide = 0;
@@ -111,7 +133,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
     $scope.gobacksignup = function() {
       if ($scope.activeslide == 0) {
-        $ionicHistory.goBack();
+	$rootScope.goback();
       }
       else {
         $scope.hideAllSlides();
@@ -140,7 +162,15 @@ angular.module('starter.controllers', ['ngCordova'])
 )
 
 .controller('ForgotPasswordCtrl', 
-  function ($scope, $state, $ionicHistory) {
+  function ($scope, $state, $rootScope, $ionicLoading, $ionicPlatform) {
+
+    $ionicLoading.show();
+    $ionicPlatform.ready(
+        function() {
+                $ionicLoading.show({delay:100});
+                $ionicLoading.hide();
+        }
+    );
 
     $scope.fp = {};
     $scope.footerShow = false;
@@ -201,7 +231,7 @@ angular.module('starter.controllers', ['ngCordova'])
     
     $scope.goBackrp = function() {
       if ( $scope.step1 ) {
-        $ionicHistory.goBack();
+	$rootScope.goback();
       }
       else if  ($scope.step2_1) {
         $scope.footerShow = false;
@@ -241,14 +271,32 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('HomeCtrl', 
   
-  function ($scope, $ionicModal, $ionicNavBarDelegate, $cordovaStatusbar, $state, $timeout) {
+  function ($scope, $ionicModal, $ionicNavBarDelegate, $cordovaStatusbar, $state, $timeout, $ionicLoading, $ionicPlatform, $rootScope) {
   
+    $ionicLoading.show();
+    $ionicPlatform.ready(
+        function() {
+                $ionicLoading.show({delay:100});
+                $ionicLoading.hide();
+        }
+    );
+
     $scope.showSearchBox = false;
     $scope.homestyle={
       "opacity": "1",
       "background": "rgb(255,255,255)"
     };
     
+    $scope.gobackhome = function() {
+      if ($scope.showSearchBox) {
+         $scope.showSearchBox = false;
+         $scope.getlocation();
+      }
+      else {
+         $rootScope.goback();
+      }
+    }
+
     /* Hardcoded data just for testing purposes - It will be replaced later by real API calls */
     $scope.places = [
       {id:"1", name:"A&W Restaurants"},
@@ -571,7 +619,11 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.showSearchBox = true;
       $timeout(                                  
        function() {
+	 document.getElementById("id_searchq").innerHTML = "";
          document.getElementById("id_searchq").focus();
+	 if ($ionicPlatform.isAndroid()) {
+            cordova.plugins.Keyboard.show();
+         }
        }, 100
       );
     }
@@ -599,14 +651,32 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('ResultsCtrl', 
   
-  function ($scope) {
+  function ($scope, $ionicLoading, $ionicPlatform) {
+
+   $ionicLoading.show();
+    $ionicPlatform.ready(
+        function() {
+                $ionicLoading.show({delay:100});
+                $ionicLoading.hide();
+        }
+    );
+
   }
   
 )
 
 .controller('StoreCtrl', 
   
-  function ($scope) {
+  function ($scope, $ionicLoading, $ionicPlatform) {
+
+    $ionicLoading.show();
+    $ionicPlatform.ready(
+        function() {
+                $ionicLoading.show({delay:100});
+                $ionicLoading.hide();
+        }
+    );
+
   }
   
 )
