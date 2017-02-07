@@ -276,8 +276,8 @@ angular.module('starter.controllers',['ngCordova'])
     $ionicLoading.show();
     $ionicPlatform.ready(
         function() {
-                $ionicLoading.show({delay:100});
-                $ionicLoading.hide();
+          $ionicLoading.show({delay:100});
+          $ionicLoading.hide();
         }
     );
 
@@ -619,9 +619,9 @@ angular.module('starter.controllers',['ngCordova'])
       $scope.showSearchBox = true;
       $timeout(                                  
        function() {
-	 document.getElementById("id_searchq").innerHTML = "";
+	       document.getElementById("id_searchq").value= "";
          document.getElementById("id_searchq").focus();
-	 if ($ionicPlatform.isAndroid()) {
+	       if (ionic.Platform.isAndroid()) {
             cordova.plugins.Keyboard.show();
          }
        }, 100
