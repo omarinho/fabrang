@@ -15,6 +15,7 @@ angular.module('angucomplete', [] )
         restrict: 'EA',
         scope: {
             "id": "@id",
+            "searchID": "@searchid",
             "placeholder": "@placeholder",
             "selectedObject": "=selectedobject",
             "url": "@url",
@@ -32,9 +33,9 @@ angular.module('angucomplete', [] )
             "dist":  "@dist",
             callBackFn: "&callbackfn",
             callBackFnFocus: "&callbackfnfocus",
-            callBackFnBlur: "&callbackfnblur",
+            callBackFnBlur: "&callbackfnblur"
         },
-        template: '<div class="angucomplete-holder"><input class="fgfield float_left" style="width:80% !important;" type="text" name="searchq" id="id_searchq" placeholder="Enter the place name here" advancenext ng-model="searchStr" onmouseup="this.select();" ng-focus="resetHideResults()" ng-blur="hideResults()"><button class="button button-icon ion-android-close input-button float_left" ng-click="clearSearch()"></button><br clear="all"/><div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown"><div class="angucomplete-searching" ng-show="searching">Searching...</div><div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No matches</div><div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}"><div ng-if="imageField" class="angucomplete-image-holder"><img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/><div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div></div><div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div><div class="angucomplete-title" ng-if="!matchClass"><div ng-bind-html="result.title | matchformat:searchStr"></div></div><div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div></div></div></div>',
+        template: '<div class="angucomplete-holder"><input class="fgfield float_left" style="width:85% !important;" type="text" name="searchq" id="{{searchID}}" placeholder="Enter the place name here" advancenext ng-model="searchStr" onmouseup="this.select();" ng-focus="resetHideResults()" ng-blur="hideResults()"><button class="button button-icon ion-android-close input-button float_left" ng-click="clearSearch()"></button><br clear="all"/><div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown"><div class="angucomplete-searching" ng-show="searching">Searching...</div><div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No matches</div><div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}"><div ng-if="imageField" class="angucomplete-image-holder"><img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/><div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div></div><div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div><div class="angucomplete-title" ng-if="!matchClass"><div ng-bind-html="result.title | matchformat:searchStr"></div></div><div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div></div></div></div>',
         link: function($scope, elem, attrs) {
             $scope.lastSearchTerm = null;
             $scope.currentIndex = null;
@@ -62,7 +63,7 @@ angular.module('angucomplete', [] )
               $timeout(                                  
                 function() {
                   $scope.searchStr = null;
-                  document.getElementById("id_searchq").blur();   
+                  document.getElementById($scope.searchID).blur();
                 }, 100
               );
             } 
@@ -173,7 +174,7 @@ angular.module('angucomplete', [] )
                 };
             };
 
-            $scope.hoverRow = function(index) {
+            $scope.hoverRow = function(index) {                    
                 $scope.currentIndex = index;
             }
 
@@ -200,8 +201,14 @@ angular.module('angucomplete', [] )
                             $scope.searchTimerComplete($scope.searchStr);
                         }, $scope.pause);
                     }
-                } else {
-                    event.preventDefault();
+                } 
+                else {
+                  event.preventDefault();
+                  if (event.which == 13) {
+                    $scope.showDropdown = false;
+                    $scope.results = [];
+                    //$scope.callBackFn();
+                  }
                 }
             }
 
@@ -213,7 +220,7 @@ angular.module('angucomplete', [] )
                 $scope.selectedObject = result;
                 $scope.showDropdown = false;
                 $scope.results = [];
-                $scope.callBackFn();
+                $scope.callBackFn({store:result.originalObject});
             }
 
             var inputField = elem.find('input');

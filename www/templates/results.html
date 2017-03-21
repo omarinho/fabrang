@@ -1,17 +1,139 @@
-<ion-nav-bar align-title="center">
-  <ion-nav-buttons>
-    <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
-    </button>
-  </ion-nav-buttons>
-</ion-nav-bar >
+<ion-header-bar class="bar-light bar-header" align-title="center" on-swipe-down="showFiltersModal()">
+    <div class="buttons">
+      <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
+      </button>
+    </div>
+    <h1 class="title grayText" ng-if="!showSearchBox">Results</h1>
+    <div class="buttons" ng-if="!showSearchBox">
+      <img src="img/glass.gif" class="rightButton1" ng-click="showSearchBoxF()">
+      <img src="img/gear.gif" class="rightButton2" ng-click="goToSettings()">
+    </div>
+    <div searchid="id_searchqResults" class="searchContainer float_left" angucomplete pause="300" url="" searchfields="name" titlefield="name" minlength="1" dist="" ng-if="showSearchBox" localdata="places" callbackfn="selectedPlace(store)" selectedobject="dummy" callbackfnfocus="showSearchOverlay()" callbackfnblur="hideSearchOverlay()"></div>
+</ion-header-bar>
 
 <ion-view>
-<ion-content scroll="false" class="has-header" has-header="true" has-bouncing="true">
-  <div id="wrapper">
-    <div class="center">
-      <br clear="all"/><br><br>
-      <h3>Results page here</h3>
+  <ion-content scroll="true" class="has-header" has-header="true" has-bouncing="true" ng-style="homestyle">
+    <div id="wrapper">
+      <div class="center">
+      
+        <div class="distanceWaitTime">
+
+            <ion-list ng-repeat="item in closePlaces">
+              
+              <div class="endingLeft" ng-show="item.live_deal">
+                <div class="grayText itemdw">
+                  <img src="img/location-dist.gif" height="20%" class="noMarginNoPadding">
+                  <br>
+                  <small>{{ item.distance }}</small>
+                  <br>
+                  <img src="img/wait-time.gif" height="20%" class="noMarginNoPadding">
+                  <br>
+                  <small>:{{ item.waitTime }}&nbsp;&nbsp;</small>
+                </div>
+              </div>
+              
+              <div class="grayText itemdw" ng-show="!item.live_deal">
+                <img src="img/location-dist.gif" height="20%" class="noMarginNoPadding">
+                <br>
+                <small>{{ item.distance }}</small>
+                <br>
+                <img src="img/wait-time.gif" height="20%" class="noMarginNoPadding">
+                <br>
+                <small>:{{ item.waitTime }}&nbsp;&nbsp;</small>
+              </div>
+            
+            </ion-list>
+
+        </div>
+        
+        <div class="overflowHidden">
+ 
+            <div class="spaceResults">&nbsp;</div>
+            
+            <ion-list ng-repeat="item in closePlaces">
+              
+              <div class="resulsItemEnding" ng-show="item.live_deal" >
+                <div class="resultsItem" ng-click="goToStore(item.id)"">
+                  <div class="resultsItemLeft">
+                    <div class="resultsItemLeftWrap">
+                      <div class="RobotoBold resultsItemLeftName">{{ item.name }}</div>
+                      <small class="grayText fontSize12">
+                        {{ item.cuisineTypes }}
+                        <br clear="all"/>
+                        <span ng-if="item.minimunPrice">Min ${{ item.minimunPrice }}</span>
+                      </small>
+                    </div> 
+                  </div>
+                  <div class="resultsItemRight">
+                    <div class="resultsItemRightWrap">
+                      <img src="img/price-level1.png" align="right" height="30" class="marginBottom9px" ng-if="item.pricesLevel == 1">
+                      <img src="img/price-level2.png" align="right" height="30" class="marginBottom9px" ng-if="item.pricesLevel == 2">
+                      <img src="img/price-level3.png" align="right" height="30" class="marginBottom9px" ng-if="item.pricesLevel == 3">
+                      <img src="img/price-level4.png" align="right" height="30" class="marginBottom9px" ng-if="item.pricesLevel == 4">
+                      <br clear="all"/>
+                      <rating ng-model="item.rating" max="rating.max" readonly="readOnly"></rating>
+                    </div> 
+                  </div>
+                </div>
+                <div class="endingAlert">
+                  <div class="RobotoBold endingStatus">Ending</div>
+                </div>
+                <div class="endingTime">
+                  <div class="RobotoBlack endingTimeFont">{{ item.endingTime }}</div>
+                </div>
+              </div>
+
+              <div class="resultsItem" ng-show="!item.live_deal" ng-click="goToStore(item.id)">
+                <div class="resultsItemLeft">
+                  <div class="resultsItemLeftWrap">
+                    <div class="RobotoBold resultsItemLeftName">{{ item.name }}</div>
+                    <small class="grayText fontSize12">
+                      {{ item.cuisineTypes }}
+                      <br clear="all"/>
+                      <span ng-if="item.minimunPrice">Min ${{ item.minimunPrice }}</span>
+                    </small>
+                  </div> 
+                </div>
+                <div class="resultsItemRight">
+                  <div class="resultsItemRightWrap">
+                    <img src="img/price-level1.png" align="right" height="30" class="marginBottom9px" ng-if="item.pricesLevel == 1">
+                    <img src="img/price-level2.png" align="right" height="30" class="marginBottom9px" ng-if="item.pricesLevel == 2">
+                    <img src="img/price-level3.png" align="right" height="30" class="marginBottom9px" ng-if="item.pricesLevel == 3">
+                    <img src="img/price-level4.png" align="right" height="30" class="marginBottom9px" ng-if="item.pricesLevel == 4">
+                    <br clear="all"/>  
+                    <rating ng-model="item.rating" max="rating.max" readonly="readOnly"></rating>
+                  </div> 
+                </div>
+              </div>              
+              
+            </ion-list>
+            <br clear="all"/><br><br>
+
+        </div>
+      </div>
     </div>
-  </div>
-</ion-content>                                                       
+  </ion-content>                                                       
 </ion-view>
+
+<ion-footer-bar class="footerBar2" ng-if="showFooter">
+  <div class="footerIcon">
+    <img src="img/footer-home.gif" align="middle">
+    <div class="overlay"></div>       
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-schedule.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-notifications.gif" align="middle">
+    <div class="overlay"></div>                           
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-favorites.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-search.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+</ion-footer-bar>

@@ -1,0 +1,81 @@
+<ion-modal-view class="filtersModal" on-swipe-up="cancelFiltersModal()">
+  <div id="filters_locked_filter" ng-drop="true" ng-drop-success="onDropComplete1($data,$event)">
+    <ion-scroll zooming="true" direction="x" scrollbar-x="false" class="filtersList">
+      <div class="boxgray" ng-repeat="obj in droppedObjects1" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess1($data,$event)" ng-center-anchor="{{centerAnchor}}">
+        {{obj.name}}
+      </div>
+      <div ng-if="droppedObjects1.length == 0">
+        <small class="grayText">Drag filters here to lock them.</small>
+      </div>
+    </ion-scroll>
+    <ion-toggle ng-model="lockedFilters.enableLockedFilters" toggle-class="toggle-positive" class="theToggle" ng-change="lockedToggleChange()"></ion-toggle>
+    <br clear="all"/>
+  </div>
+  <div id="filters_service_type">
+    <div ng-class="activeServiceType.indexOf('Delivery') !== -1 ? 'serviceTypeActive' : 'serviceType'" ng-click="toggleServiceType('Delivery');">
+      Delivery
+    </div>
+    <div ng-class="activeServiceType.indexOf('Pick Up') !== -1 ? 'serviceTypeActive' : 'serviceType'" ng-click="toggleServiceType('Pick Up');">
+      Pick Up
+    </div>
+    <div ng-class="activeServiceType.indexOf('Reservation') !== -1 ? 'serviceTypeActive' : 'serviceType'" ng-click="toggleServiceType('Reservation');">
+      Reservation                                   
+    </div>
+    <br clear="all"/>
+  </div>
+  <div id="filters_miscelaneous" ng-drop="true" ng-drop-success="onDropComplete2($data,$event)">
+    <span class="white-color float_left miscTitle">CUISINE</span>
+    <ion-scroll zooming="true" direction="x" scrollbar-x="false" class="filtersList">
+      <div ng-class="activeFilters|containsObject:obj" ng-repeat="obj in droppedObjects2" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess2($data,$event)" ng-center-anchor="{{centerAnchor}}" ng-click="toggleFilter(obj)">
+        {{obj.name}}
+      </div>
+    </ion-scroll>
+    <br clear="all"/>
+    <span class="white-color float_left miscTitle">DIET</span>
+    <ion-scroll zooming="true" direction="x" scrollbar-x="false" class="filtersList">
+      <div ng-class="activeFilters|containsObject:obj" ng-repeat="obj in droppedObjects3" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess3($data,$event)" ng-center-anchor="{{centerAnchor}}" ng-click="toggleFilter(obj)">
+        {{obj.name}}
+      </div>
+    </ion-scroll>
+    <br clear="all"/>
+    <span class="white-color float_left miscTitle">SETTING</span>
+    <ion-scroll zooming="true" direction="x" scrollbar-x="false" class="filtersList">
+      <div ng-class="activeFilters|containsObject:obj" ng-repeat="obj in droppedObjects4" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess4($data,$event)" ng-center-anchor="{{centerAnchor}}" ng-click="toggleFilter(obj)">
+        {{obj.name}}
+      </div>
+    </ion-scroll>
+    <br clear="all"/>
+    <span class="white-color float_left miscTitle">FEATURES</span>
+    <ion-scroll zooming="true" direction="x" scrollbar-x="false" class="filtersList">
+      <div ng-class="activeFilters|containsObject:obj" ng-repeat="obj in droppedObjects5" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess5($data,$event)" ng-center-anchor="{{centerAnchor}}" ng-click="toggleFilter(obj)">
+        {{obj.name}}
+      </div>
+    </ion-scroll>
+    <br clear="all"/>
+  </div>
+  <hr>
+  <div id="filters_price_range">                    
+    <div  ng-class="activePriceRange.indexOf('1') !== -1 ? 'priceRangeActive' : 'priceRange'" ng-click="togglePriceRange('1');">
+      <img src="img/price-level1.png" align="middle" height="27">
+    </div>
+    <div  ng-class="activePriceRange.indexOf('2') !== -1 ? 'priceRangeActive' : 'priceRange'" ng-click="togglePriceRange('2');">
+      <img src="img/price-level2.png" align="middle" height="27">
+    </div>
+    <div  ng-class="activePriceRange.indexOf('3') !== -1 ? 'priceRangeActive' : 'priceRange'" ng-click="togglePriceRange('3');">
+      <img src="img/price-level3.png" align="middle" height="27">
+    </div>
+    <div  ng-class="activePriceRange.indexOf('4') !== -1 ? 'priceRangeActive' : 'priceRange'" ng-click="togglePriceRange('4');">
+      <img src="img/price-level4.png" align="middle" height="27">
+    </div>
+    <br clear="all"/>
+  </div>
+  <hr>
+  <div id="filters_rating">
+    <div class="center">
+      <rating ng-model="filterrating.rating" max="filterrating.max"></rating>
+    </div>
+  </div>
+  <button class="center button button-icon ion-chevron-up white-color cancelFiltersModal" ng-click="cancelFiltersModal()">
+  </button>
+</ion-modal-view>
+

@@ -6,43 +6,43 @@
 </ion-nav-bar >
 
 <ion-view>
-<ion-content scroll="false" class="has-header" has-header="true" has-bouncing="true">
-  <div id="wrapper">
-    <div id="signupct">
-      <img src="img/logo.png" id="logo2">
-      <div ng-show="slideon_0">
-        <div class="fgfieldlabel signupfield" id="label_fullname">Hey! What's your full name?</div>
-        <input class="fgfield signupfield" type="text" name="fullname" id="signupfield_0" placeholder="Hey! What's your full name?" ng-model="user.fullname" advancenextsignup>
-        <br clear="all"/>
-        <div class="center">
-          <img src="img/signup-progress-1.png" id="signup_progress">
+  <ion-content scroll="false" class="has-header" has-header="true" has-bouncing="true">
+    <div id="wrapper">
+      <div id="signupct">
+        <img src="img/logo.png" id="logo2">
+        <div ng-show="slideon_0">
+          <div class="fgfieldlabel signupfield" id="label_fullname">Hey! What's your full name?</div>
+          <input class="fgfield signupfield" type="text" name="fullname" id="signupfield_0" placeholder="Hey! What's your full name?" ng-model="user.fullname" advancenextsignup>
+          <br clear="all"/>
+          <div class="center">
+            <img src="img/signup-progress-1.png" id="signup_progress">
+          </div>
+        </div>          
+        <div ng-show="slideon_1">
+          <div class="fgfieldlabel signupfield" id="label_password">Password</div>
+          <input class="fgfield signupfield" type="password" name="password" id="signupfield_1" placeholder="Password" ng-model="user.password" advancenextsignup>
+          <br clear="all"/>
+          <div class="center">
+            <img src="img/signup-progress-2.png" id="signup_progress">
+          </div>
+        </div>          
+        <div ng-show="slideon_2">
+          <div class="fgfieldlabel signupfield" id="label_phone">Phone</div>
+          <input class="fgfield signupfield" type="tel" name="phone" id="signupfield_2" placeholder="Phone" ng-model="user.phone" advancenextsignup>
+          <br clear="all"/>
+          <div class="center">
+            <img src="img/signup-progress-3.png" id="signup_progress">
+          </div>
         </div>
-      </div>          
-      <div ng-show="slideon_1">
-        <div class="fgfieldlabel signupfield" id="label_password">Password</div>
-        <input class="fgfield signupfield" type="password" name="password" id="signupfield_1" placeholder="Password" ng-model="user.password" advancenextsignup>
-        <br clear="all"/>
-        <div class="center">
-          <img src="img/signup-progress-2.png" id="signup_progress">
-        </div>
-      </div>          
-      <div ng-show="slideon_2">
-        <div class="fgfieldlabel signupfield" id="label_phone">Phone</div>
-        <input class="fgfield signupfield" type="tel" name="phone" id="signupfield_2" placeholder="Phone" ng-model="user.phone" advancenextsignup>
-        <br clear="all"/>
-        <div class="center">
-          <img src="img/signup-progress-3.png" id="signup_progress">
-        </div>
-      </div>
-      <div ng-show="slideon_3">
-        <div class="fgfieldlabel signupfield" id="label_phonecode">Phone verification code</div>
-        <input class="fgfield signupfield" type="text" name="phonecode" id="signupfield_3" placeholder="Phone verification code" ng-model="user.phonecode" advancenextsignup>
-        <br clear="all"/>
-        <div class="center">
-          <img src="img/signup-progress-4.png" id="signup_progress">
+        <div ng-show="slideon_3">
+          <div class="fgfieldlabel signupfield" id="label_phonecode">Phone verification code</div>
+          <input class="fgfield signupfield" type="text" name="phonecode" id="signupfield_3" placeholder="Phone verification code" ng-model="user.phonecode" advancenextsignup>
+          <br clear="all"/>
+          <div class="center">
+            <img src="img/signup-progress-4.png" id="signup_progress">
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</ion-content>
+  </ion-content>
 </ion-view>

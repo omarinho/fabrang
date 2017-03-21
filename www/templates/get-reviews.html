@@ -1,0 +1,76 @@
+<ion-modal-view class="infoModal grayBackground">
+
+  <ion-header-bar align-title="center">
+    <h1 class="title grayText">
+      Reviews
+      <div class="closex" ng-click="cancelReviewsModal()">X</div>
+    </h1>
+  </ion-header-bar>
+
+  <ion-content scroll="true">
+    <div class="center">
+      <div class="content">
+        <div class="modalTextHeader">
+          <div class="modalText">
+            <div class="float_left">      
+              <rating ng-model="store.rating" max="rating.max" readonly="readOnly"></rating>
+            </div>
+            <div class="float_left">
+              &nbsp;&nbsp;&nbsp;{{ store.rating }}
+            </div>
+            <div class="float_right">
+              35 Reviews
+            </div>
+            <br clear="all"/>
+            <select ng-model="reviewsDropDown.sort" class="reviewsDropdown" ng-change="reloadReviews()">
+              <option value="DESC">Newest - Oldest</option>
+              <option value="ASC">Oldest - Newest</option>
+            </select>
+          </div>
+        </div>
+        <div ng-repeat="review in store.reviews" class="width100 review" ng-class-even="'revieweven'" ng-class-odd="'reviewodd'">
+            <div class="modalText">
+              <div ng-if="review.userid == userID">
+                <div class="float_left grayText italicFont">
+                  Your Review
+                </div>
+                <div class="float_right blueText">
+                  Edit
+                </div>
+                <br clear="all"/>
+              </div>
+              <div class="width100 textAlignLeft grayText">
+                <div class="float_left">
+                  <rating ng-model="review.rating" readonly="readOnly"></rating>
+                </div>
+                <div class="float_left">
+                  &nbsp;&nbsp;&nbsp;{{ review.title }}
+                </div>
+                <br clear="all"/>
+                {{ review.username }} on {{ review.date }} 
+              </div>
+              <div class="textAlignLeft blackText">
+                <span ng-if="reviewNoCutID != review.id">
+                  {{ review.content | limitTo: 118 }} 
+                  <span class="blueText italicFont" ng-click="reviewNoCut(review.id)">
+                    {{ review.content.length > 118 ? ' more...' : ''}}
+                  </span>
+                </span>
+                <span ng-if="reviewNoCutID == review.id">
+                  {{ review.content }} 
+                  <span class="blueText italicFont" ng-click="reviewNoCutRelease()" ng-if="reviewNoCutID == review.id">
+                    {{ review.content.length > 118 ? ' less' : ''}}
+                  </span>
+                </span>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  
+  <ion-footer-bar class="reviewsFooter">
+    <div class="center">Write a Review</div>
+  </ion-footer-bar>
+  
+</ion-modal-view>

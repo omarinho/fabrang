@@ -1,4 +1,4 @@
-angular.module('starter', ['ionic', 'starter.controllers', 'ngIOS9UIWebViewPatch', 'angucomplete'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngIOS9UIWebViewPatch', 'angucomplete', 'ionic.rating', 'ngDraggable'])
 
 .run(
   function ($ionicPlatform) {
@@ -18,6 +18,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngIOS9UIWebViewPatch
         if (window.StatusBar) {
           StatusBar.styleDefault();
         }
+        
       }
     );
   }
@@ -63,9 +64,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngIOS9UIWebViewPatch
 
       .state('store', {
         cache: false,
-        url: "/store",
+        url: "/store/:storeID",
         templateUrl: "templates/store.html",
         controller: 'StoreCtrl'
+      })
+
+      .state('settings', {
+        cache: false,
+        url: "/settings",
+        templateUrl: "templates/settings.html",
+        controller: 'SettingsCtrl'
       })
 
     $urlRouterProvider.otherwise("/");      
@@ -187,4 +195,77 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngIOS9UIWebViewPatch
   }
 )
 
+.filter('containsObject', 
+  function() {
+    return function (arr, o) {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].name == o.name && arr[i].type == o.type) {
+          return 'boxblue';
+        }
+      }
+      return 'boxwhite';
+    }
+  }
+)
+
+.filter('cut', 
+  function () {
+    return function (value, wordwise, max, tail) {
+      if (!value) {
+        return '';
+      }
+      max = parseInt(max, 10);
+      if (!max) {
+        return value;
+      }
+      if (value.length <= max) {
+        return value;
+      }
+      value = value.substr(0, max);
+      if (wordwise) {
+        var lastspace = value.lastIndexOf(' ');
+        if (lastspace !== -1) {
+          if (value.charAt(lastspace-1) === '.' || value.charAt(lastspace-1) === ',') {
+            lastspace = lastspace - 1;
+          }
+          value = value.substr(0, lastspace);
+        }
+      }
+      return value + (tail || ' ...');
+    };
+  }
+)
+
 ;
+
+/*** MISCELANEOUS FUNCTIONS ***/
+
+/**
+* objectIndexOf - Get index of an object in an array of objects. If it doesn't exist, it returns -1
+* @param arr - The array ob objects
+* @param o     - The object we are looking for 
+* @returns {*} - Index    
+*/       
+function objectIndexOf(arr, o) {    
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i].name == o.name && arr[i].type == o.type) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+
+/**
+* searchObjectByID - Get element in an array of objects by key ID
+* @param nameKey - Value we are looking for
+* @param myArray - The array of objects 
+* @returns {*}   - The object with id = nameKey   
+*/       
+function searchObjectByID(nameKey, myArray){
+  for (var i=0; i < myArray.length; i++) {
+    if (myArray[i].id === nameKey) {
+      return myArray[i];
+    }
+  }
+}
