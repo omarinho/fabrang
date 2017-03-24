@@ -1,25 +1,30 @@
 <ion-modal-view class="infoModal grayBackground">
-
+ 
   <ion-header-bar align-title="center">
-    <h1 class="title grayText">
+    <div class="title grayText">
       Reviews
-      <div class="closex" ng-click="cancelReviewsModal()">X</div>
-    </h1>
+      <div class="float_right closex" ng-click="cancelReviewsModal()">
+        <i class="icon ion-close"></i>
+      </div>
+    </div>
+    <br clear="all"/>
   </ion-header-bar>
 
-  <ion-content scroll="true">
-    <div class="center">
+  <ion-content scroll="true" class="has-header" has-header="true" has-bouncing="true">
+    
+    <!-- See reviews -->
+    <div id="seeReviews" class="center"  ng-show="!writeAReview && !submittedReview">
       <div class="content">
         <div class="modalTextHeader">
           <div class="modalText">
             <div class="float_left">      
-              <rating ng-model="store.rating" max="rating.max" readonly="readOnly"></rating>
+              <rating ng-model="store.rating" readonly="readOnly"></rating>
             </div>
             <div class="float_left">
               &nbsp;&nbsp;&nbsp;{{ store.rating }}
             </div>
             <div class="float_right">
-              35 Reviews
+              {{ store.reviews.length }} Reviews
             </div>
             <br clear="all"/>
             <select ng-model="reviewsDropDown.sort" class="reviewsDropdown" ng-change="reloadReviews()">
@@ -67,10 +72,39 @@
         </div>
       </div>
     </div>
+    
+    <!-- Write review -->
+    <div id="writeReview" class="center" ng-show="writeAReview">
+      <rating ng-model="userReview.rating" style="font-size:27px;"></rating>
+      <br clear="all"/>
+      <div class="textAlignLeft">
+        <div class="fgfieldlabel" id="label_displayname">Display Name</div>
+        <input class="fgfield" type="text" name="displayname" id="id_displayname" placeholder="Display Name" ng-model="userReview.displayname" advancenext>
+        <br>
+        <div class="fgfieldlabel" id="label_headline">Headline</div>
+        <input class="fgfield" type="text" name="headline" id="id_headline" placeholder="Headline" ng-model="userReview.headline" advancenext>
+        <br>
+        <div class="fgfieldlabel" id="label_reviewtext">Write your review...</div>
+        <textarea class="fgfield text_area" rows="3" name="reviewtext" id="id_reviewtext" placeholder="Write your review..." ng-model="userReview.reviewtext" advancenext></textarea>
+      </div>
+      <br clear="all"/><br><br>
+    </div>
+
+    <!-- Submitted review -->
+    <div id="submittedReview" class="center grayText" ng-show="submittedReview">
+      <br clear="all"/><br><br>
+      Thank you for submitting your review! 
+    </div>
+
   </ion-content>
   
-  <ion-footer-bar class="reviewsFooter">
-    <div class="center">Write a Review</div>
+  <ion-footer-bar class="reviewsFooter" ng-show="!submittedReview">
+    <div class="center" ng-click="writeReview()"  ng-show="!writeAReview && !submittedReview">
+      Write a Review
+    </div>
+    <div class="center" ng-click="submitReview()"  ng-show="writeAReview">
+      Submit Review
+    </div>
   </ion-footer-bar>
   
 </ion-modal-view>

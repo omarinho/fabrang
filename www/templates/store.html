@@ -1,4 +1,4 @@
-<ion-header-bar class="bar-light bar-header" align-title="center" on-swipe-down="showFiltersModal()">
+<ion-header-bar class="bar-light bar-header" align-title="center">
     <div class="buttons">
       <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
       </button>
@@ -13,7 +13,7 @@
 </ion-header-bar>
 
 <ion-view>
-  <ion-content scroll="true" class="has-header" has-header="true" has-bouncing="true" ng-style="homestyle">
+  <ion-content scroll="true" class="has-header has-footer" has-header="true" has-bouncing="true" ng-style="homestyle">
     <div id="wrapper">
       <div class="center">
         <div id="storeInfo">
@@ -21,15 +21,17 @@
             <div class="RobotoBold placeName">
               {{ store.name }}
             </div>
-            <div class="grayText placeGenre">
+            <div class="grayText">
               {{ store.cuisineTypes }} Cuisine
             </div>
           </div>  
           <div class="float_right">
-            <img src="img/favorite.png" height="18" align="middle" ng-click="saveToFavorite()">
-            <div class="grayText">
-              Min ${{ store.minimunPrice }}<br>
-              {{ store.todaySchedule }}
+            <img src="img/favorite.png" height="15" align="middle" ng-click="saveToFavorite()">
+            <div class="grayText" style="line-height:100%;">
+              <small>
+                Min ${{ store.minimunPrice }}<br>
+                {{ store.todaySchedule }}
+              </small>
             </div>
           </div>
           <br clear="all"/>
@@ -49,8 +51,8 @@
             </div>
             <div class="float_right grayText">
               <div class="float_left" ng-click="showReviewsModal()">
-                <rating ng-model="store.rating" max="rating.max" readonly="readOnly"></rating>
-                <div>(35 Reviews)</div>
+                <rating ng-model="store.rating" readonly="readOnly"></rating>
+                <div>({{ store.reviews.length }} Reviews)</div>
               </div>
               <div class="float_left">&nbsp;</div>
               <div class="float_left">&nbsp;</div>
@@ -67,7 +69,43 @@
           </div>
         </div>
         <div id="categoryTabs">
-          &nbsp;
+          <div class="float_left RobotoBold" style="background-color:#99E58A; color:#FFFFFF; font-weight:bold; display: flex; justify-content: center; align-items: center;">
+            <div class="float_left cartIcon" ng-click="completeCart()">
+              4
+            </div>
+            <div class="float_left" id="cartIconText"> 
+              CART&nbsp;&nbsp;&nbsp;                                       
+            </div>
+            <br clear="all"/>
+          </div>
+          <ion-scroll zooming="false" direction="x" scrollbar-x="false" class="whiteSpaceNoWrap" has-bouncing="false" on-scroll="gotScrolled()">
+            <div class="long-container" id="id_long_container"">
+              <div ng-repeat="category in store.categories" ng-class="activeTab == category.id ? 'float_left RobotoBold tabActive' : 'float_left RobotoBold'" on-tap="selectTab(category.id)" style="padding-left:9px; padding-right:9px; padding-top:15px; display:inline-block; text-align:center; height:100%;">
+                {{ category.name }}
+              </div>
+            </div>
+          </ion-scroll>
+          <br clear="all"/>
+        </div>
+        <div class="textAlignLeft" style="padding:9px; width:100%;">
+          <div ng-repeat="aItem in store.categoryItems" ng-clik="addItemToCard(aItem)">
+            <div id="itemInfo_{{ aItem.id }}">
+              <div class="float_left" style="margin-bottom:18px;">
+                <span class="RobotoBold">{{ aItem.name }}</span>
+                <br>
+                <span class="grayText">{{ aItem.description }}</span>
+              </div>
+              <div class="float_right grayText">
+                ${{ aItem.price }}
+              </div>
+            </div>
+            <br clear="all"/>
+            <hr>
+            <br clear="all"/>
+            <div id="addItemToCart_{{ aItem.id }}" class="displayNone">
+              dgdfgdfghdfh
+            </div>
+          </div> 
         </div>
       </div>
     </div>

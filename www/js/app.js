@@ -269,3 +269,17 @@ function searchObjectByID(nameKey, myArray){
     }
   }
 }
+
+/**
+* shuffleArray - Randomize order of items in an array
+* @param a - The array we want to shuffle
+*/       
+function shuffleArray(a) {
+    var j, x, i;
+    for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
+}

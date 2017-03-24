@@ -637,6 +637,24 @@ angular.module('starter.controllers',['ngCordova'])
   
   function ($scope, $ionicLoading, $ionicPlatform, $timeout, $ionicModal, $stateParams, SearchService, FavoritesService, StoreService, UsersService) {
 
+    $scope.showSearchBox = false;
+    $scope.homestyle={
+      "opacity": "1",
+      "background": "rgb(255,255,255)"
+    };
+    var currentD = new Date();
+    $scope.todayWeekDay = currentD.getDay();     
+    $scope.rating = {};
+    $scope.readOnly = true;
+    $scope.reviewNoCutID = -1;
+    $scope.writeAReview = false;
+    $scope.submittedReview = false;
+    $scope.activeTab = 'Cart';
+    $scope.reviewsDropDown={
+      sort:'DESC'
+    };
+    
+
     /*** Call API: Get the ID of logged user ***/
     $scope.userID = UsersService.getUserID();
     
@@ -649,19 +667,11 @@ angular.module('starter.controllers',['ngCordova'])
     /*** Results are stored in $scope.store ***/
     StoreService.getStoreData($scope, $stateParams.storeID.toString());
     /******************************************/
-
-    $scope.showSearchBox = false;
-    $scope.homestyle={
-      "opacity": "1",
-      "background": "rgb(255,255,255)"
-    };
-    var currentD = new Date();
-    $scope.todayWeekDay = currentD.getDay();     
-    $scope.rating = {
-      max:5,
-    };
-    $scope.readOnly = true;
-    $scope.reviewNoCutID = -1;
+    
+    /*** Call API: Get reviews of this store          ***/
+    /*** Results are stored in $scope.store.reviews   ***/
+    StoreService.getStoreReviews($scope, $stateParams.storeID.toString(), $scope.userID, $scope.reviewsDropDown.sort);
+    /****************************************************/
     
     $scope.showSearchBoxF = function() {
       $scope.showSearchBox = true;
@@ -735,18 +745,13 @@ angular.module('starter.controllers',['ngCordova'])
     );
 	
     $scope.showReviewsModal = function() {
-      $scope.reviewsDropDown={
-        sort:'DESC'
-      };
-      /*** Call API: Get reviews of this store          ***/
-      /*** Results are stored in $scope.store.reviews   ***/
-      StoreService.getStoreReviews($scope, $stateParams.storeID.toString(), $scope.userID, $scope.reviewsDropDown.sort);
-      /****************************************************/
       $scope.getReviews.show();
     };
   
     $scope.cancelReviewsModal = function() {
       $scope.getReviews.hide();
+      $scope.writeAReview = false;  
+      $scope.submittedReview = false;    
     }
 
     $scope.reloadReviews = function() {
@@ -763,6 +768,41 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.reviewNoCutRelease = function() {
       $scope.reviewNoCutID = -1; 
     } 
+    
+    $scope.writeReview = function() {
+      $scope.userReview = {};
+      $scope.writeAReview = true;      
+    }
+
+    $scope.submitReview = function() {
+      $scope.writeAReview = false;      
+      $scope.submittedReview = true;      
+    }
+    
+    $scope.gotScrolled = function() {
+      var widthLongContainer = $scope.store.categories.length * 72;
+      document.getElementById('id_long_container').setAttribute("style","width:" + widthLongContainer + "px");
+      document.getElementById('cartIconText').style.display = 'none'      
+    }
+    
+    $scope.completeCart = function() {
+      document.getElementById('cartIconText').style.display = 'block'      
+    }  
+    
+    $scope.selectTab = function(categoryID) {
+      /*** Call API: Get items of the category for this store ***/
+      /*** Results are stored in $scope.store.categoryItems   ***/
+      StoreService.getCategoryItems($scope, categoryID);
+      /**********************************************************/
+      $scope.activeTab = categoryID;
+    }
+    
+    $scope.addItemToCard = function(item) {
+      if (item.options.lenght == 0) {
+        document.getElementById('itemInfo_' + item.id).style.display = 'none';
+        document.getElementById('addItemToCart_' + item.id).style.display = 'block';
+      }      
+    } 
 
   }
   
@@ -777,8 +817,6 @@ angular.module('starter.controllers',['ngCordova'])
 .controller('SettingsCtrl',                                    
   
   function ($scope, $ionicLoading, $ionicPlatform) {
-
-
   }
 
 )

@@ -142,10 +142,29 @@
 }
 
 #categoryTabs {
-  background-color:#EAEAEA;
+}
+
+#writeReview ul.rating li i {
+  font-size:45px;
+}
+
+#submittedReview {
+  font-size:21px;
+  line-height:150%;
 }
 
 .fgfield {
+  width:80%;
+  margin: 0 auto;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  border-bottom: 7px solid #EAEAEA !important;
+  font-family: 'RobotoRegular';
+  font-size:18px !important;
+}
+
+.fgfield .text_area {
   width:80%;
   margin: 0 auto;
   border: 0 !important;
@@ -378,7 +397,7 @@ a, a:hover, a:active {
   border-radius: 9px;
 }
 
-.infoModal .title {
+.infoModal .titlex {
   font-weight:bold;
   margin-top:9px;
   font-size: 18px;
@@ -791,3 +810,33 @@ ul.rating li i {
   font-style: italic;
 }
 
+.cartIcon {
+  width:34px; 
+  height:33px; 
+  background: url('../img/cart-icon.png');  
+  background-size: cover;  
+  background-repeat: no-repeat; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  padding-top:10px; 
+  margin:9px;
+}
+
+.whiteSpaceNoWrap {
+  white-space: nowrap !important;
+}
+
+.long-container {
+  width: 300%;
+  height:51px;
+  background-color:#EAEAEA;
+}
+
+.tabActive {
+  border-bottom: 6px #C0BEBF solid;
+}
+
+.displayNone {
+  display:none;
+}
