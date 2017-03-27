@@ -211,6 +211,23 @@ angular.module('starter.controllers',['ngCordova'])
     }
     // Code to control filtrers globally  - END //
     
+    // Cart management - BEGIN
+    if (SessionService.get('cart') == null) {
+      $rootScope.cart = [];
+    } 
+    else {
+      $rootScope.cart = SessionService.get('cart')
+    }
+    $rootScope.addToCart = function(aItem) {
+      $rootScope.cart.push(aItem);
+      SessionService.set('cart',$rootScope.cart);      
+    }
+    $rootScope.removeFromCart = function(index) {
+      $rootScope.cart.splice(index, 1);
+      SessionService.set('cart',$rootScope.cart);
+    }
+    // Cart management - END
+    
     $rootScope.showLoading = function() {
       $ionicLoading.show();
     }
@@ -224,12 +241,12 @@ angular.module('starter.controllers',['ngCordova'])
 
     window.addEventListener('native.keyboardshow', function() {
       $rootScope.showFooter = false;
-      $rootScope.$apply()
+      $rootScope.$apply();
     });
 
     window.addEventListener('native.keyboardhide', function() {
       $rootScope.showFooter = true;
-      $rootScope.$apply()
+      $rootScope.$apply();
     });
 
   }
@@ -782,11 +799,11 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.gotScrolled = function() {
       var widthLongContainer = $scope.store.categories.length * 72;
       document.getElementById('id_long_container').setAttribute("style","width:" + widthLongContainer + "px");
-      document.getElementById('cartIconText').style.display = 'none'      
+      document.getElementById('cartIconText').style.display = 'none';    
     }
     
     $scope.completeCart = function() {
-      document.getElementById('cartIconText').style.display = 'block'      
+      document.getElementById('cartIconText').style.display = 'block';      
     }  
     
     $scope.selectTab = function(categoryID) {
@@ -795,14 +812,93 @@ angular.module('starter.controllers',['ngCordova'])
       StoreService.getCategoryItems($scope, categoryID);
       /**********************************************************/
       $scope.activeTab = categoryID;
+      $scope.hideMOPanel();      
     }
     
-    $scope.addItemToCard = function(item) {
-      if (item.options.lenght == 0) {
-        document.getElementById('itemInfo_' + item.id).style.display = 'none';
+    $scope.wantThis = function(item) {
+      if (item.options.length == 0) {
         document.getElementById('addItemToCart_' + item.id).style.display = 'block';
-      }      
+      }
+      else {
+        $scope.item_mo = item;
+        $scope.showMOPanel();
+      }
     } 
+    
+    $scope.hideAddItemCart = function(item) {
+      $timeout(
+        function() {
+          document.getElementById('addItemToCart_' + item.id).style.display = 'none';
+        }, 100
+      );	
+    }
+    
+    $scope.showMOPanel = function() {
+      $scope.auxArray=[];
+      $timeout(
+        function() {
+          document.getElementById('regularPanel').style.display = 'none';
+          document.getElementById('MOPanel').style.display = 'block';
+        }, 100
+      );	
+    }
+    
+    $scope.hideMOPanel = function() {
+      $timeout(
+        function() {
+          document.getElementById('MOPanel').style.display = 'none';
+          document.getElementById('regularPanel').style.display = 'block';
+        }, 100
+      );	
+    }
+    
+    $scope.toggleOption = function(elem)  {
+      var index = objectIndexOf2($scope.auxArray, elem);
+      if (index > -1) {
+        $scope.auxArray.splice(index,1);
+      }
+      else {
+        for (i=0; i<$scope.auxArray.length; ++i) {
+          if ($scope.auxArray[i].type === elem.type) {
+            $scope.auxArray.splice(i,1);
+          }
+        }
+        $scope.auxArray.push(elem);
+      }
+    }
+    
+    $scope.addThisToCard = function(item, optionsArray, source) {
+      if (source=='nooptions') {
+        var finalPrice = item.price;
+        var q = document.getElementById('quantity_' + item.id);
+      }
+      if (source=='multioptions') {
+        var floatPrice = parseFloat(item.price);
+        for (i=0; i<optionsArray.length; ++i) {
+          if ( parseFloat(optionsArray[i].inc) > 0) {
+            floatPrice = floatPrice + parseFloat(optionsArray[i].inc);
+          }
+        }
+        var finalPrice = floatPrice + '';                    
+        var q = document.getElementById('quantity_mo');
+      }
+      var cartObject =  {
+              id:item.id, 
+              name:item.name, 
+              price:finalPrice, 
+              description:item.description, 
+              options:optionsArray,
+              quantity:q.options[q.selectedIndex].value
+      }
+      $scope.addToCart(cartObject);
+      $timeout(
+        function() {
+          document.getElementById('addItemToCart_' + item.id).style.display = 'none';
+          $scope.hideMOPanel();
+        }, 100
+      );
+      $scope.alerti('You have added ' + item.name + ' to your cart.','ADDED');          
+    }
 
   }
   

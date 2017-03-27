@@ -195,6 +195,41 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   }
 )
 
+.directive('countdown', 
+  function($timeout) {
+    return {
+      restrict: 'A',
+      link: function($scope,elem,attrs) {
+        if (attrs.livedeal == "true") {
+          var ld = parseInt(attrs.liveduration);
+          setInterval(
+            function() {
+              var myElem = document.getElementById(attrs.id);
+              if (myElem === null) {
+                //do nothing
+              }
+              else {              
+                var left = remainingTime(attrs.endingtime);
+                var leftArray = left.split(":");
+                var leftSeconds = parseInt(leftArray[0]*60*60) + parseInt(leftArray[1]*60) + parseInt(leftArray[2]);
+                var progresswidth = 100 - ((leftSeconds/ld)*100);
+                document.getElementById(attrs.id).innerHTML= left;
+                if (document.getElementById('progress_' + attrs.id) === null) {
+                  //do nothing
+                } 
+                else {
+                  document.getElementById('progress_' + attrs.id).setAttribute("style","width:" + progresswidth + "%");
+                }
+              }              
+            }, 
+            1000
+          );
+        }
+      }                
+    }
+  }
+)
+
 .filter('containsObject', 
   function() {
     return function (arr, o) {
@@ -202,8 +237,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         if (arr[i].name == o.name && arr[i].type == o.type) {
           return 'boxblue';
         }
-      }
+      }                             
       return 'boxwhite';
+    }
+  }
+)
+
+.filter('containsObject2', 
+  function() {
+    return function (arr, o) {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].id == o.id && arr[i].desc == o.desc) {
+          return 'boxblue';
+        }
+      }                             
+      return 'boxgray';
     }
   }
 )
@@ -232,7 +280,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
       return value + (tail || ' ...');
-    };
+    }
   }
 )
 
@@ -241,8 +289,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 /*** MISCELANEOUS FUNCTIONS ***/
 
 /**
-* objectIndexOf - Get index of an object in an array of objects. If it doesn't exist, it returns -1
-* @param arr - The array ob objects
+* objectIndexOf1 - Get index of an object in an array of filters. If it doesn't exist, it returns -1
+* @param arr   - The array ob objects
 * @param o     - The object we are looking for 
 * @returns {*} - Index    
 */       
@@ -255,6 +303,20 @@ function objectIndexOf(arr, o) {
   return -1;
 }
 
+/**
+* objectIndexOf2 - Get index of an object in an array of options to order in an item (store). If it doesn't exist, it returns -1
+* @param arr   - The array ob objects
+* @param o     - The object we are looking for 
+* @returns {*} - Index    
+*/       
+function objectIndexOf2(arr, o) {    
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i].id == o.id && arr[i].desc == o.desc) {
+      return i;
+    }
+  }
+  return -1;
+}
 
 /**
 * searchObjectByID - Get element in an array of objects by key ID
@@ -275,11 +337,44 @@ function searchObjectByID(nameKey, myArray){
 * @param a - The array we want to shuffle
 */       
 function shuffleArray(a) {
-    var j, x, i;
+    var j, x, i;                                                        
     for (i = a.length; i; i--) {
         j = Math.floor(Math.random() * i);
         x = a[i - 1];
         a[i - 1] = a[j];
         a[j] = x;
     }
+}
+
+/**
+* remainingTime - Calculate left hours, minutes and seconds
+* @param valuestop - Time to stop (H:mm:ss 24h format) 
+*/       
+function remainingTime(valuestop) {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  if (m < 10) {
+    m = "0" + m;
+  }
+  if (s < 10) {
+    s = "0" + s;
+  }
+  var valuestart = h + ":" + m + ":" + s;
+  var timeStart = new Date("12/01/1900 " + valuestart);
+  var timeEnd = new Date("12/01/1900 " + valuestop);
+  var delta = Math.abs(timeEnd - timeStart) / 1000;
+  var hours = Math.floor(delta / 3600) % 24;
+  delta -= hours * 3600;
+  var minutes = Math.floor(delta / 60) % 60;
+  delta -= minutes * 60;
+  var seconds = delta % 60;
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+  return hours + ':' + minutes + ':' + seconds;    
 }

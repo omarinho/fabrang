@@ -10,7 +10,7 @@
  ***/
  var HARDCODED_DATABASE = [
                 {id:"98", name:"Farbeissen", waitTime:"15", cuisineTypes:"Chassidic", minimunPrice:"7.70", pricesLevel:"2", rating:"1.6", live_deal:false, endingTime:'', distance:"0.1", todaySchedule:"7AM - 7PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
-                {id:"51", name:"Chai Town", waitTime:"20", cuisineTypes:"Chinese", minimunPrice:"10.00", pricesLevel:"4", rating:"4.0", live_deal:true, endingTime:'O:14:05', distance:"0.4", todaySchedule:"7AM - 8PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
+                {id:"51", name:"Chai Town", waitTime:"20", cuisineTypes:"Chinese", minimunPrice:"10.00", pricesLevel:"4", rating:"4.0", live_deal:true, live_duration:'86400', endingTime:'23:59:59', distance:"0.4", todaySchedule:"7AM - 8PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
                 {id:"112", name:"Gorin's Cafe", waitTime:"25", cuisineTypes:"Israel", minimunPrice:"7.80", pricesLevel:"3", rating:"2.0", live_deal:false, endingTime:'', distance:"1.0", todaySchedule:"8AM - 9PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
                 {id:"1", name:"A&W Restaurants", waitTime:"9", cuisineTypes:"American", minimunPrice:"3.00", pricesLevel:"1", rating:"4.0", live_deal:false, endingTime:'', distance:"3.6", todaySchedule:"9AM - 10PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
                 {id:"2", name:"America's Incredible Pizza Company", waitTime:"15", cuisineTypes:"Chassidic", minimunPrice:"7.70", pricesLevel:"2", rating:"1.6", live_deal:false, endingTime:'', distance:'5.2', todaySchedule:"6AM-7PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
@@ -492,23 +492,23 @@ angular.module('starter.services',[])
                 {
                   heading:'Choose a topping (first two free)', 
                   values:[
-                    {id:1, desc:'Tomatoes +$0.75'}, 
-                    {id:2, desc:'Olives'}, 
-                    {id:3, desc:'Pickles'}, 
-                    {id:4, desc:'Lettuce +$0.25'}, 
-                    {id:5, desc:'Rice'},
-                    {id:6, desc:'Cream'}
+                    {id:1, desc:'Tomatoes', inc:'0.75', type:'topping'}, 
+                    {id:2, desc:'Olives', inc:'0.0', type:'topping'}, 
+                    {id:3, desc:'Pickles', inc:'0.0', type:'topping'}, 
+                    {id:4, desc:'Lettuce', inc:'0.25', type:'topping'}, 
+                    {id:5, desc:'Rice', inc:'0.0', type:'topping'},
+                    {id:6, desc:'Cream', inc:'0.0', type:'topping'}
                   ]
                 }, 
                 {
                   heading:'Choose a bread type', 
                   values:[
-                    {id:7, desc:'Plain'}, 
-                    {id:8, desc:'Whole Wheat +$0.75'}, 
-                    {id:9, desc:'Rye Sesame'}, 
-                    {id:10, desc:'Sourdough'}, 
-                    {id:11, desc:'Pita'},
-                    {id:12, desc:'Toast'}
+                    {id:7, desc:'Plain', inc:'0.0', type:'bread'}, 
+                    {id:8, desc:'Whole Wheat', inc:'0.75', type:'bread'}, 
+                    {id:9, desc:'Rye Sesame', inc:'0.0', type:'bread'}, 
+                    {id:10, desc:'Sourdough', inc:'0.0', type:'bread'}, 
+                    {id:11, desc:'Pita', inc:'0.0', type:'bread'},
+                    {id:12, desc:'Toast', inc:'0.0', type:'bread'}
                   ]
                 } 
               ] 
@@ -529,23 +529,23 @@ angular.module('starter.services',[])
                 {
                   heading:'Choose a topping (first two free)', 
                   values:[
-                    {id:1, desc:'Tomatoes +$0.75'}, 
-                    {id:2, desc:'Olives'}, 
-                    {id:3, desc:'Pickles'}, 
-                    {id:4, desc:'Lettuce +$0.25'}, 
-                    {id:5, desc:'Rice'},
-                    {id:6, desc:'Cream'}
+                    {id:1, desc:'Tomatoes', inc:'0.75', type:'topping'}, 
+                    {id:2, desc:'Olives', inc:'0.0', type:'topping'}, 
+                    {id:3, desc:'Pickles', inc:'0.0', type:'topping'}, 
+                    {id:4, desc:'Lettuce', inc:'0.25', type:'topping'}, 
+                    {id:5, desc:'Rice', inc:'0.0', type:'topping'},
+                    {id:6, desc:'Cream', inc:'0.0', type:'topping'}
                   ]
                 }, 
                 {
                   heading:'Choose a bread type', 
                   values:[
-                    {id:7, desc:'Plain'}, 
-                    {id:8, desc:'Whole Wheat +$0.75'}, 
-                    {id:9, desc:'Rye Sesame'}, 
-                    {id:10, desc:'Sourdough'}, 
-                    {id:11, desc:'Pita'},
-                    {id:12, desc:'Toast'}
+                    {id:7, desc:'Plain', inc:'0.0', type:'bread'}, 
+                    {id:8, desc:'Whole Wheat', inc:'0.75', type:'bread'}, 
+                    {id:9, desc:'Rye Sesame', inc:'0.0', type:'bread'}, 
+                    {id:10, desc:'Sourdough', inc:'0.0', type:'bread'}, 
+                    {id:11, desc:'Pita', inc:'0.0', type:'bread'},
+                    {id:12, desc:'Toast', inc:'0.0', type:'bread'}
                   ]
                 } 
               ] 
@@ -566,23 +566,23 @@ angular.module('starter.services',[])
                 {
                   heading:'Choose a topping (first two free)', 
                   values:[
-                    {id:1, desc:'Tomatoes +$0.75'}, 
-                    {id:2, desc:'Olives'}, 
-                    {id:3, desc:'Pickles'}, 
-                    {id:4, desc:'Lettuce +$0.25'}, 
-                    {id:5, desc:'Rice'},
-                    {id:6, desc:'Cream'}
+                    {id:1, desc:'Tomatoes', inc:'0.75', type:'topping'}, 
+                    {id:2, desc:'Olives', inc:'0.0', type:'topping'}, 
+                    {id:3, desc:'Pickles', inc:'0.0', type:'topping'}, 
+                    {id:4, desc:'Lettuce', inc:'0.25', type:'topping'}, 
+                    {id:5, desc:'Rice', inc:'0.0', type:'topping'},
+                    {id:6, desc:'Cream', inc:'0.0', type:'topping'}
                   ]
                 }, 
                 {
                   heading:'Choose a bread type', 
                   values:[
-                    {id:7, desc:'Plain'}, 
-                    {id:8, desc:'Whole Wheat +$0.75'}, 
-                    {id:9, desc:'Rye Sesame'}, 
-                    {id:10, desc:'Sourdough'}, 
-                    {id:11, desc:'Pita'},
-                    {id:12, desc:'Toast'}
+                    {id:7, desc:'Plain', inc:'0.0', type:'bread'}, 
+                    {id:8, desc:'Whole Wheat', inc:'0.75', type:'bread'}, 
+                    {id:9, desc:'Rye Sesame', inc:'0.0', type:'bread'}, 
+                    {id:10, desc:'Sourdough', inc:'0.0', type:'bread'}, 
+                    {id:11, desc:'Pita', inc:'0.0', type:'bread'},
+                    {id:12, desc:'Toast', inc:'0.0', type:'bread'}
                   ]
                 } 
               ] 

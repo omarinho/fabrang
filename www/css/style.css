@@ -219,6 +219,21 @@
   border-color: #F2E37E; 
 }
 
+.fgbuttongreen {
+  background-color:#99E58A;
+  color:#FFFFFF;
+  font-weight:bold;
+  border-radius: 27px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-family: 'RobotoRegular';
+  font-size:18px;
+  border-style: solid;
+  border-color: #99E58A; 
+  padding-left:27px;
+  padding-right:27px;
+}
+
 .loginbutton {
   width:47%;
   margin-right:3px;
@@ -294,7 +309,7 @@ a, a:hover, a:active {
 }
 
 .popup-head {
-  background-color:#A42B94;
+  background-color:#DC4A4A;
   font-family: 'RobotoRegular';
   color:#FFFFFF !important;
 }
@@ -839,4 +854,54 @@ ul.rating li i {
 
 .displayNone {
   display:none;
+}                       
+
+.cartDropDown {
+  width:54px;
+  height:36px;
+  border-radius: 18px;
+  border:3px solid #99E58A;
+  text-align:center;
+  background-color:#FFFFFF;
+}
+
+.liveDealsBar {
+  text-align:center;
+  background-color:#DC4A4A;
+  color:#FFFFFF;
+  border-bottom:3px #943938 solid!important;
+  padding:9px;
+  vertical-align:middle !important;
+}
+
+.liveDealsBar .icon {
+  font-size: 18px;
+}
+
+.liveDealsBar .timeprogress {
+  margin-left:18px;
+  margin-top:6px;
+  margin-right:18px;
+  width:100px;
+  background-color:#FFFFFF;
+  border-radius: 9px;
+  height:9px;
+}
+
+.liveDealsBar .timeprogress .passed {
+  background-color:#9B9B9B;
+  border-radius: 9px;
+  height:9px;
+}
+
+.countdown {
+  font-weight:bold;
+}
+
+body.keyboard-open .has-footer{
+  bottom: 0;
+}
+
+body.keyboard-open .has-subfooter {
+  bottom: 0;
 }

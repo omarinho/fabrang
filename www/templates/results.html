@@ -12,7 +12,7 @@
 </ion-header-bar>
 
 <ion-view>
-  <ion-content scroll="true" class="has-header" has-header="true" has-bouncing="true" ng-style="homestyle">
+  <ion-content scroll="true" ng-class="showFooter ? 'has-header has-footer' : 'has-header'"  has-header="true" has-bouncing="true" ng-style="homestyle">
     <div id="wrapper">
       <div class="center">
       
@@ -79,7 +79,7 @@
                   <div class="RobotoBold endingStatus">Ending</div>
                 </div>
                 <div class="endingTime">
-                  <div class="RobotoBlack endingTimeFont">{{ item.endingTime }}</div>
+                  <div id="countdown_{{ item.id }}" class="RobotoBlack endingTimeFont" countdown livedeal="{{ item.live_deal }}" endingtime="{{ item.endingTime }}" liveduration="{{ item.live_duration }}"></div>
                 </div>
               </div>
 
@@ -105,17 +105,14 @@
                   </div> 
                 </div>
               </div>              
-              
             </ion-list>
-            <br clear="all"/><br><br>
-
         </div>
       </div>
     </div>
   </ion-content>                                                       
 </ion-view>
 
-<ion-footer-bar class="footerBar2" ng-if="showFooter">
+<ion-footer-bar class="footerBar2" ng-if="showFooter" ng-hide="!showFooter">
   <div class="footerIcon">
     <img src="img/footer-home.gif" align="middle">
     <div class="overlay"></div>       
