@@ -218,13 +218,74 @@ angular.module('starter.controllers',['ngCordova'])
     else {
       $rootScope.cart = SessionService.get('cart')
     }
+    
     $rootScope.addToCart = function(aItem) {
-      $rootScope.cart.push(aItem);
-      SessionService.set('cart',$rootScope.cart);      
+      if (aItem.source == "nooptions") {
+        if ( !$rootScope.updateToCart(aItem) ) {
+          $rootScope.cart.push(aItem);
+        }
+      }
+      else {
+        $rootScope.cart.push(aItem);
+      }
+      SessionService.set('cart',$rootScope.cart);
     }
+    
     $rootScope.removeFromCart = function(index) {
       $rootScope.cart.splice(index, 1);
       SessionService.set('cart',$rootScope.cart);
+    }
+    
+    $rootScope.updateToCart = function(aItem) {
+      var found = false;
+      for (var i in $rootScope.cart) {
+        if ( ($rootScope.cart[i].id == aItem.id) && ($rootScope.cart[i].storeID == aItem.storeID) ) {
+          var newQuantity = parseInt($rootScope.cart[i].quantity) + parseInt(aItem.quantity);
+          var newPrice = parseFloat($rootScope.cart[i].price) + parseFloat(aItem.price);  
+          $rootScope.cart[i].quantity = newQuantity.toString();
+          $rootScope.cart[i].price = newPrice.toString();
+          found = true;
+          break;
+        }
+      }
+      SessionService.set('cart',$rootScope.cart);
+      return found;
+    }
+
+    $rootScope.clearCart = function(storeID) {
+      var tempArray = [];
+      for (var i in $rootScope.cart) {
+        if ($rootScope.cart[i].storeID == storeID) {
+          //do nothing
+        }
+        else {
+          tempArray.push($rootScope.cart[i]);
+        }
+      }
+      $rootScope.cart = tempArray;
+      SessionService.set('cart',$rootScope.cart);
+      $rootScope.alerti('You have cleared your cart.','CLEARED');
+    }
+    
+    $rootScope.updateCartQuantity = function(id, quantity, ident) {
+      for (var i in $rootScope.cart) {
+        if ($rootScope.cart[i].ident == ident) {
+          var unitPrice = parseFloat($rootScope.cart[i].price) / parseInt(quantity);
+          var newPrice = unitPrice * parseInt($rootScope.cart[i].quantity);
+          $rootScope.cart[i].price = newPrice.toString();
+          break;
+        }
+      }
+      SessionService.set('cart',$rootScope.cart);
+    }
+    
+    $rootScope.removeFromCartByIdent = function(ident) {
+      for (var i in $rootScope.cart) {
+        if ($rootScope.cart[i].ident == ident) {
+          $rootScope.removeFromCart(i);
+          break;
+        }
+      }
     }
     // Cart management - END
     
@@ -666,7 +727,11 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.reviewNoCutID = -1;
     $scope.writeAReview = false;
     $scope.submittedReview = false;
-    $scope.activeTab = 'Cart';
+    $scope.activeTab = 0;
+    $scope.storeCart = [];
+    $scope.cartLength = 0;
+    $scope.cartSubtotal = 0;
+    $scope.cartTotal = 0;
     $scope.reviewsDropDown={
       sort:'DESC'
     };
@@ -689,6 +754,50 @@ angular.module('starter.controllers',['ngCordova'])
     /*** Results are stored in $scope.store.reviews   ***/
     StoreService.getStoreReviews($scope, $stateParams.storeID.toString(), $scope.userID, $scope.reviewsDropDown.sort);
     /****************************************************/
+    
+    /*** Call API: Get delivery fee for this store and this user ***/
+    /*** Results are stored in $scope.store.deliveryFee          ***/
+    StoreService.getDeliveryFee($scope, $stateParams.storeID.toString(), $scope.userID);
+    /***************************************************************/
+
+    /*** Call API: Get discount percent for this store and this user ***/
+    /*** Results are stored in $scope.store.discount                  ***/
+    StoreService.getDiscountPercent($scope, $stateParams.storeID.toString(), $scope.userID);
+    /********************************************************************/
+
+    /*** Call API: Get tip percent for this store and this user ***/
+    /*** Results are stored in $scope.store.tip                 ***/
+    StoreService.getTipPercent($scope, $stateParams.storeID.toString(), $scope.userID);
+    /**************************************************************/
+
+    $ionicPlatform.ready(
+      function() {
+        for (var i in $scope.cart) {
+          if ($scope.cart[i].storeID == $stateParams.storeID.toString()) {
+            $scope.cartLength = $scope.cartLength + 1;
+            $scope.cartSubtotal = $scope.cartSubtotal + parseFloat($scope.cart[i].price);
+          } 
+        }
+        $scope.cartSubtotal = $scope.cartSubtotal +  $scope.store.deliveryFee
+        $scope.cartTotal = $scope.cartSubtotal - ( ($scope.store.discount/100) * $scope.cartSubtotal )  + ( ($scope.store.tip/100) * $scope.cartSubtotal); 
+      }
+    )
+
+    $scope.$watch('cart', 
+      function () {
+        $scope.cartLength = 0;
+        $scope.cartSubtotal = 0;
+        $scope.cartTotal = 0;
+        for (var i in $scope.cart) {
+          if ($scope.cart[i].storeID == $stateParams.storeID.toString()) {
+            $scope.cartLength = $scope.cartLength + 1;
+            $scope.cartSubtotal = $scope.cartSubtotal + parseFloat($scope.cart[i].price);
+          } 
+        }
+        $scope.cartSubtotal = $scope.cartSubtotal +  $scope.store.deliveryFee
+        $scope.cartTotal = $scope.cartSubtotal - ( ($scope.store.discount/100) * $scope.cartSubtotal )  + ( ($scope.store.tip/100) * $scope.cartSubtotal); 
+      }, true
+    );
     
     $scope.showSearchBoxF = function() {
       $scope.showSearchBox = true;
@@ -815,6 +924,10 @@ angular.module('starter.controllers',['ngCordova'])
       $scope.hideMOPanel();      
     }
     
+    $scope.showCart = function() {
+      $scope.activeTab = 0;
+    } 
+    
     $scope.wantThis = function(item) {
       if (item.options.length == 0) {
         document.getElementById('addItemToCart_' + item.id).style.display = 'block';
@@ -882,13 +995,18 @@ angular.module('starter.controllers',['ngCordova'])
         var finalPrice = floatPrice + '';                    
         var q = document.getElementById('quantity_mo');
       }
+      finalPricexQuantity = ( parseFloat(finalPrice) * parseFloat(q.options[q.selectedIndex].value) );
+      finalPrice = finalPricexQuantity + '';    
       var cartObject =  {
-              id:item.id, 
-              name:item.name, 
-              price:finalPrice, 
-              description:item.description, 
-              options:optionsArray,
-              quantity:q.options[q.selectedIndex].value
+        ident:Date.now(),
+        storeID:$scope.store.id,
+        id:item.id, 
+        name:item.name, 
+        price:finalPrice, 
+        description:item.description, 
+        options:optionsArray,
+        quantity:q.options[q.selectedIndex].value,
+        source:source
       }
       $scope.addToCart(cartObject);
       $timeout(

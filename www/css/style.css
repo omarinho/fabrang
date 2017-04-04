@@ -865,6 +865,15 @@ ul.rating li i {
   background-color:#FFFFFF;
 }
 
+.cartDropDownNoBorder {
+  width:54px;
+  height:36px;
+  border:0px;
+  text-align:center;
+  background-color:#FFFFFF;
+  font-size:27px;
+}
+
 .liveDealsBar {
   text-align:center;
   background-color:#DC4A4A;
@@ -896,6 +905,10 @@ ul.rating li i {
 
 .countdown {
   font-weight:bold;
+}
+
+.mediumFont {
+  font-size:18px;
 }
 
 body.keyboard-open .has-footer{

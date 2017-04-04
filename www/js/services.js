@@ -423,10 +423,46 @@ angular.module('starter.services',[])
         * @returns {*} - Return true   
         */       
         getStoreData: function($scope, storeID) {
-          $scope.store = searchObjectByID(storeID, HARDCODED_DATABASE)     
+          $scope.store = searchObjectByID(storeID, HARDCODED_DATABASE)
           return true; 
         },
         
+        /**
+        * getDeliveryFee - Get delivery fee for a specific user and store 
+        * @param scope - Ionic scope
+        * @param storeID - ID of store
+        * @param userID  - ID of user
+        * @returns {*} - Fee value is storeed in $scope.store.deliveryFee   
+        */       
+        getDeliveryFee: function($scope, storeID, userID) {
+          $scope.store.deliveryFee = 3.00;
+          return true; 
+        },
+
+        /**
+        * getDiscountPercent - Get discount percent for a specific user and store 
+        * @param scope - Ionic scope
+        * @param storeID - ID of store
+        * @param userID  - ID of user
+        * @returns {*} - Fee value is storeed in $scope.store.discount   
+        */       
+        getDiscountPercent: function($scope, storeID, userID) {
+          $scope.store.discount = 15;
+          return true; 
+        },
+
+        /**
+        * getTipPercent - Get delivery fee for a specifi user and store 
+        * @param scope - Ionic scope
+        * @param storeID - ID of store
+        * @param userID  - ID of user
+        * @returns {*} - Fee value is storeed in $scope.store.tip  
+        */       
+        getTipPercent: function($scope, storeID, userID) {
+          $scope.store.tip = 10;
+          return true; 
+        },
+
         /**
         * getStoreMoreInfo - Get moreInfo (todaySchedule, address and phone) of a store 
         * @param scope - Ionic scope

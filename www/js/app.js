@@ -284,6 +284,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   }
 )
 
+.filter('rangeQuantities', 
+  function() {
+
+    return function(input, total) {
+      total = parseInt(total) + 9;
+
+      for (var i=1; i<=total; i++) {
+        input.push(i);
+      }
+
+      return input;
+    };
+  }
+)
+
 ;
 
 /*** MISCELANEOUS FUNCTIONS ***/
