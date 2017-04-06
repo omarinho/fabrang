@@ -1,4 +1,4 @@
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngIOS9UIWebViewPatch', 'angucomplete', 'ionic.rating', 'ngDraggable'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngIOS9UIWebViewPatch', 'angucomplete', 'ionic.rating', 'ngDraggable','ionic-datepicker'])
 
 .run(
   function ($ionicPlatform) {
@@ -74,6 +74,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: "/settings",
         templateUrl: "templates/settings.html",
         controller: 'SettingsCtrl'
+      })
+      
+      .state('order_confirmation', {
+        cache: false,
+        url: "/order_confirmation/:storeID",
+        templateUrl: "templates/order_confirmation.html",
+        controller: 'OrderConfirmationCtrl'
+      })
+
+      .state('order_processing', {
+        cache: false,
+        url: "/order_processing/:storeID",
+        templateUrl: "templates/order_processing.html",
+        controller: 'OrderProcessingCtrl'
       })
 
     $urlRouterProvider.otherwise("/");      

@@ -26,7 +26,7 @@
           </div>  
           <div class="float_right">
             <img src="img/favorite.png" height="15" align="middle" ng-click="saveToFavorite()">
-            <div class="grayText" style="line-height:100%;">
+            <div class="grayText lineHeight100">
               <small>
                 Min ${{ store.minimunPrice }}<br>
                 {{ store.todaySchedule }}
@@ -68,7 +68,7 @@
           </div>
         </div>
         <div id="categoryTabs">
-          <div class="float_left RobotoBold" ng-click="showCart()" style="background-color:#99E58A; color:#FFFFFF; font-weight:bold; display: flex; justify-content: center; align-items: center;">
+          <div class="float_left RobotoBold showCart" ng-click="showCart()">
             <div class="float_left cartIcon" ng-click="completeCart()">
               {{ cartLength }}
             </div>
@@ -79,16 +79,16 @@
           </div>
           <ion-scroll zooming="false" direction="x" scrollbar-x="false" class="whiteSpaceNoWrap" has-bouncing="false" on-scroll="gotScrolled()">
             <div class="long-container" id="id_long_container"">
-              <div ng-repeat="category in store.categories" ng-class="activeTab == category.id ? 'float_left RobotoBold tabActive' : 'float_left RobotoBold'" on-tap="selectTab(category.id)" style="padding-left:9px; padding-right:9px; padding-top:15px; display:inline-block; text-align:center; height:100%;">
+              <div ng-repeat="category in store.categories" id="tab_{{ category.id }}" ng-class="activeTab == category.id ? 'float_left RobotoBold tabActive storeCategory' : 'float_left RobotoBold storeCategory'" ng-click="selectTab(category.id)">
                 {{ category.name }}
               </div>
             </div>
           </ion-scroll>
         </div>
     
-        <div ng-if="activeTab == 0" style="padding:9px; width:100%; font-size:15px;">
+        <div ng-if="activeTab == 0" class="activeTab0">
           <div class="float_right grayText" ng-click="clearCart(store.id)" ng-if="cartLength > 0">
-            <i class="icon ion-close" style="font-size:15px;">&nbsp;Clear cart</i>
+            <i class="icon ion-close" class="fontSize15">&nbsp;Clear cart</i>
           </div>
           <br clear="all"/>
           <div ng-repeat="cartItem in cart track by $index" ng-if="(cartLength>0) && (cartItem.storeID==store.id)">
@@ -98,7 +98,7 @@
                 <option ng-repeat="n in [] | rangeQuantities:cartItem.quantity" value="{{ n }}" >{{n}}</option>
               </select>
             </div>
-            <div class="float_left" style="padding:9px; text-align:left; max-width:50%;">
+            <div class="float_left cartItemDescription">
               <span class="RobotoBold">{{ cartItem.name }}</span>
               <br clear="all"/>
               <span class="grayText">
@@ -108,9 +108,9 @@
                 </span> 
               </span>
             </div>
-            <div class="float_right grayText" style="padding-top:9px; text-align:right; margin:0px;">
+            <div class="float_right grayText cartItemPrice">
               <b>
-                <i class="icon ion-close" style="font-size:15px;" ng-click="removeFromCartByIdent(cartItem.ident)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                <i class="icon ion-close fontSize15" ng-click="removeFromCartByIdent(cartItem.ident)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                 <br clear="all"/>
                 {{ cartItem.price | currency }}
               </b>
@@ -119,14 +119,45 @@
             </div>
             <br clear="all"/>
           </div>
-          <div ng-if="cartLength > 0" style="background-color:#EAEAEA !important; padding-left:9px; border-top:3px #9B9B9B solid;">
-            <div class="RobotoBold float_left" style="margin:12px;">
+          <div ng-if="cartLength > 0" class="cartTotal">
+            <div ng-show="cartExpanded" class="cartExpanded">
+              <div class="float_left">
+                Delivery Fee:
+              </div>
+              <div class="float_right">
+                {{ store.deliveryFee | currency }}
+              </div>
+              <br clear="all"/>
+              <div class="float_left">
+                Subtotal:
+              </div>
+              <div class="float_right">
+                {{ cartSubtotal | currency }}
+              </div>
+              <br clear="all"/><br>
+              <div class="float_left">
+                Discount:
+              </div>
+              <div class="float_right redText">
+                ({{ store.discount }}%) -{{ cartDiscount | currency }}
+              </div>
+              <br clear="all"/>
+              <div class="float_left">
+                Tip:
+              </div>
+              <div class="float_right">
+                ({{ store.tip }}%) {{ cartTip | currency }}
+              </div>
+              <br clear="all"/>
+            </div>
+            <div class="RobotoBold float_left cartTotalTotal">
               Total
             </div>
             <div class="RobotoBold float_right">
-              <button class="button button-icon ion-chevron-down"></button>
+              <button class="button button-icon ion-chevron-down" ng-click="expandCart()" ng-show="!cartExpanded"></button>
+              <button class="button button-icon ion-chevron-up" ng-click="contractCart()" ng-show="cartExpanded"></button>
             </div>
-            <div class="RobotoBold float_right" style="margin:12px;">
+            <div class="RobotoBold float_right margin12">
               {{ cartTotal | currency }} 
             </div>
             <br clear="all"/>
@@ -135,14 +166,20 @@
             <br clear="all"/><br><br>
             No items in your cart for this store.
           </div>
+          <br clear="all"/>
+          <div class="center" ng-if="cartLength > 0">
+            <img src="img/schedule-order.png" align="middle" class="float_left height36" ng-click="showRepeatModal()">
+            <button class="float_right fgbuttongreen proceedToCheckout" ng-click="goToOrderConfirmation()">Proceed to Checkout</button>
+          </div>
+          <br clear="all"/><br><br>
         </div>
     
         <div ng-if="activeTab != 0">
           <!-- Place Menu -->    
-          <div id="regularPanel" class="textAlignLeft" style="padding:9px; width:100%;">
+          <div id="regularPanel" class="textAlignLeft regularPanel">
             <div ng-repeat="aItem in store.categoryItems" ng-click="wantThis(aItem)">
               <div id="itemInfo_{{ aItem.id }}">
-                <div class="float_left" style="margin-bottom:18px;">
+                <div class="float_left marginBottom18">
                   <span class="RobotoBold">{{ aItem.name }}</span>
                   <br>
                   <span class="grayText">{{ aItem.description }}</span>
@@ -179,23 +216,23 @@
         
           <!-- Multioptions selection -->
           <div id="MOPanel" class="textAlignLeft width100 displayNone">
-            <div id="itemInfo_mo" style="background-color: #EAEAEA;">
+            <div id="itemInfo_mo" class="background-color_EAEAEA">
               <div class="float_left">
                 <button class="button button-icon ion-chevron-left backbutton" ng-click="hideMOPanel()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>      
               </div>
-              <div class="float_left" style="margin-top:15px; margin-left:27px;">
+              <div class="float_left multiOptionName">
                 <span class="RobotoBold">{{ item_mo.name }}</span>
               </div>
-              <div class="float_right grayText" style="margin-top:15px; margin-right:27px;">
+              <div class="float_right grayText multiOptionPrice">
                 ${{ item_mo.price }}
               </div>
               <br clear="all"/>
             </div>
             <div ng-repeat="options in item_mo.options">
-              <div class="grayText" style="background-color: #F8F8F8; padding:9px; padding-left:27px;">
+              <div class="grayText cartItemOptions">
                 {{$index +1}}. {{ options.heading }}
               </div>
-              <ion-scroll zooming="true" direction="x" scrollbar-x="false" style="width:100%; min-height:54px; float:left; white-space: nowrap; margin-left:3px; margin-right:3px; margin-top:9px;">
+              <ion-scroll zooming="true" direction="x" scrollbar-x="false" class="multiOptionScroll">
                 <div ng-class="auxArray|containsObject2:obj" ng-repeat="obj in options.values" ng-click="toggleOption(obj)">
                   {{obj.desc}} <span ng-if="obj.inc != '0.0'">+${{obj.inc}}</span>
                 </div>
@@ -231,13 +268,13 @@
 
 <ion-footer-bar align-title="left" class="bar-subfooter liveDealsBar hide-on-keyboard-open" ng-show="store.live_deal && showFooter" ng-hide="!showFooter || !store.live_deal">
   <div class="width100">
-    <div class="float_left" style="min-width:20%;">
+    <div class="float_left min_width20">
       All You Can Eat
     </div>
-    <div class="float_left timeprogress" style="min-width:20%;">
-      <div class="passed" id="progress_countdown_{{ store.id }}" style="width:1%;">&nbsp;</div>  
+    <div class="float_left timeprogress min_width20">
+      <div class="passed width1" id="progress_countdown_{{ store.id }}">&nbsp;</div>  
     </div>
-    <div id="countdown_{{ store.id }}" class="float_left countdown" countdown livedeal="{{ store.live_deal }}" endingtime="{{ store.endingTime }}" liveduration="{{ store.live_duration }}" style="min-width:20%;"></div>
+    <div id="countdown_{{ store.id }}" class="float_left countdown min_width20" countdown livedeal="{{ store.live_deal }}" endingtime="{{ store.endingTime }}" liveduration="{{ store.live_duration }}"></div>
     <div class="float_right">
       <i class="icon ion-chevron-right"></i>
     </div>

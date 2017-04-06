@@ -1,0 +1,65 @@
+<ion-modal-view class="addNewCardModal">
+
+  <ion-header-bar align-title="center" class="grayText">
+    <div class="buttons">
+      <button class="button button-icon ion-chevron-left backbutton" ng-click="cancelAddNewCardModal()">
+      </button>
+    </div>
+    <h1 class="title grayText">Credit Cards</h1>
+  </ion-header-bar>
+
+  <ion-content scroll="true" has-header="false" has-bouncing="true">
+    <div id="wrapper">
+      <div class="center">
+        <div class="grayText">  
+          New Credit Card
+        </div>
+        <div class="center width100" style="margin-left:9px; margin-right:9px;">
+          <div class="colorOption" id="cc_color1" style="background-color:#C7272F;" ng-click="setNewCardColor('#C7272F', 'cc_color1')">&nbsp;</div>
+          <div class="colorOption" id="cc_color2" style="background-color:#CE6345;" ng-click="setNewCardColor('#CE6345', 'cc_color2')">&nbsp;</div>
+          <div class="colorOption" id="cc_color3" style="background-color:#E87F27;" ng-click="setNewCardColor('#E87F27', 'cc_color3')">&nbsp;</div>
+          <div class="colorOption" id="cc_color4" style="background-color:#E3A52D;" ng-click="setNewCardColor('#E3A52D', 'cc_color4')">&nbsp;</div>
+          <div class="colorOption" id="cc_color5" style="background-color:#42C98B;" ng-click="setNewCardColor('#42C98B', 'cc_color5')">&nbsp;</div>
+          <div class="colorOption" id="cc_color6" style="background-color:#78C635;" ng-click="setNewCardColor('#78C635', 'cc_color6')">&nbsp;</div>
+        </div>
+        <br clear="all"/><br>
+      
+        <div class="textAlignLeft">
+          <div class="fgfieldlabel" id="label_cardName">Give this card a name</div>
+          <input class="fgfield" type="text" name="cardName" id="id_cardName" placeholder="Give this card a name" ng-model="newCard.name" advancenext>
+          <br>
+          <div class="fgfieldlabel" id="label_cardNumber">Card Number</div>
+          <input class="fgfield" type="number" name="cardNumber" id="id_cardNumber" placeholder="Card Number" ng-model="newCard.number" advancenext>
+          <br>
+          <div class="fgfieldlabel" id="label_expiration">Expiration (mm/yy)</div>
+          <input class="fgfield" type="text" name="expiration" id="id_expiration" placeholder="Expiration (mm/yy)" ng-model="newCard.expiration" advancenext>
+          <br>
+        </div>
+        <br clear="all"/>
+      
+        <div class="width100" ng-show="!showFooter">
+          <button class="fgbuttongreen width100" ng-click="saveNewCard()">Save</button>
+        </div>
+        <br clear="all"/>
+        <div class="width100" ng-show="!showFooter">
+          <button class="fgbuttonwhite width100" ng-click="cancelAddNewCardModal()">Cancel</button>
+        </div>
+        <br clear="all"/><br><br>
+
+      </div>
+    </div>
+  </ion-content>
+  
+  <ion-footer-bar class="bar-subfooter width100" ng-show="showFooter" ng-hide="!showFooter">
+    <div class="width100">
+      <button class="fgbuttongreen width100" ng-click="saveNewCard()">Save</button>
+    </div>
+  </ion-footer-bar>
+  
+  <ion-footer-bar class="width100" ng-show="showFooter" ng-hide="!showFooter">
+    <div class="width100">
+      <button class="fgbuttonwhite width100" ng-click="cancelAddNewCardModal()">Cancel</button>
+    </div>
+  </ion-footer-bar>  
+  
+</ion-modal-view>

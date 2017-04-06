@@ -75,7 +75,7 @@
     
     <!-- Write review -->
     <div id="writeReview" class="center" ng-show="writeAReview">
-      <rating ng-model="userReview.rating" style="font-size:27px;"></rating>
+      <rating ng-model="userReview.rating" class="fontSize27"></rating>
       <br clear="all"/>
       <div class="textAlignLeft">
         <div class="fgfieldlabel" id="label_displayname">Display Name</div>
@@ -87,8 +87,14 @@
         <div class="fgfieldlabel" id="label_reviewtext">Write your review...</div>
         <textarea class="fgfield text_area" rows="3" name="reviewtext" id="id_reviewtext" placeholder="Write your review..." ng-model="userReview.reviewtext" advancenext></textarea>
       </div>
+      <br clear="all"/>
+      
+      <div class="center width80" ng-show="!showFooter">
+        <button class="fgbuttongreen width100" ng-click="submitReview()">Submit Review</button>
+      </div>
       <br clear="all"/><br><br>
-    </div>
+
+   </div>
 
     <!-- Submitted review -->
     <div id="submittedReview" class="center grayText" ng-show="submittedReview">
@@ -98,7 +104,7 @@
 
   </ion-content>
   
-  <ion-footer-bar class="reviewsFooter" ng-show="!submittedReview">
+  <ion-footer-bar class="reviewsFooter hide-on-keyboard-open" ng-show="!submittedReview && showFooter" ng-hide="!showFooter || submittedReview">
     <div class="center" ng-click="writeReview()"  ng-show="!writeAReview && !submittedReview">
       Write a Review
     </div>

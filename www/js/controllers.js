@@ -252,7 +252,7 @@ angular.module('starter.controllers',['ngCordova'])
       return found;
     }
 
-    $rootScope.clearCart = function(storeID) {
+    $rootScope.clearCart = function(storeID,alert=true) {
       var tempArray = [];
       for (var i in $rootScope.cart) {
         if ($rootScope.cart[i].storeID == storeID) {
@@ -264,7 +264,9 @@ angular.module('starter.controllers',['ngCordova'])
       }
       $rootScope.cart = tempArray;
       SessionService.set('cart',$rootScope.cart);
-      $rootScope.alerti('You have cleared your cart.','CLEARED');
+      if (alert) {
+        $rootScope.alerti('You have cleared your cart.','CLEARED');
+      }
     }
     
     $rootScope.updateCartQuantity = function(id, quantity, ident) {
@@ -713,7 +715,7 @@ angular.module('starter.controllers',['ngCordova'])
 /*********************************/
 .controller('StoreCtrl', 
   
-  function ($scope, $ionicLoading, $ionicPlatform, $timeout, $ionicModal, $stateParams, SearchService, FavoritesService, StoreService, UsersService) {
+  function ($scope, $ionicLoading, $ionicPlatform, $timeout, $ionicModal, $stateParams, $state, ionicDatePicker, SearchService, FavoritesService, StoreService, UsersService) {
 
     $scope.showSearchBox = false;
     $scope.homestyle={
@@ -732,10 +734,27 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.cartLength = 0;
     $scope.cartSubtotal = 0;
     $scope.cartTotal = 0;
+    $scope.cartDiscount = 0;
+    $scope.cartTip = 0;
+    $scope.cartExpanded = false;
     $scope.reviewsDropDown={
       sort:'DESC'
     };
-    
+    $scope.schedule={
+      date:null,
+      timeHour:'11',
+      timeMinutes:'55',
+      timeAMPM:'PM',
+      text:''
+    };
+    $scope.scheduleRepeat={
+      enabled:false,
+      frequency:"weekly",
+      days:[],
+      timeHour:'11',
+      timeMinutes:'55',
+      timeAMPM:'PM'
+    }
 
     /*** Call API: Get the ID of logged user ***/
     $scope.userID = UsersService.getUserID();
@@ -765,40 +784,85 @@ angular.module('starter.controllers',['ngCordova'])
     StoreService.getDiscountPercent($scope, $stateParams.storeID.toString(), $scope.userID);
     /********************************************************************/
 
-    /*** Call API: Get tip percent for this store and this user ***/
+    /*** Call API: Get default tip percent for this store and this user ***/
     /*** Results are stored in $scope.store.tip                 ***/
-    StoreService.getTipPercent($scope, $stateParams.storeID.toString(), $scope.userID);
+    StoreService.getDefaultTipPercent($scope, $stateParams.storeID.toString(), $scope.userID);
     /**************************************************************/
 
     $ionicPlatform.ready(
       function() {
+      
         for (var i in $scope.cart) {
           if ($scope.cart[i].storeID == $stateParams.storeID.toString()) {
             $scope.cartLength = $scope.cartLength + 1;
             $scope.cartSubtotal = $scope.cartSubtotal + parseFloat($scope.cart[i].price);
           } 
         }
-        $scope.cartSubtotal = $scope.cartSubtotal +  $scope.store.deliveryFee
-        $scope.cartTotal = $scope.cartSubtotal - ( ($scope.store.discount/100) * $scope.cartSubtotal )  + ( ($scope.store.tip/100) * $scope.cartSubtotal); 
+        $scope.cartSubtotal = $scope.cartSubtotal +  $scope.store.deliveryFee;
+        $scope.cartDiscount = ( ($scope.store.discount/100) * $scope.cartSubtotal );
+        $scope.cartTip = ( ($scope.store.tip/100) * $scope.cartSubtotal);
+        $scope.cartTotal = $scope.cartSubtotal - $scope.cartDiscount  + $scope.cartTip;
+
+        $timeout(function() {
+          var el = document.getElementById('tab_' + $scope.store.categories[0].id);
+          angular.element(el).triggerHandler('click');
+        }, 100);
+        
       }
-    )
+    );
 
     $scope.$watch('cart', 
       function () {
         $scope.cartLength = 0;
         $scope.cartSubtotal = 0;
         $scope.cartTotal = 0;
+        $scope.cartDiscount = 0;
+        $scope.cartTip = 0;
         for (var i in $scope.cart) {
           if ($scope.cart[i].storeID == $stateParams.storeID.toString()) {
             $scope.cartLength = $scope.cartLength + 1;
             $scope.cartSubtotal = $scope.cartSubtotal + parseFloat($scope.cart[i].price);
           } 
         }
-        $scope.cartSubtotal = $scope.cartSubtotal +  $scope.store.deliveryFee
-        $scope.cartTotal = $scope.cartSubtotal - ( ($scope.store.discount/100) * $scope.cartSubtotal )  + ( ($scope.store.tip/100) * $scope.cartSubtotal); 
+        $scope.cartSubtotal = $scope.cartSubtotal +  $scope.store.deliveryFee;
+        $scope.cartDiscount = ( ($scope.store.discount/100) * $scope.cartSubtotal );
+        $scope.cartTip = ( ($scope.store.tip/100) * $scope.cartSubtotal);
+        $scope.cartTotal = $scope.cartSubtotal - $scope.cartDiscount  + $scope.cartTip; 
       }, true
     );
     
+    $scope.checkDailyCondition =  function() {
+      if ($scope.scheduleRepeat.frequency == 'daily') {
+        $scope.scheduleRepeat.days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
+      }
+      else {
+        $scope.scheduleRepeat.days = [];
+      }
+    } 
+
+    $scope.goToOrderConfirmation = function() {
+      $state.go('order_confirmation', {storeID:$stateParams.storeID}, { reload: true });
+    }
+  
+    $scope.toggleRepeatDay = function(day) {
+      var index = $scope.scheduleRepeat.days.indexOf(day);
+      if (index > -1) {
+        $scope.scheduleRepeat.days.splice(index, 1);
+        $scope.scheduleRepeat.frequency = 'weekly';
+      }
+      else {
+        $scope.scheduleRepeat.days.push(day);
+      }      
+    } 
+    
+    $scope.expandCart = function() {
+      $scope.cartExpanded = true;  
+    } 
+    
+    $scope.contractCart = function() {
+      $scope.cartExpanded = false;  
+    } 
+
     $scope.showSearchBoxF = function() {
       $scope.showSearchBox = true;
       $timeout(                                  
@@ -834,6 +898,104 @@ angular.module('starter.controllers',['ngCordova'])
       /******************************************************/
     }
     
+    $scope.nth = function(d) {
+      if(d>3 && d<21) return 'th';
+      switch (d % 10) {
+        case 1:  return "st";
+        case 2:  return "nd";
+        case 3:  return "rd";
+        default: return "th";
+      }
+    } 
+    
+    $scope.openDatePicker = function() {
+      var initialDate = new Date();
+      var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug','Sep','Oct','Nov','Dec']; 
+      var ipObj1 = {
+        callback: function (val) {
+          $scope.schedule.date = val;
+          var aDate = new Date(val);
+          var aDate = days[aDate.getDay()] + ', ' + months[aDate.getMonth()] + ' ' + aDate.getDate() + $scope.nth(aDate.getDate());
+          $scope.schedule.text = aDate.toString();
+        },
+        disabledDates: [],
+        from: new Date(1900, 1, 1),
+        to: new Date(2100, 1, 31),
+        inputDate: initialDate,
+        mondayFirst: true,
+        closeOnSelect: false,
+        templateType: 'popup'
+      }
+      ionicDatePicker.openDatePicker(ipObj1);
+    }
+    
+    $scope.scheduleOrder = function() {
+      $scope.showLoading();
+      /*** Call API: Schedule order  ***/
+      /*** It saves info in database ***/
+      var scheduled = StoreService.scheduleOrder($scope, $stateParams.storeID.toString(), $scope.userID, $scope.cart, $scope.cartTip, $scope.schedule);
+      /**********************************/
+      $timeout(
+        function() {
+          if (scheduled) {
+            var el = document.getElementById('tab_' + $scope.store.categories[0].id);
+            angular.element(el).triggerHandler('click');
+            $scope.hideLoading();
+            $scope.alerti('Your order has been scheduled','Success');
+          }
+        }, 1000
+      );	
+    }
+    
+    $scope.scheduleRepeatOrder = function() {
+      $scope.showLoading();
+      /*** Call API: Schedule repeat order ***/
+      /*** It saves info in database       ***/
+      var scheduled = StoreService.scheduleRepeatOrder($scope, $stateParams.storeID.toString(), $scope.userID, $scope.cart, $scope.cartTip, $scope.scheduleRepeat);
+      /**********************************/
+      $timeout(
+        function() {
+          if (scheduled) {
+            var el = document.getElementById('tab_' + $scope.store.categories[0].id);
+            angular.element(el).triggerHandler('click');
+            $scope.hideLoading();
+            $scope.alerti('Your order has been scheduled to repeat on selected days and times','Success');
+          }
+        }, 1000
+      );	
+    } 
+    
+    $ionicModal.fromTemplateUrl('templates/repeat-modal.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.repeatModal = modal;
+	     }
+    );
+	
+    $scope.showRepeatModal = function() {
+      $scope.repeatModal.show();
+      $timeout(
+        function() {
+          $scope.scheduleRepeat.enabled = false;
+          var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+          var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug','Sep','Oct','Nov','Dec']; 
+          var aDate = new Date();
+          var aDate = days[aDate.getDay()] + ', ' + months[aDate.getMonth()] + ' ' + aDate.getDate() + $scope.nth(aDate.getDate());
+          $scope.schedule.text = aDate.toString();
+        }, 300
+      );
+    }
+  
+    $scope.cancelRepeatModal = function() {
+      $scope.repeatModal.hide();
+    }
+
     $ionicModal.fromTemplateUrl('templates/get-store-info.html', 
       {
 		    scope: $scope,
@@ -877,7 +1039,7 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.cancelReviewsModal = function() {
       $scope.getReviews.hide();
       $scope.writeAReview = false;  
-      $scope.submittedReview = false;    
+      $scope.submittedReview = false;
     }
 
     $scope.reloadReviews = function() {
@@ -898,6 +1060,13 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.writeReview = function() {
       $scope.userReview = {};
       $scope.writeAReview = true;      
+      $timeout(
+        function() {
+          document.getElementById('label_displayname').style.display = 'none';
+          document.getElementById('label_headline').style.display = 'none';
+          document.getElementById('label_reviewtext').style.display = 'none';
+        }, 100
+      );	
     }
 
     $scope.submitReview = function() {
@@ -925,6 +1094,7 @@ angular.module('starter.controllers',['ngCordova'])
     }
     
     $scope.showCart = function() {
+      $scope.cartExpanded = false;
       $scope.activeTab = 0;
     } 
     
@@ -1025,6 +1195,7 @@ angular.module('starter.controllers',['ngCordova'])
 /*** Store Controller - END  ***/
 /*******************************/
 
+
 /************************************/
 /*** Settings Controller - BEGIN  ***/
 /************************************/
@@ -1037,5 +1208,299 @@ angular.module('starter.controllers',['ngCordova'])
 /**********************************/
 /*** Settings Controller - END  ***/
 /**********************************/
+
+
+/**********************************************/
+/*** Order Confirmation Controller - BEGIN ***/
+/**********************************************/
+.controller('OrderConfirmationCtrl',                                    
+  
+  function ($scope, $ionicLoading, $ionicPlatform, $stateParams, $ionicModal, $timeout, $rootScope, UsersService, StoreService) {
+    $scope.storeID = $stateParams.storeID.toString();
+    $scope.cartLength = 0;
+    $scope.userAddresses = [];
+    $scope.userCards = [];
+    $scope.order = {
+      deliverTo:null,
+      creditCard: null,
+      tip:10,
+      tipValue:0,
+      subtotal:0,
+      discount:0,
+      discountValue:0
+    }
+    $scope.newAddress = {
+    }
+    $scope.newCard = {
+    }
+    $scope.store = {
+    }
+    
+    /*** Call API: Get the ID of logged user ***/
+    $scope.userID = UsersService.getUserID();
+        
+    /*** Call API: Get the stored user addresses    ***/
+    /*** Results are stored in $scope.userAddresses ***/
+    UsersService.getAddresses($scope, $scope.userID);
+    /**************************************************/
+
+    /*** Call API: Get the stored user credit cards ***/
+    /*** Results are stored in $scope.userCards ***/
+    UsersService.getCards($scope, $scope.userID);
+    /**************************************************/
+
+    /*** Call API: Get delivery fee for this store and this user ***/
+    /*** Results are stored in $scope.store.deliveryFee          ***/
+    StoreService.getDeliveryFee($scope, $stateParams.storeID.toString(), $scope.userID);
+    /***************************************************************/
+
+    /*** Call API: Get discount percent for this store and this user ***/
+    /*** Results are stored in $scope.store.discount                  ***/
+    StoreService.getDiscountPercent($scope, $stateParams.storeID.toString(), $scope.userID);
+    /********************************************************************/
+
+    /*** Call API: Get default tip percent for this store and this user ***/
+    /*** Results are stored in $scope.store.tip                 ***/
+    StoreService.getDefaultTipPercent($scope, $stateParams.storeID.toString(), $scope.userID);
+    /**************************************************************/
+
+    $ionicPlatform.ready(
+      function() {
+      
+        for (var i in $scope.cart) {
+          if ($scope.cart[i].storeID == $stateParams.storeID.toString()) {
+            $scope.cartLength = $scope.cartLength + 1;
+            $scope.order.subtotal = $scope.order.subtotal + parseFloat($scope.cart[i].price);
+          } 
+        }
+        $scope.order.subtotal = $scope.order.subtotal +  $scope.store.deliveryFee;
+        $scope.order.discount = $scope.store.discount; 
+        $scope.order.discountValue = ( ($scope.store.discount/100) * $scope.order.subtotal );
+        $scope.order.tip = $scope.store.tip;
+        $scope.order.tipValue = ( ($scope.store.tip/100) * $scope.order.subtotal);
+        $scope.order.total = $scope.order.subtotal - $scope.order.discountValue  + $scope.order.tipValue;
+      }
+    );
+    
+    $scope.updateTip = function() {
+      $scope.order.tipValue = ( ($scope.order.tip/100) * $scope.order.subtotal);
+      $scope.order.total = $scope.order.subtotal - $scope.order.discountValue  + $scope.order.tipValue;
+    }
+
+    $scope.selectThisAddress = function(address) {
+      $scope.order.deliverTo = address;
+      $scope.cancelSelectAddressModal();
+    }
+    
+    $scope.selectThisCard = function(card) {
+      $scope.order.creditCard = card;
+      $scope.cancelSelectCardModal();
+    }
+
+    $ionicModal.fromTemplateUrl('templates/select-address.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.selectAddress = modal;
+	     }
+    );
+	
+    $scope.showSelectAddressModal = function() {
+      $scope.selectAddress.show();
+    }
+  
+    $scope.cancelSelectAddressModal = function() {
+      $scope.selectAddress.hide();
+    }
+  
+    $ionicModal.fromTemplateUrl('templates/select-card.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.selectCard = modal;
+	     }
+    );
+	
+    $scope.showSelectCardModal = function() {
+      $scope.selectCard.show();
+    }
+  
+    $scope.cancelSelectCardModal = function() {
+      $scope.selectCard.hide();
+    }
+
+    $scope.addNewUserAddress = function() {
+      $scope.cancelSelectAddressModal();
+      $scope.showAddNewAddressModal();
+      $scope.newAddress = {};
+      $timeout(
+        function() {
+          document.getElementById('color1').className = 'colorOption';
+          document.getElementById('color2').className = 'colorOption';
+          document.getElementById('color3').className = 'colorOption';
+          document.getElementById('color4').className = 'colorOption';
+          document.getElementById('color5').className = 'colorOption';
+          document.getElementById('color6').className = 'colorOption';
+          document.getElementById('label_addressName').style.display = 'none';
+          document.getElementById('label_address').style.display = 'none';
+          document.getElementById('label_specifications').style.display = 'none';
+        }, 100
+      );	
+    }
+    
+    $scope.setNewAddressColor = function(color, id) {
+      document.getElementById('color1').className = 'colorOption';
+      document.getElementById('color2').className = 'colorOption';
+      document.getElementById('color3').className = 'colorOption';
+      document.getElementById('color4').className = 'colorOption';
+      document.getElementById('color5').className = 'colorOption';
+      document.getElementById('color6').className = 'colorOption';
+      document.getElementById(id).className = 'colorOptionChecked';      
+      $scope.newAddress.color = color;
+    }
+    
+    $scope.saveNewAddress = function() {
+      $scope.cancelAddNewAddressModal();
+      $scope.showLoading();
+      /*** Call API: Save new user address in database ***/
+      /*** It saves info in database       ***/
+      $timeout(
+        function() {
+          var saved = UsersService.saveNewAddress($scope, $scope.newAddress, $scope.userID);
+          if (saved) {
+            $scope.hideLoading();
+            $scope.alerti('Your new address have been saved','Success');
+          }
+        }, 1000
+      );
+      /**************************************************/
+    }
+    
+    $ionicModal.fromTemplateUrl('templates/add-new-address.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.addNewAddress = modal;
+	     }
+    );
+	
+    $scope.showAddNewAddressModal = function() {
+      $scope.addNewAddress.show();
+    }
+  
+    $scope.cancelAddNewAddressModal = function() {
+      $scope.addNewAddress.hide();
+    }
+
+    $scope.addNewUserCard = function() {
+      $scope.cancelSelectCardModal();
+      $scope.showAddNewCardModal();
+      $scope.newCard = {};
+      $timeout(
+        function() {
+          document.getElementById('cc_color1').className = 'colorOption';
+          document.getElementById('cc_color2').className = 'colorOption';
+          document.getElementById('cc_color3').className = 'colorOption';
+          document.getElementById('cc_color4').className = 'colorOption';
+          document.getElementById('cc_color5').className = 'colorOption';
+          document.getElementById('cc_color6').className = 'colorOption';
+          document.getElementById('label_cardName').style.display = 'none';
+          document.getElementById('label_cardNumber').style.display = 'none';
+          document.getElementById('label_expiration').style.display = 'none';
+        }, 100
+      );	
+    }
+    
+    $scope.setNewCardColor = function(color, id) {
+      document.getElementById('cc_color1').className = 'colorOption';
+      document.getElementById('cc_color2').className = 'colorOption';
+      document.getElementById('cc_color3').className = 'colorOption';
+      document.getElementById('cc_color4').className = 'colorOption';
+      document.getElementById('cc_color5').className = 'colorOption';
+      document.getElementById('cc_color6').className = 'colorOption';
+      document.getElementById(id).className = 'colorOptionChecked';      
+      $scope.newCard.color = color;
+    }
+    
+    $scope.saveNewCard = function() {
+      $scope.cancelAddNewCardModal();
+      $scope.showLoading();
+      /*** Call API: Save new user card in database ***/
+      /*** It saves info in database       ***/
+      $timeout(
+        function() {
+          var saved = UsersService.saveNewCard($scope, $scope.newCard, $scope.userID);
+          if (saved) {
+            $scope.hideLoading();
+            $scope.alerti('Your new credit card have been saved','Success');
+          }
+        }, 1000
+      );
+      /**************************************************/
+    }
+    
+    $ionicModal.fromTemplateUrl('templates/add-new-card.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.addNewCard = modal;
+	     }
+    );
+	
+    $scope.showAddNewCardModal = function() {
+      $scope.addNewCard.show();
+    }
+  
+    $scope.cancelAddNewCardModal = function() {
+      $scope.addNewCard.hide();
+    }
+
+    $rootScope.showFooter = true;
+
+    window.addEventListener('native.keyboardshow', function() {
+      $rootScope.showFooter = false;
+      $rootScope.$apply();
+    });
+
+    window.addEventListener('native.keyboardhide', function() {
+      $rootScope.showFooter = true;
+      $rootScope.$apply();
+    });
+
+  }
+
+)
+/*******************************************/
+/*** Order Confirmation Controller - END ***/
+/*******************************************/
+
+/*******************************************/
+/*** Order Processing Controller - BEGIN ***/
+/******************************************/
+.controller('OrderProcessingCtrl',                                    
+  
+  function ($scope, $ionicLoading, $ionicPlatform) {
+  }
+
+)
+/*****************************************/
+/*** Order Processing Controller - END ***/
+/*****************************************/
 
 ;

@@ -452,15 +452,48 @@ angular.module('starter.services',[])
         },
 
         /**
-        * getTipPercent - Get delivery fee for a specifi user and store 
+        * getDefaultTipPercent - Get delivery fee by default for a specific user and store 
         * @param scope - Ionic scope
         * @param storeID - ID of store
         * @param userID  - ID of user
         * @returns {*} - Fee value is storeed in $scope.store.tip  
         */       
-        getTipPercent: function($scope, storeID, userID) {
+        getDefaultTipPercent: function($scope, storeID, userID) {
           $scope.store.tip = 10;
           return true; 
+        },
+        
+
+        /**
+        * scheduleOrder - Store in database the scheduled order for user and store
+        * @param scope - Ionic scope
+        * @param storeID - ID of store
+        * @param userID  - ID of user
+        * @param cart    - An objects array with the whole cart of the user. It needs to be filtered in the server by checking storeID for this scheduled order.
+        * @param tip     - Percentage of tip
+        * @param schedule - Date and time for schedule
+        * @returns {*}   - True if succes, False if error  
+        */       
+        scheduleOrder: function($scope, storeID, userID, cart, tip, schedule) {
+          $scope.clearCart(storeID,false);
+          $scope.cancelRepeatModal();
+          return true;
+        },
+
+        /**
+        * scheduleRepeatOrder - Store in database the scheduled repeat order for user and store
+        * @param scope - Ionic scope
+        * @param storeID - ID of store
+        * @param userID  - ID of user
+        * @param cart    - An objects array with the whole cart of the user. It needs to be filtered in the server by checking storeID for this scheduled order.
+        * @param tip     - Percentage of tip
+        * @param scheduleRepeat - Days and time for schedule (repeat)
+        * @returns {*}   - True if succes, False if error  
+        */       
+        scheduleRepeatOrder: function($scope, storeID, userID, cart, tip, scheduleRepeat) {
+          $scope.clearCart(storeID,false);
+          $scope.cancelRepeatModal();
+          return true;
         },
 
         /**
@@ -654,8 +687,58 @@ angular.module('starter.services',[])
         */       
         getUserID: function() {
           return 1; 
-        }
+        },
       
+        /**
+        * getAddresses - Get the stored addresses for a user
+        * @param scope - Ionic scope
+        * @param userID  - ID of user
+        * @returns {*} - Results is an objects array and it's stored in $scope.userAddresses.   
+        */       
+        getAddresses: function($scope, userID) {
+          $scope.userAddresses = [
+            {id:"1", desc:"Josh's place", address:"Street 1 #1, New York, NY 11111", specifications:"Suite #111",  color:"#C6272F"},
+            {id:"2", desc:"David", address:"Street 2 #2, Chicago, IL, 22222", specifications:"Suite #222", color:"#E17B25"},
+            {id:"3", desc:"Home", address:"Street 3 #3, Los Angeles, CA, 33333", specifications:"Suite #333", color:"#7DCF38"}
+          ] 
+        },
+
+        /**
+        * saveNewAddress - Save a new user address in database
+        * @param scope - Ionic scope 
+        * @param address - Object containing data of new address
+        * @param userID  - ID of user
+        * @returns {*} - It saves info in database.   
+        */       
+        saveNewAddress: function($scope, address, userID) {
+          return true;
+        },
+
+        /**
+        * getCards - Get the stored credit cards for a user
+        * @param scope - Ionic scope
+        * @param userID  - ID of user
+        * @returns {*} - Results is an objects array and it's stored in $scope.userCards.   
+        */       
+        getCards: function($scope, userID) {
+          $scope.userCards = [
+            {id:"1", desc:"My Visa", number:"Ending in 1111",  color:"#C6272F"},
+            {id:"2", desc:"My Mastercard", number:"Ending in 2222", color:"#E17B25"},
+            {id:"3", desc:"My American Express", number:"Ending in 333", color:"#7DCF38"}
+          ] 
+        },
+        
+        /**
+        * saveNewCard - Save a new user card in database
+        * @param scope - Ionic scope 
+        * @param card - Object containing data of new address
+        * @param userID  - ID of user
+        * @returns {*} - It saves info in database.   
+        */       
+        saveNewCard: function($scope, card, userID) {
+          return true;
+        },
+
       }
       
       return functions;
