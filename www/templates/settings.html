@@ -1,17 +1,33 @@
-<ion-nav-bar align-title="center">
-  <ion-nav-buttons>
-    <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
-    </button>
-  </ion-nav-buttons>
-</ion-nav-bar >
+<ion-header-bar class="bar-light bar-header" align-title="center">
+    <div class="buttons grayText">
+      <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
+      </button>
+    </div>
+    <h1 class="title grayText">Settings & Preferences</h1>
+</ion-header-bar>
 
 <ion-view>
 <ion-content scroll="false" class="has-header" has-header="true" has-bouncing="true">
   <div id="wrapper">
     <div class="center">
       
-      Settings
-
+      <div class="float_left settingIcon">
+        <img src="img/generalSettings.png" class="settingIconImage">
+      </div>      
+      <div class="float_left settingIcon">
+        <img src="img/orderHistory.png" class="settingIconImage">
+      </div>      
+      <div class="float_left settingIcon">
+        <img src="img/notifications.png" class="settingIconImage">
+      </div>
+      <br clear="all"/>
+      
+      <div class="float_left settingsContent grayText">
+        <span class="settingsSectionTitle">General Settings</span>
+        <br>
+        <span class="settingsSectionSubtitle">Personal</span>        
+      </div>
+            
     </div>
   </div>
 </ion-content>                                                       

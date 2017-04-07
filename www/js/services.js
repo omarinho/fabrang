@@ -124,7 +124,7 @@
                 {id:"115", name:"Golden corral", waitTime:"15", cuisineTypes:"Chassidic", minimunPrice:"7.70", pricesLevel:"2", rating:"1.6", live_deal:false, endingTime:'', distance:'5.2', todaySchedule:"6AM-7PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
                 {id:"116", name:"Green burrito", waitTime:"15", cuisineTypes:"Chassidic", minimunPrice:"7.70", pricesLevel:"2", rating:"1.6", live_deal:false, endingTime:'', distance:'5.2', todaySchedule:"6AM-7PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
                 {id:"117", name:"Ground round", waitTime:"15", cuisineTypes:"Chassidic", minimunPrice:"7.70", pricesLevel:"2", rating:"1.6", live_deal:false, endingTime:'', distance:'5.2', todaySchedule:"6AM-7PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
-                {id:"118", name:"Ha'achim Yarden Ve'Shia Restaurant", waitTime:"20", cuisineTypes:"Cafe, Dairy", minimunPrice:"5.00", pricesLevel:"1", rating:"3", live_deal:false, endingTime:'', distance:"1.2"},
+                {id:"118", name:"Ha'achim Yarden Ve'Shia Restaurant", waitTime:"20", cuisineTypes:"Cafe, Dairy", minimunPrice:"5.00", pricesLevel:"1", rating:"3", live_deal:false, endingTime:'', distance:"1.2", todaySchedule:"7AM - 7PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
                 {id:"119", name:"Hardee's", waitTime:"15", cuisineTypes:"Chassidic", minimunPrice:"7.70", pricesLevel:"2", rating:"1.6", live_deal:false, endingTime:'', distance:'5.2', todaySchedule:"6AM-7PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
                 {id:"120", name:"Hobee's restaurant", waitTime:"15", cuisineTypes:"Chassidic", minimunPrice:"7.70", pricesLevel:"2", rating:"1.6", live_deal:false, endingTime:'', distance:'5.2', todaySchedule:"6AM-7PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
                 {id:"121", name:"Hooters", waitTime:"15", cuisineTypes:"Chassidic", minimunPrice:"7.70", pricesLevel:"2", rating:"1.6", live_deal:false, endingTime:'', distance:'5.2', todaySchedule:"6AM-7PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
@@ -737,6 +737,32 @@ angular.module('starter.services',[])
         */       
         saveNewCard: function($scope, card, userID) {
           return true;
+        },
+
+      }
+      
+      return functions;
+    
+    }
+  ]
+)
+
+.factory('OrdersService', 
+  ['$http', 
+    function( $http ) {
+      
+      var functions = {
+      
+        /**
+        * processOrder - Process an order
+        * @param scope - Ionic scope 
+        * @param order - Object containing all data of the order
+        * @param userID  - ID of user
+        * @returns {*} - It saves info in database. Order ID is stored in $scope.orderID 
+        */       
+        processOrder: function($scope, order, userID) {
+          $scope.orderID = 'FB54654543';
+          return true; 
         },
 
       }

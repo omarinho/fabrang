@@ -5,7 +5,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
     $ionicPlatform.ready(
       function() {
-        
+
         if (navigator && navigator.splashscreen) { 
           navigator.splashscreen.hide();
         }
@@ -85,9 +85,30 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       .state('order_processing', {
         cache: false,
-        url: "/order_processing/:storeID",
+        url: "/order_processing/:storeID/:orderTotal",
         templateUrl: "templates/order_processing.html",
         controller: 'OrderProcessingCtrl'
+      })
+
+      .state('order_placed', {
+        cache: false,
+        url: "/order_placed/:storeID/:orderID/:orderTotal",
+        templateUrl: "templates/order_placed.html",
+        controller: 'OrderPlacedCtrl'
+      })
+
+      .state('order_status', {
+        cache: false,
+        url: "/order_status/:orderID",
+        templateUrl: "templates/order_status.html",
+        controller: 'OrderStatusCtrl'
+      })
+
+      .state('order_receipt', {
+        cache: false,
+        url: "/order_receipt/:orderID",
+        templateUrl: "templates/order_receipt.html",
+        controller: 'OrderReceiptCtrl'
       })
 
     $urlRouterProvider.otherwise("/");      
@@ -241,6 +262,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }                
     }
+  }
+)
+
+.directive('onlydigitsandspaces', 
+  function() {
+    return {
+      require: 'ngModel',
+      link: function(scope, element, attrs, modelCtrl) {
+        modelCtrl.$parsers.push(
+          function (inputValue) {
+            if (inputValue == undefined) { 
+              return '';
+            } 
+            var transformedInput = inputValue.replace(/[^0-9]/g, ''); 
+            if (transformedInput!=inputValue) {
+              modelCtrl.$setViewValue(transformedInput);
+              modelCtrl.$render();
+            }         
+            return transformedInput;         
+          }
+        );
+      }
+   };
   }
 )
 

@@ -1,0 +1,27 @@
+<ion-view>
+  <ion-content scroll="false" has-header="false" has-bouncing="true">
+    <div id="wrapper">
+      <div class="center op_lh">
+        <br clear="all"/><br>
+        <img src="img/logo.png" id="logo1">
+        <div class="fontSize27 op_color">Order placed!</div>
+        <div class="fontSize15 op_color">Total: {{ orderTotal | currency }}</div>
+        <br clear="all"/><br>
+
+        <div class="width100">
+          <button class="fgbuttongreen width100" ng-click="goToOrderStatus()">Status</button>
+        </div>
+        <br clear="all"/>
+        <div class="width100">
+          <button class="fgbuttongreen width100" ng-click="goToOrderReceipt()">Receipt</button>
+        </div>
+        <br clear="all"/><br><br>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
+
+<ion-footer-bar class="grayText op_footer">
+  <div ng-click="goHome()">Where to next?</div>
+</ion-footer-bar>
+

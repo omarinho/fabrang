@@ -2,22 +2,22 @@
   <ion-content scroll="true" has-header="false" has-bouncing="true">
     <div class="center">
       <br clear="all"/>
-      <div class="textAlignLeft" ng-repeat="card in userCards track by $index" style="padding:9px;">
+      <div class="textAlignLeft sc_padding" ng-repeat="card in userCards track by $index">
         <div ng-click="selectThisCard(card)">
-          <div class="float_left" style="width:3px; margin-right:27px; margin-top:9px;">
+          <div class="float_left sc_circle">
             <div class="circleOptions" style="background-color:{{ card.color }} !important;">&nbsp;</div>
           </div>
-          <div style="overflow:hidden;  border-radius:27px; background-color:#FFFFFF; padding:9px; margin-right:9px;">
+          <div class="sc_cardDesc">
             <span class="RobotoBold">{{ card.desc }}</span>
           </div>
         </div>
       </div>        
     
-      <div class="textAlignLeft" style="padding:9px;" ng-click="addNewUserCard()">
-        <div class="float_left" style="width:3px; margin-right:27px; margin-top:9px;">
+      <div class="textAlignLeft sc_addNewUserCard" ng-click="addNewUserCard()">
+        <div class="float_left sc_addNewUserCardAddIcon">
           <img src="img/add_icon.png" align="left">
         </div>
-        <div style="overflow:hidden;  border-radius:27px; background-color:#F8F8F8; padding:9px; margin-right:9px;">
+        <div class="sc_addcc">
           <span class="RobotoBold grayText">Add a new credit card</span>
         </div>
       </div>

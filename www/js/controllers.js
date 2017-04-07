@@ -5,7 +5,7 @@ angular.module('starter.controllers',['ngCordova'])
 /****************************************/
 .run(
   
-  function($rootScope, $ionicHistory, $ionicPopup, $timeout, $state, $ionicModal, $ionicLoading, SessionService, SearchService) {
+  function($rootScope, $ionicHistory, $ionicPopup, $timeout, $state, $ionicModal, $ionicLoading, $ionicPlatform, SessionService, SearchService) {
   
     $rootScope.goback = function() {
       $timeout(
@@ -15,6 +15,18 @@ angular.module('starter.controllers',['ngCordova'])
       );	
     }
   
+    $ionicPlatform.registerBackButtonAction(
+      function (event) {
+        event.preventDefault();
+        if ( ($state.current.name == 'order_placed') || ($state.current.name == 'order_processing') )  {
+          //do nothing();
+        }
+        else {
+          $rootScope.goback();
+        } 
+      }, 100
+    );
+
     $rootScope.alerti = function(text, title) {
       if (typeof title === "undefined") {
         title="Alert";
@@ -252,7 +264,7 @@ angular.module('starter.controllers',['ngCordova'])
       return found;
     }
 
-    $rootScope.clearCart = function(storeID,alert=true) {
+    $rootScope.clearCart = function(storeID, alert) {
       var tempArray = [];
       for (var i in $rootScope.cart) {
         if ($rootScope.cart[i].storeID == storeID) {
@@ -803,10 +815,11 @@ angular.module('starter.controllers',['ngCordova'])
         $scope.cartTip = ( ($scope.store.tip/100) * $scope.cartSubtotal);
         $scope.cartTotal = $scope.cartSubtotal - $scope.cartDiscount  + $scope.cartTip;
 
-        $timeout(function() {
-          var el = document.getElementById('tab_' + $scope.store.categories[0].id);
-          angular.element(el).triggerHandler('click');
-        }, 100);
+        $timeout(
+          function() {
+            $scope.selectTab($scope.store.categories[0].id);
+          }, 300
+        );
         
       }
     );
@@ -1215,11 +1228,14 @@ angular.module('starter.controllers',['ngCordova'])
 /**********************************************/
 .controller('OrderConfirmationCtrl',                                    
   
-  function ($scope, $ionicLoading, $ionicPlatform, $stateParams, $ionicModal, $timeout, $rootScope, UsersService, StoreService) {
+  function ($scope, $ionicLoading, $ionicPlatform, $stateParams, $ionicModal, $timeout, $rootScope, $state, UsersService, StoreService) {
     $scope.storeID = $stateParams.storeID.toString();
     $scope.cartLength = 0;
     $scope.userAddresses = [];
     $scope.userCards = [];
+    $scope.latestIdent = 0;
+    $scope.addressColorSelected = 0;
+    $scope.cardColorSelected = 0;
     $scope.order = {
       deliverTo:null,
       creditCard: null,
@@ -1271,6 +1287,7 @@ angular.module('starter.controllers',['ngCordova'])
           if ($scope.cart[i].storeID == $stateParams.storeID.toString()) {
             $scope.cartLength = $scope.cartLength + 1;
             $scope.order.subtotal = $scope.order.subtotal + parseFloat($scope.cart[i].price);
+            $scope.latestIdent = $scope.cart[i].ident;
           } 
         }
         $scope.order.subtotal = $scope.order.subtotal +  $scope.store.deliveryFee;
@@ -1279,6 +1296,8 @@ angular.module('starter.controllers',['ngCordova'])
         $scope.order.tip = $scope.store.tip;
         $scope.order.tipValue = ( ($scope.store.tip/100) * $scope.order.subtotal);
         $scope.order.total = $scope.order.subtotal - $scope.order.discountValue  + $scope.order.tipValue;
+    
+        
       }
     );
     
@@ -1343,12 +1362,6 @@ angular.module('starter.controllers',['ngCordova'])
       $scope.newAddress = {};
       $timeout(
         function() {
-          document.getElementById('color1').className = 'colorOption';
-          document.getElementById('color2').className = 'colorOption';
-          document.getElementById('color3').className = 'colorOption';
-          document.getElementById('color4').className = 'colorOption';
-          document.getElementById('color5').className = 'colorOption';
-          document.getElementById('color6').className = 'colorOption';
           document.getElementById('label_addressName').style.display = 'none';
           document.getElementById('label_address').style.display = 'none';
           document.getElementById('label_specifications').style.display = 'none';
@@ -1357,23 +1370,21 @@ angular.module('starter.controllers',['ngCordova'])
     }
     
     $scope.setNewAddressColor = function(color, id) {
-      document.getElementById('color1').className = 'colorOption';
-      document.getElementById('color2').className = 'colorOption';
-      document.getElementById('color3').className = 'colorOption';
-      document.getElementById('color4').className = 'colorOption';
-      document.getElementById('color5').className = 'colorOption';
-      document.getElementById('color6').className = 'colorOption';
-      document.getElementById(id).className = 'colorOptionChecked';      
-      $scope.newAddress.color = color;
+      $timeout(
+        function() {
+          $scope.addressColorSelected = id;
+          $scope.newAddress.color = color;
+        }, 100
+      );
     }
     
     $scope.saveNewAddress = function() {
       $scope.cancelAddNewAddressModal();
       $scope.showLoading();
-      /*** Call API: Save new user address in database ***/
-      /*** It saves info in database       ***/
       $timeout(
         function() {
+          /*** Call API: Save new user address in database ***/
+          /*** It saves info in database       ***/
           var saved = UsersService.saveNewAddress($scope, $scope.newAddress, $scope.userID);
           if (saved) {
             $scope.hideLoading();
@@ -1410,28 +1421,21 @@ angular.module('starter.controllers',['ngCordova'])
       $scope.newCard = {};
       $timeout(
         function() {
-          document.getElementById('cc_color1').className = 'colorOption';
-          document.getElementById('cc_color2').className = 'colorOption';
-          document.getElementById('cc_color3').className = 'colorOption';
-          document.getElementById('cc_color4').className = 'colorOption';
-          document.getElementById('cc_color5').className = 'colorOption';
-          document.getElementById('cc_color6').className = 'colorOption';
           document.getElementById('label_cardName').style.display = 'none';
           document.getElementById('label_cardNumber').style.display = 'none';
           document.getElementById('label_expiration').style.display = 'none';
+          document.getElementById('label_ccv').style.display = 'none';
         }, 100
       );	
     }
     
     $scope.setNewCardColor = function(color, id) {
-      document.getElementById('cc_color1').className = 'colorOption';
-      document.getElementById('cc_color2').className = 'colorOption';
-      document.getElementById('cc_color3').className = 'colorOption';
-      document.getElementById('cc_color4').className = 'colorOption';
-      document.getElementById('cc_color5').className = 'colorOption';
-      document.getElementById('cc_color6').className = 'colorOption';
-      document.getElementById(id).className = 'colorOptionChecked';      
-      $scope.newCard.color = color;
+      $timeout(
+        function() {
+          $scope.cardColorSelected = id;
+          $scope.newCard.color = color;
+        }, 100
+      );
     }
     
     $scope.saveNewCard = function() {
@@ -1471,6 +1475,33 @@ angular.module('starter.controllers',['ngCordova'])
       $scope.addNewCard.hide();
     }
 
+    $scope.processOrder = function() {
+      $rootScope.orderToProcess = $scope.order;
+      $state.go('order_processing', {storeID:$scope.storeID, orderTotal: $scope.order.total}, { reload: true });      
+    } 
+    
+    $scope.cc_format = function () {
+      value =  $scope.newCard.number;
+      if (typeof value !== "undefined") {
+        var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        var matches = v.match(/\d{4,16}/g);
+        var match = matches && matches[0] || ''
+        var parts = []
+
+        for (i=0, len=match.length; i<len; i+=4) {
+          parts.push(match.substring(i, i+4))
+        }
+
+        if (parts.length) {
+          $scope.newCard.number = parts.join(' ')
+        } 
+        
+        else {
+          $scope.newCard.number =  value
+        }
+      }
+    }    
+    
     $rootScope.showFooter = true;
 
     window.addEventListener('native.keyboardshow', function() {
@@ -1492,15 +1523,83 @@ angular.module('starter.controllers',['ngCordova'])
 
 /*******************************************/
 /*** Order Processing Controller - BEGIN ***/
-/******************************************/
+/******************************************/                       
 .controller('OrderProcessingCtrl',                                    
   
-  function ($scope, $ionicLoading, $ionicPlatform) {
+  function ($scope, $ionicLoading, $ionicPlatform, $stateParams, $timeout, $state, $rootScope, OrdersService) {
+    $timeout(
+      function() {
+        /*** Call API: Process the order                                     ***/
+        /*** It saves info in database. Order ID is stored in $scope.orderID ***/
+        var processed = OrdersService.processOrder($scope, $rootScope.orderToProcess, $scope.userID);
+        if (processed) {
+          $scope.clearCart($stateParams.storeID, false);
+          $state.go('order_placed', {storeID:$stateParams.storeID.toString(), orderID:$scope.orderID, orderTotal:$stateParams.orderTotal.toString()}, { reload: true });
+        }      
+      }, 2000
+    );
   }
 
 )
 /*****************************************/
 /*** Order Processing Controller - END ***/
 /*****************************************/
+
+/***************************************/
+/*** Order Placed Controller - BEGIN ***/
+/***************************************/
+.controller('OrderPlacedCtrl',                                    
+  
+  function ($scope, $ionicLoading, $ionicPlatform, $stateParams, $state) {
+    $scope.orderTotal = $stateParams.orderTotal.toString();
+    
+    $scope.goToOrderStatus = function() {
+      $state.go('order_status', {orderID:$stateParams.orderID.toString()}, { reload: true });
+    }
+    
+    $scope.goToOrderReceipt = function() {
+      $state.go('order_receipt', {orderID:$stateParams.orderID.toString()}, { reload: true });
+    }
+    
+    $scope.goHome = function() {
+      $state.go('home', {}, { reload: true });
+    }
+
+  }
+
+)
+/*************************************/
+/*** Order Placed Controller - END ***/
+/*************************************/
+
+
+/*****************************************/
+/*** Order Status Controller - BEGIN  ***/
+/****************************************/
+.controller('OrderStatusCtrl',                                    
+  
+  function ($scope, $ionicLoading, $ionicPlatform, $stateParams) {
+    $scope.orderID = $stateParams.orderID.toString();
+  }
+
+)
+/**************************************/
+/*** Order Status Controller - END  ***/
+/**************************************/
+
+
+/*****************************************/
+/*** Order Receipt Controller - BEGIN  ***/
+/****************************************/
+.controller('OrderReceiptCtrl',                                    
+  
+  function ($scope, $ionicLoading, $ionicPlatform, $stateParams) {
+    $scope.orderID = $stateParams.orderID.toString();
+  }
+
+)
+/**************************************/
+/*** Order Receipt Controller - END  ***/
+/**************************************/
 
 ;

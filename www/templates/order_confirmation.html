@@ -13,63 +13,63 @@
         <br clear="all"/>        
 
         <div>
-          <div class="background-color_EAEAEA grayText textAlignLeft" style="padding-left:27px;">Your order:</div>
+          <div class="background-color_EAEAEA grayText textAlignLeft oc_yourOrder">Your order:</div>
         </div>
-        <div class="textAlignLeft" ng-repeat="cartItem in cart track by $index" ng-if="cartItem.storeID==storeID" style="padding-left:18px; margin-top:9px;">
+        <div class="textAlignLeft oc_repeatCart" ng-repeat="cartItem in cart track by $index" ng-if="cartItem.storeID==storeID">
           <span class="RobotoBold">{{ cartItem.quantity }}&nbsp;&nbsp;&nbsp;{{ cartItem.name }}</span>
-          <hr ng-show="!$last && cart.length > 1">
+          <hr ng-show="!$last && cart.length > 1 && cartItem.ident != latestIdent">
         </div>
         <br clear="all"/>
 
         <div>
-          <div class="background-color_EAEAEA grayText textAlignLeft" style="padding-left:27px;">Delivering to:</div>
+          <div class="background-color_EAEAEA grayText textAlignLeft paddingLeft27">Delivering to:</div>
         </div>
-        <div style="padding-left:18px; background-color:#F8F8F8; padding-top:9px; padding-bottom:27px;" ng-if="order.deliverTo">
-          <div class="float_left" style="width:9px; margin-top:6px;">
+        <div class="oc_pickAddress" ng-if="order.deliverTo">
+          <div class="float_left oc_addressCircle">
             <div class="circleOptions" style="background-color:{{ order.deliverTo.color }} !important;">&nbsp;</div>
           </div>
-          <div style="overflow:hidden;">
+          <div class="overflowHidden">
             <input type="text" ng-model="order.deliverTo.desc" class="center pickAddress textAlignLeft" ng-readonly="true" ng-click="showSelectAddressModal()">
           </div>
         </div>
-        <div style="padding-left:18px; background-color:#F8F8F8; padding-top:9px; padding-bottom:27px;" ng-if="!order.deliverTo">
-          <div class="float_left" style="width:9px; margin-top:9px;">
+        <div class="oc_pickCard" ng-if="!order.deliverTo">
+          <div class="float_left oc_addIcon">
             <img src="img/add_icon.png" align="middle">
           </div>
-          <div style="overflow:hidden;">
+          <div class="overflowHidden">
             <input type="text" class="center pickAddress textAlignLeft" ng-readonly="true" placeholder="Select an address"  ng-click="showSelectAddressModal()">
           </div>
         </div>
 
         <div>
-          <div class="background-color_EAEAEA grayText textAlignLeft" style="padding-left:27px;">Paying with:</div>
+          <div class="background-color_EAEAEA grayText textAlignLeft paddingLeft27">Paying with:</div>
         </div>
-        <div style="padding-left:18px; background-color:#F8F8F8; padding-top:9px; padding-bottom:27px;" ng-if="order.creditCard">
-          <div class="float_left" style="width:9px; margin-top:6px;">
+        <div class="oc_cc" ng-if="order.creditCard">
+          <div class="float_left oc_addressCircle">
             <div class="circleOptions" style="background-color:{{ order.creditCard.color }} !important;">&nbsp;</div>
           </div>
-          <div style="overflow:hidden;">
+          <div class="overflowHidden">
             <input type="text" ng-model="order.creditCard.desc" class="center pickCC textAlignLeft" ng-readonly="true" ng-click="showSelectCardModal()">
           </div>
         </div>
-        <div style="padding-left:18px; background-color:#F8F8F8; padding-top:9px; padding-bottom:27px;" ng-if="!order.creditCard">
-          <div class="float_left" style="width:9px; margin-top:9px;">
+        <div class="oc_cc2" ng-if="!order.creditCard">
+          <div class="float_left oc_addIcon">
             <img src="img/add_icon.png" align="middle">
           </div>
-          <div style="overflow:hidden;">
+          <div class="overflowHidden">
             <input type="text" ng-model="order.creditCard" class="center pickCC textAlignLeft" ng-readonly="true" placeholder="Select a credit card" ng-click="showSelectCardModal()">
           </div>
         </div>
         <br clear="all"/>
 
-        <div class="textAlignLeft grayText" style="padding-left:18px;">
-          Tip percent: <b style="color:#389E23;">{{ order.tip }}%</b>
+        <div class="textAlignLeft grayText oc_tipPercent">
+          Tip percent: <b class="oc_tipColor">{{ order.tip }}%</b>
         </div>
-        <div class="item range" style="border:0px;">
+        <div class="item range border0">
           0&nbsp;<input type="range" ng-model="order.tip" min="0" max="20" ng-change="updateTip()">&nbsp;20
         </div>
 
-        <div style="padding:18px;">
+        <div class="oc_totalization">
           <div class="float_left">
             Delivery Fee:
           </div>

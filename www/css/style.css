@@ -1352,6 +1352,195 @@ ul.rating li i {
   background-repeat: no-repeat;
   background-position: center; 
 }
+.newAddressColors {
+  margin-left:9px; 
+  margin-right:9px;
+}
+
+.newCardColors {
+  margin-left:9px; 
+  margin-right:9px;
+}
+
+.border0 {
+  border:0px;
+}
+
+.paddingLeft27 {
+  padding-left:27px;
+}
+
+.oc_repeatCart {
+  padding-left:18px; 
+  margin-top:9px;
+}
+
+.oc_yourOrder {
+  padding-left:27px;
+}
+
+.oc_pickAddress {
+  padding-left:18px; 
+  background-color:#F8F8F8; 
+  padding-top:9px; 
+  padding-bottom:27px;
+}
+
+.oc_addressCircle {
+  width:9px; 
+  margin-top:6px;
+}
+
+.oc_pickCard {
+  padding-left:18px; 
+  background-color:#F8F8F8; 
+  padding-top:9px; 
+  padding-bottom:27px;
+}
+
+.oc_addIcon {
+  width:9px; 
+  margin-top:9px;
+}
+
+.oc_cc {
+  padding-left:18px; 
+  background-color:#F8F8F8; 
+  padding-top:9px; 
+  padding-bottom:27px;
+}
+
+.oc_cc2 {
+  padding-left:18px; 
+  background-color:#F8F8F8; 
+  padding-top:9px; 
+  padding-bottom:27px;
+}
+
+.oc_tipPercent {
+  padding-left:18px;
+}
+
+.oc_tipColor {
+  color:#389E23;
+}
+
+.oc_totalization {
+  padding:18px;
+}
+
+.op_lh {
+  line-height:200%;
+}
+
+.op_color {
+  color:#5C1853
+}
+
+.op_footer {
+  border-top:1px #CCCCCC solid; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+
+.sa_addressList {
+  padding:9px;
+}
+
+.sa_circle {
+  width:3px; 
+  margin-right:27px; 
+  margin-top:9px;
+}
+
+.sa_addressDesc {
+  overflow:hidden;  
+  border-radius:27px; 
+  background-color:#FFFFFF; 
+  padding:9px; 
+  margin-right:9px;
+}
+
+.sa_addNewAddress {
+  padding:9px;
+}
+
+.sa_addNewAddressAddIcon {
+  width:3px; 
+  margin-right:27px; 
+  margin-top:9px;
+}
+
+.sa_action {
+  overflow:hidden;  
+  border-radius:27px; 
+  background-color:#F8F8F8; 
+  padding:9px; 
+  margin-right:9px;
+}
+
+.sc_padding {
+  padding:9px;
+}
+
+.sc_circle {
+  width:3px; 
+  margin-right:27px; 
+  margin-top:9px;
+}
+
+.sc_cardDesc {
+  overflow:hidden;  
+  border-radius:27px; 
+  background-color:#FFFFFF; 
+  padding:9px; 
+  margin-right:9px;
+}
+
+.sc_addNewUserCard {
+  padding:9px;
+}
+
+.sc_addNewUserCardAddIcon {
+  width:3px;
+  margin-right:27px; 
+  margin-top:9px;
+}
+
+.sc_addcc {
+  overflow:hidden;  
+  border-radius:27px; 
+  background-color:#F8F8F8; 
+  padding:9px; 
+  margin-right:9px;
+}
+
+.settingIcon {
+  width:33%;
+}
+
+.settingIconSelected {
+  width:33%;
+  border-bottom:3px #C0BFBF solid;
+}
+
+.settingIconImage {
+  max-width:30%;
+}
+
+.settingsContent {
+  margin:9px;
+}
+
+.settingsSectionTitle {
+  font-style: italic;
+  font-size:15px;
+}
+
+.settingsSectionSubtitle {
+  font-size:12px;
+}
 
 body.keyboard-open .has-footer{
   bottom: 0;

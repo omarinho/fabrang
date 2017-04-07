@@ -14,13 +14,13 @@
         <div class="grayText">  
           New address
         </div>
-        <div class="center width100" style="margin-left:9px; margin-right:9px;">
-          <div class="colorOption" id="color1" style="background-color:#C7272F;" ng-click="setNewAddressColor('#C7272F', 'color1')">&nbsp;</div>
-          <div class="colorOption" id="color2" style="background-color:#CE6345;" ng-click="setNewAddressColor('#CE6345', 'color2')">&nbsp;</div>
-          <div class="colorOption" id="color3" style="background-color:#E87F27;" ng-click="setNewAddressColor('#E87F27', 'color3')">&nbsp;</div>
-          <div class="colorOption" id="color4" style="background-color:#E3A52D;" ng-click="setNewAddressColor('#E3A52D', 'color4')">&nbsp;</div>
-          <div class="colorOption" id="color5" style="background-color:#42C98B;" ng-click="setNewAddressColor('#42C98B', 'color5')">&nbsp;</div>
-          <div class="colorOption" id="color6" style="background-color:#78C635;" ng-click="setNewAddressColor('#78C635', 'color6')">&nbsp;</div>
+        <div class="center width100 newAddressColors">
+          <div ng-class="addressColorSelected == 'color1' ? 'colorOptionChecked' : 'colorOption'" id="color1" style="background-color:#C7272F;" ng-click="setNewAddressColor('#C7272F', 'color1')">&nbsp;</div>
+          <div ng-class="addressColorSelected == 'color2' ? 'colorOptionChecked' : 'colorOption'" id="color2" style="background-color:#CE6345;" ng-click="setNewAddressColor('#CE6345', 'color2')">&nbsp;</div>
+          <div ng-class="addressColorSelected == 'color3' ? 'colorOptionChecked' : 'colorOption'" id="color3" style="background-color:#E87F27;" ng-click="setNewAddressColor('#E87F27', 'color3')">&nbsp;</div>
+          <div ng-class="addressColorSelected == 'color4' ? 'colorOptionChecked' : 'colorOption'" id="color4" style="background-color:#E3A52D;" ng-click="setNewAddressColor('#E3A52D', 'color4')">&nbsp;</div>
+          <div ng-class="addressColorSelected == 'color5' ? 'colorOptionChecked' : 'colorOption'" id="color5" style="background-color:#42C98B;" ng-click="setNewAddressColor('#42C98B', 'color5')">&nbsp;</div>
+          <div ng-class="addressColorSelected == 'color6' ? 'colorOptionChecked' : 'colorOption'" id="color6" style="background-color:#78C635;" ng-click="setNewAddressColor('#78C635', 'color6')">&nbsp;</div>
         </div>
         <br clear="all"/><br>
       
