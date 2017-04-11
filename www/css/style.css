@@ -63,6 +63,45 @@
   float:right;
 }
 
+.theToggle {
+  min-height:54px;
+  border:0px; 
+  float:right;
+}
+
+.toggleLabel {
+  height:54px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  float:left;
+  font-size:18px;
+  color:#9b9b9b !important;
+}
+
+.toggleLabelActive {
+  height:54px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  float:left;
+  font-size:18px;
+  color:#000000 !important;
+  font-weight:bold;
+}
+
+.settingsDropdown {
+  background-color:#FFFFFF; 
+  border:3px #EDEDED solid; 
+  border-radius: 27px; 
+  padding:9px; 
+  margin-top:9px; 
+  margin-bottom:18px; 
+  text-align:left; 
+  color:#9A9A9A; 
+  width:100%;
+}
+
 #filters_locked_filter .item-toggle, .item-toggle.item-complex .item-content {
   padding-right: 68px !important;
 }
@@ -151,6 +190,10 @@
 #submittedReview {
   font-size:21px;
   line-height:150%;
+}
+
+.transparent {
+  background: transparent !important;
 }
 
 .fgfield {
@@ -252,6 +295,14 @@
 .loginbutton {
   width:47%;
   margin-right:3px;
+}
+
+.savePassword {
+  height:45px;
+  width:80% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .signupbutton {
@@ -392,6 +443,15 @@ a, a:hover, a:active {
 .vertical-align-content {
 }
 
+.verticalMiddle {
+  display: flex;
+  align-items: center;
+}
+
+.verticalAlignMiddle {
+  vertical-align:middle;
+}
+
 .modal {
   top: 0px;
   bottom: 0;
@@ -425,6 +485,32 @@ a, a:hover, a:active {
   bottom: 10%;
   background-color:#FFFFFF;
   border-radius: 9px;
+}
+
+.editModal {
+  width: 80%; 
+  height: 50%; 
+  min-height: 0; 
+  max-height: 486px; 
+  top: 10%; 
+  left: 10%; 
+  right: 10%; 
+  bottom: 10%;
+  background-color:#FFFFFF;
+  border-radius: 9px;
+}
+
+.editModal .closex {
+  margin-right:9px;
+  color: #5B73DF;
+}
+
+.editModal .titlex {
+  font-weight:bold;
+  margin-top:9px;
+  font-size: 18px;
+  margin-left:18px;
+  margin-bottom:9px;
 }
 
 .selectAddressModal {
@@ -670,6 +756,10 @@ a, a:hover, a:active {
 .resultsItemLeftName {
   font-size:15px; 
   margin-bottom:6px;
+}
+
+.fontSize9 {
+  font-size:9px;
 }
 
 .fontSize12 {
@@ -1112,7 +1202,7 @@ ul.rating li i {
 }
 
 .width100 {
-  width:100%;
+  width:100% !important;
 }
 
 .width80 {
@@ -1480,6 +1570,42 @@ ul.rating li i {
   margin-right:9px;
 }
 
+.settings_basicData {
+  overflow:hidden;  
+  border-radius:27px; 
+  background-color:#F8F8F8; 
+  padding:9px; 
+  margin-right:9px;
+  margin-bottom:18px;
+}
+
+.settingsSeparator{
+  background-color: #CCCCCC;
+  height:1px;
+}
+
+.settingsItem {
+  height:54px;
+  display: flex;
+  align-items: center;
+  text-align:left !important;
+  padding-left:27px;
+}
+
+.settingsBox {
+  background-color:#F0F0F0; 
+  padding:9px; 
+  border-radius:9px 9px 0px 0px;
+}
+
+.displayBlock {
+  display:block;
+}
+
+.height80 {
+  height:80%;
+}
+
 .sc_padding {
   padding:9px;
 }
@@ -1531,15 +1657,119 @@ ul.rating li i {
 
 .settingsContent {
   margin:9px;
+  padding-top:27px;
+  width:95%;
 }
 
 .settingsSectionTitle {
   font-style: italic;
-  font-size:15px;
+  font-size:18px;
 }
 
 .settingsSectionSubtitle {
-  font-size:12px;
+  padding-top:9px;
+  font-size:15px;
+}
+
+.ea_title {
+  padding-top:9px;
+  padding-left:18px;
+}
+
+.ea_bottom {
+  position:absolute; 
+  bottom:50px;
+  width:97%;
+  max-width:800px;
+}
+
+.ea_moreOptions {
+  padding-left:9px;
+  border-bottom:2px #ABABAB solid;
+  width:100%;
+}
+
+.ea_moreOptionsItem {
+  height:63px;
+  border-bottom:1px #ABABAB solid;
+  font-size:18px;
+  display: flex; 
+  align-items: center;
+  padding-left:27px;
+  width:100%;
+}
+
+.ea_editArrow {
+  margin-right:9px;
+  color:#838383;
+}
+
+.ea_editLink {
+  margin-top:12px;
+}
+
+.degrade {
+  padding:9px;
+  background: #F4F4F4;
+  background: -webkit-linear-gradient(#F4F4F4, #FFFFFF);
+  background: -o-linear-gradient(#F4F4F4, #FFFFFF);
+  background: -moz-linear-gradient(#F4F4F4, #FFFFFF);
+  background: linear-gradient(#F4F4F4, #FFFFFF);  
+}
+
+.noBorderBottom {
+  border-bottom:0px !important;
+}
+
+.backgroundColorC7272F {
+  background-color:#C7272F;
+}
+.backgroundColorCE6345 {
+  background-color:#CE6345;
+}
+.backgroundColorE87F27 {
+  background-color:#E87F27;
+}
+.backgroundColorE3A52D {
+  background-color:#E3A52D;
+}
+.backgroundColor42C98B {
+  background-color:#42C98B;
+}
+.backgroundColor78C635 {
+  background-color:#78C635;
+}
+
+.anc_cardnumber {
+  width:80%; 
+  display: flex; 
+  align-items: flex-end;  
+}
+
+.anc_cardnumbernumber {
+  text-align:left; 
+  width:80%;
+}
+
+.anc_cardCameraImg {
+  width:45px; 
+  margin-left:9px;
+}
+
+.anc_cardTypeImg {
+  width:45px; 
+  margin-right:9px;
+}
+
+.anc_expiration {
+  text-align:left; 
+  width:49%; 
+  margin-right:9px;
+}
+
+.anc_ccv {
+  text-align:left; 
+  width:29%;
 }
 
 body.keyboard-open .has-footer{

@@ -111,6 +111,41 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'OrderReceiptCtrl'
       })
 
+      .state('addresses', {
+        cache: false,
+        url: "/addresses",
+        templateUrl: "templates/addresses.html",
+        controller: 'AddressesCtrl'
+      })
+      
+      .state('credit_cards', {
+        cache: false,
+        url: "/credit_cards",
+        templateUrl: "templates/credit_cards.html",
+        controller: 'CreditCardsCtrl'
+      })
+
+      .state('edit_address', {
+        cache: false,
+        url: "/edit_address/:addressID",
+        templateUrl: "templates/edit_address.html",
+        controller: 'EditAddressCtrl'
+      })
+
+      .state('edit_credit_card', {
+        cache: false,
+        url: "/edit_credit_card/:creditCardID",
+        templateUrl: "templates/edit_credit_card.html",
+        controller: 'EditCreditCardCtrl'
+      })
+
+      .state('favorites', {
+        cache: false,
+        url: "/favorites",
+        templateUrl: "templates/favorites.html",
+        controller: 'FavoritesCtrl'
+      })
+
     $urlRouterProvider.otherwise("/");      
     
     $ionicConfigProvider.views.swipeBackEnabled(false);    
@@ -400,7 +435,7 @@ function objectIndexOf2(arr, o) {
 function searchObjectByID(nameKey, myArray){
   for (var i=0; i < myArray.length; i++) {
     if (myArray[i].id === nameKey) {
-      return myArray[i];
+      return cloneObject(myArray[i]);
     }
   }
 }
@@ -450,4 +485,61 @@ function remainingTime(valuestop) {
     seconds = "0" + seconds;
   }
   return hours + ':' + minutes + ':' + seconds;    
+}
+
+/**
+* cloneObject - Clone a JS object (not is a copy)
+* @param obj - Object to clone 
+*/       
+function cloneObject(obj) {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+  var temp = obj.constructor();
+  for (var key in obj) {
+    temp[key] = cloneObject(obj[key]);
+  }
+  return temp;
+}
+
+
+/**
+* getCardType - Identify credit card type: Visa, Mastercard, American Express, etc
+* @param number - Credit card number entered by user 
+*/       
+function getCardType(number)
+{
+    re = new RegExp("^(4026|417500|4508|4844|491(3|7))");
+    if (number.match(re) != null)
+        return "visaElectron";
+
+    var re = new RegExp("^4");
+    if (number.match(re) != null)
+        return "visa";
+
+    re = new RegExp("^5[1-5]");
+    if (number.match(re) != null)
+        return "mastercard";
+
+    re = new RegExp("^3[47]");
+    if (number.match(re) != null)
+        return "amex";
+
+    re = new RegExp("^(6011|622(12[6-9]|1[3-9][0-9]|[2-8][0-9]{2}|9[0-1][0-9]|92[0-5]|64[4-9])|65)");
+    if (number.match(re) != null)
+        return "discover";
+
+    re = new RegExp("^36");
+    if (number.match(re) != null)
+        return "diners";
+
+    re = new RegExp("^30[0-5]");
+    if (number.match(re) != null)
+        return "dinersCarteBlanche";
+
+    re = new RegExp("^35(2[89]|[3-8][0-9])");
+    if (number.match(re) != null)
+        return "jcb";
+
+    return "generic";
 }

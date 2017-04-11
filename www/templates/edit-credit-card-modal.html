@@ -1,0 +1,91 @@
+<ion-modal-view class="addNewAddressModal">
+
+  <ion-header-bar align-title="center" class="grayText">
+    <div class="buttons">
+      <button class="button button-icon ion-chevron-left backbutton" ng-click="cancelEditCreditCardModal()">
+      </button>
+    </div>
+    <h1 class="title grayText">Credit Cards</h1>
+  </ion-header-bar>
+
+  <ion-content scroll="true" has-header="false" has-bouncing="true">
+    <div id="wrapper">
+      <div class="center">
+        <div class="grayText">  
+          Edit credit card
+        </div>
+        <div class="center width100 newAddressColors">
+          <div ng-class="creditCard.color == '#C7272F' ? 'colorOptionChecked backgroundColorC7272F' : 'colorOption backgroundColorC7272F'" id="color1" ng-click="setCreditCardColor('#C7272F', 'color1')">&nbsp;</div>
+          <div ng-class="creditCard.color == '#CE6345' ? 'colorOptionChecked backgroundColorCE6345' : 'colorOption backgroundColorCE6345'" id="color2" ng-click="setCreditCardColor('#CE6345', 'color2')">&nbsp;</div>
+          <div ng-class="creditCard.color == '#E87F27' ? 'colorOptionChecked backgroundColorE87F27' : 'colorOption backgroundColorE87F27'" id="color3" ng-click="setCreditCardColor('#E87F27', 'color3')">&nbsp;</div>
+          <div ng-class="creditCard.color == '#E3A52D' ? 'colorOptionChecked backgroundColorE3A52D' : 'colorOption backgroundColorE3A52D'" id="color4" ng-click="setCreditCardColor('#E3A52D', 'color4')">&nbsp;</div>
+          <div ng-class="creditCard.color == '#42C98B' ? 'colorOptionChecked backgroundColor42C98B' : 'colorOption backgroundColor42C98B'" id="color5" ng-click="setCreditCardColor('#42C98B', 'color5')">&nbsp;</div>
+          <div ng-class="creditCard.color == '#78C635' ? 'colorOptionChecked backgroundColor78C635' : 'colorOption backgroundColor78C635'" id="color6" ng-click="setCreditCardColor('#78C635', 'color6')">&nbsp;</div>
+        </div>
+        <br clear="all"/><br>
+      
+        <div class="textAlignLeft">
+          <div class="fgfieldlabel displayBlock" id="label_cardName">Give this card a name</div>
+          <input class="fgfield" type="text" name="cardName" id="id_cardName" placeholder="Give this card a name" ng-model="creditCard.desc" advancenext>
+          <br>
+          <div class="center anc_cardnumber">
+            <div class="float_left anc_cardTypeImg">
+              <img src="img/{{ CCTypeImg }}.gif" width="36" height="36">
+            </div>
+            <div class="float_left anc_cardnumbernumber">
+              <div class="fgfieldlabel width100" id="label_cardNumber">Card Number</div>
+              <input class="fgfield width100" type="text" name="cardNumber" id="id_cardNumber" placeholder="Card Number" ng-model="creditCard.newNumber" advancenext onlydigitsandspaces ng-blur="cc_format()" ng-focus="setGenericCard();">
+            </div>
+            <div class="float_right anc_cardCameraImg">
+                <img src="img/camera.gif" width="36" height="36">
+            </div>
+            <br clear="all"/>
+          </div>
+          <br>
+          <div class="center anc_cardnumber">
+            <div class="float_left anc_cardCameraImg">
+              &nbsp;
+            </div>
+            <div class="float_left anc_expiration">
+              <div class="fgfieldlabel width100 displayBlock" id="label_expiration">Expiration</div>
+              <input class="fgfield width100" type="text" name="expiration" id="id_expiration" placeholder="Expiration" ng-model="creditCard.expiration" maxlength="5" advancenext>
+            </div>
+            <div class="float_left anc_ccv">
+              <div class="fgfieldlabel width100" id="label_ccv">CCV</div>
+              <input class="fgfield width100" type="text" name="ccv" id="id_ccv" placeholder="CCV" ng-model="creditCard.ccv" maxlength="5" advancenext>
+            </div>
+            <div class="float_right anc_cardCameraImg">
+                &nbsp;
+            </div>
+            <br clear="all"/>
+          </div>
+          <br clear="all"/>
+        </div>
+        <br clear="all"/>
+      
+        <div class="width100" ng-show="!showFooter">
+          <button class="fgbuttongreen width100" ng-click="saveCreditCard(false)">Save</button>
+        </div>
+        <br clear="all"/>
+        <div class="width100" ng-show="!showFooter">
+          <button class="fgbuttonwhite width100" ng-click="cancelEditCreditCardModal()">Cancel</button>
+        </div>
+        <br clear="all"/><br><br>
+
+      </div>
+    </div>
+  </ion-content>
+  
+  <ion-footer-bar class="bar-subfooter width100" ng-show="showFooter" ng-hide="!showFooter">
+    <div class="width100">
+      <button class="fgbuttongreen width100" ng-click="saveCreditCard(false)">Save</button>
+    </div>
+  </ion-footer-bar>
+  
+  <ion-footer-bar class="width100" ng-show="showFooter" ng-hide="!showFooter">
+    <div class="width100">
+      <button class="fgbuttonwhite width100" ng-click="cancelEditCreditCardModal()">Cancel</button>
+    </div>
+  </ion-footer-bar>  
+  
+</ion-modal-view>

@@ -1,0 +1,25 @@
+<ion-modal-view class="editModal">
+
+  <ion-header-bar align-title="center">
+    <div class="center">
+      <div class="titlex">
+        Edit Mode
+        <div class="float_right closex" ng-click="cancelChangeStatementEmailModal()"><i class="icon ion-close"></i></div>
+      </div>
+    </div>
+  </ion-header-bar>
+  
+  <ion-content scroll="true" class="has-header center" has-header="true" has-bouncing="true">
+    <div class="textAlignLeft">
+      <div class="fgfieldlabel displayBlock" id="label_changeEmail">E-mail</div>
+      <input class="fgfield" type="text" name="changeEmail" id="id_changeEmail" placeholder="E-mail" ng-model="user.statementEmail" advancenext>
+    </div>
+  </ion-content>
+  
+  <ion-footer-bar class="reviewsFooter">
+    <div class="center" ng-click="saveStatementEmail()">
+      Save
+    </div>
+  </ion-footer-bar>
+
+</ion-modal-view>

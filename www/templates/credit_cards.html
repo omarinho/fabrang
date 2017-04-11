@@ -1,0 +1,45 @@
+<ion-header-bar class="bar-light bar-header" align-title="center" on-swipe-down="showFiltersModal()">
+    <div class="buttons">
+      <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
+      </button>
+    </div>
+    <h1 class="title grayText" ng-if="!showSearchBox">Credit Cards</h1>
+    <div class="buttons" ng-if="!showSearchBox">
+      <img src="img/glass.gif" class="rightButton1" ng-click="showSearchBoxF()">
+      <img src="img/gear.gif" class="rightButton2" ng-click="goToSettings()">
+    </div>
+    <div searchid="id_searchqResults" class="searchContainer float_left" angucomplete pause="300" url="" searchfields="name" titlefield="name" minlength="1" dist="" ng-if="showSearchBox" localdata="places" callbackfn="selectedPlace(store)" selectedobject="dummy" callbackfnfocus="showSearchOverlay()" callbackfnblur="hideSearchOverlay()"></div>
+</ion-header-bar>
+
+<ion-view>
+  <ion-content scroll="false" class="has-header" has-header="true" has-bouncing="true" ng-style="homestyle">
+    <div id="wrapper">
+      <div class="center fontSize18">
+        <br clear="all"/>
+        <div class="textAlignLeft sc_padding" ng-repeat="card in userCards track by $index"  ng-click="editCreditCard(card.id)">
+          <div class="settingsBox">
+            <div class="float_left sc_circle">
+              <div class="circleOptions" style="background-color:{{ card.color }} !important;">&nbsp;</div>
+            </div>
+            <div class="sc_cardDesc transparent">
+              <span class="RobotoBold">{{ card.desc }}</span>
+              <div class="float_right">
+                <span class="ion-checkmark-round grayText" ng-if="card.isDefault"></span>
+              </div>
+            </div>
+          </div>
+        </div>        
+    
+        <div class="textAlignLeft sc_addNewUserCard fontSize15" ng-click="addNewUserCard()">
+          <div class="center settingsBox">
+            <div class="sc_addcc transparent">
+              <span class="RobotoBold grayText">+ Add a new credit card</span>
+              <br clear="all"/>
+            </div>
+          </div>
+        </div>
+    
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

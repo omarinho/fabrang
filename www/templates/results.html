@@ -113,7 +113,7 @@
 </ion-view>
 
 <ion-footer-bar class="footerBar2" ng-if="showFooter" ng-hide="!showFooter">
-  <div class="footerIcon">
+  <div class="footerIcon" ng-click="goToHome()">
     <img src="img/footer-home.gif" align="middle">
     <div class="overlay"></div>       
   </div>
@@ -125,7 +125,7 @@
     <img src="img/footer-notifications.gif" align="middle">
     <div class="overlay"></div>                           
   </div>
-  <div class="footerIcon">
+  <div class="footerIcon" ng-click="goToFavorites()">
     <img src="img/footer-favorites.gif" align="middle">
     <div class="overlay"></div>
   </div>

@@ -12,7 +12,7 @@
 </ion-header-bar>
 
 <ion-view>
-  <ion-content scroll="true" ng-class="showFooter ? 'has-header has-footer has-subfooter' : 'has-header'" has-header="true" has-bouncing="true" ng-style="homestyle">
+  <ion-content scroll="true" ng-class="showFooter ? (store.live_deal ? 'has-header has-footer has-subfooter' : 'has-header has-footer') : 'has-header'" has-header="true" has-bouncing="true" ng-style="homestyle">
     <div id="wrapper">
       <div class="center">
         <div id="storeInfo">
@@ -283,7 +283,7 @@
 </ion-footer-bar>
 
 <ion-footer-bar class="footerBar2 hide-on-keyboard-open" ng-if="showFooter" ng-hide="!showFooter">
-  <div class="footerIcon">
+  <div class="footerIcon" ng-click="goToHome()">
     <img src="img/footer-home.gif" align="middle">
     <div class="overlay"></div>       
   </div>
@@ -295,7 +295,7 @@
     <img src="img/footer-notifications.gif" align="middle">
     <div class="overlay"></div>                           
   </div>
-  <div class="footerIcon">
+  <div class="footerIcon" ng-click="goToFavorites()">
     <img src="img/footer-favorites.gif" align="middle">
     <div class="overlay"></div>
   </div>

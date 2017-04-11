@@ -3,10 +3,22 @@ angular.module('starter.controllers',['ngCordova'])
 /****************************************/
 /*** Some rootScope Utilities - BEGIN ***/
 /****************************************/
-.run(
+.run(                                      
   
   function($rootScope, $ionicHistory, $ionicPopup, $timeout, $state, $ionicModal, $ionicLoading, $ionicPlatform, SessionService, SearchService) {
   
+    $rootScope.goToHome = function() {
+      $state.go('home', {}, { reload: true });
+    } 
+    
+    $rootScope.goToFavorites = function() {
+      $state.go('favorites', {}, { reload: true });
+    } 
+  
+    $rootScope.goToSettings = function() {
+      $state.go('settings', {}, { reload: true });
+    } 
+
     $rootScope.goback = function() {
       $timeout(
         function() {
@@ -337,7 +349,7 @@ angular.module('starter.controllers',['ngCordova'])
 /**********************************/
 .controller('HomeCtrl',                            
   
-  function ($scope, $ionicModal, $ionicNavBarDelegate, $cordovaStatusbar, $state, $timeout, $ionicLoading, $ionicPlatform, $rootScope, SearchService) {
+  function ($rootScope, $scope, $ionicModal, $ionicNavBarDelegate, $cordovaStatusbar, $state, $timeout, $ionicLoading, $ionicPlatform, SearchService) {
   
     /*** Call API: Get the current locations and places ***/
     /*** Results are stored in $scope.places            ***/
@@ -428,21 +440,12 @@ angular.module('starter.controllers',['ngCordova'])
 /*** Signin Controler - BEGIN ***/
 /********************************/
 .controller('SigninCtrl', 
-  function ($scope, $state, $ionicLoading, $rootScope, $ionicPlatform) {
+  function ($rootScope, $scope, $state, $ionicLoading, $ionicPlatform) {
 
     $scope.user = {};
 
     $scope.login = function() {
-      var msg = "";
-      var re = /^([_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,5}))|(\d{6,}$)$/;
-      var re2 = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-      
-      if (msg) {
-        $rootScope.alerti(msg);
-		  }
-      else {
-        $state.go('home', {}, { reload: true });
-      }
+      $state.go('home', {}, { reload: true });
     }      
 
     $scope.goto_signup = function() {
@@ -460,7 +463,7 @@ angular.module('starter.controllers',['ngCordova'])
 /*** Signup Controler - BEGIN ***/
 /********************************/
 .controller('SignupCtrl', 
-  function ($scope, $timeout, $state, $rootScope, $ionicLoading, $ionicPlatform) {
+  function ($rootScope, $scope, $timeout, $state, $ionicLoading, $ionicPlatform) {
 
     $scope.user = {};
     $scope.activeslide = 0;
@@ -541,7 +544,7 @@ angular.module('starter.controllers',['ngCordova'])
 /*** Forgot Password Controler - BEGIN ***/
 /*****************************************/
 .controller('ForgotPasswordCtrl', 
-  function ($scope, $state, $rootScope, $ionicLoading, $ionicPlatform) {
+  function ($rootScope, $scope, $state, $ionicLoading, $ionicPlatform) {
 
     $scope.fp = {};
     $scope.footerShow = false;
@@ -648,7 +651,7 @@ angular.module('starter.controllers',['ngCordova'])
 /***********************************/
 .controller('ResultsCtrl', 
 
-  function ($scope, $ionicPlatform, $state, $timeout, ResultsService, SearchService) {
+  function ($rootScope, $scope, $ionicPlatform, $state, $timeout, ResultsService, SearchService) {
 
     $scope.hideLoading();
     
@@ -681,10 +684,6 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.goToStore = function(storeID) {
       $state.go('store', {storeID:storeID}, { reload: true });
     }
-  
-    $scope.goToSettings = function() {
-      $state.go('settings', {}, { reload: true });
-    } 
 
     $scope.showSearchBoxF = function() {
       $scope.showSearchBox = true;
@@ -727,7 +726,7 @@ angular.module('starter.controllers',['ngCordova'])
 /*********************************/
 .controller('StoreCtrl', 
   
-  function ($scope, $ionicLoading, $ionicPlatform, $timeout, $ionicModal, $stateParams, $state, ionicDatePicker, SearchService, FavoritesService, StoreService, UsersService) {
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $timeout, $ionicModal, $stateParams, $state, ionicDatePicker, SearchService, FavoritesService, StoreService, UsersService) {
 
     $scope.showSearchBox = false;
     $scope.homestyle={
@@ -766,6 +765,9 @@ angular.module('starter.controllers',['ngCordova'])
       timeHour:'11',
       timeMinutes:'55',
       timeAMPM:'PM'
+    }
+    $scope.store={
+      live_deal:false
     }
 
     /*** Call API: Get the ID of logged user ***/
@@ -907,7 +909,10 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.saveToFavorite = function() {
       /*** Call API: Get the current locations and places ***/
       /*** Results are stored in $scope.places            ***/
-      FavoritesService.saveStore($scope, $scope.store.id);
+      var saved = FavoritesService.saveStore($scope, $scope.store.id);
+      if (saved) {
+        $rootScope.alerti('Store saved in your favorites!','Success');
+      }          
       /******************************************************/
     }
     
@@ -955,7 +960,7 @@ angular.module('starter.controllers',['ngCordova'])
             var el = document.getElementById('tab_' + $scope.store.categories[0].id);
             angular.element(el).triggerHandler('click');
             $scope.hideLoading();
-            $scope.alerti('Your order has been scheduled','Success');
+            $rootScope.alerti('Your order has been scheduled','Success');
           }
         }, 1000
       );	
@@ -973,7 +978,7 @@ angular.module('starter.controllers',['ngCordova'])
             var el = document.getElementById('tab_' + $scope.store.categories[0].id);
             angular.element(el).triggerHandler('click');
             $scope.hideLoading();
-            $scope.alerti('Your order has been scheduled to repeat on selected days and times','Success');
+            $rootScope.alerti('Your order has been scheduled to repeat on selected days and times','Success');
           }
         }, 1000
       );	
@@ -1198,7 +1203,7 @@ angular.module('starter.controllers',['ngCordova'])
           $scope.hideMOPanel();
         }, 100
       );
-      $scope.alerti('You have added ' + item.name + ' to your cart.','ADDED');          
+      $rootScope.alerti('You have added ' + item.name + ' to your cart.','ADDED');          
     }
 
   }
@@ -1214,8 +1219,243 @@ angular.module('starter.controllers',['ngCordova'])
 /************************************/
 .controller('SettingsCtrl',                                    
   
-  function ($scope, $ionicLoading, $ionicPlatform) {
-  }
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $ionicModal, $timeout, $state, UsersService) {
+    $scope.tabSelected = 'generalSettings';
+    $scope.user={
+    }
+    $scope.settings={
+    }
+    
+    /*** Call API: Get the ID of logged user ***/
+    $scope.userID = UsersService.getUserID();
+
+    /*** Call API: Get the settings of logged user ***/
+    /*** Data are stored in $scope.user            ***/
+    UsersService.getAllSettings($scope, $scope.userID);
+    /************************************************/
+
+    /*** Call API: Get the logged user data ***/
+    /*** Data are stored in $scope.user     ***/
+    UsersService.getUserBasicData($scope, $scope.userID);
+    /******************************************/
+    
+    $scope.activateTab = function (tab) {
+      $scope.tabSelected = tab;
+    }
+    
+    $scope.saveName = function() {
+      $scope.showLoading();
+      /*** Call API: Update the user name ***/
+      /*** Info is updated in database    ***/
+      var saved = UsersService.saveName($scope, $scope.user);
+      /******************************************/
+      if (saved) {
+        $scope.cancelChangeNameModal();
+        $timeout(
+          function() {
+            $scope.hideLoading();
+            $state.go($state.current, {}, {reload: true});
+            $rootScope.alerti('Your name has been updated','Success');
+          }, 1000
+        );	
+      }
+    }
+    
+    $scope.savePassword = function() {
+      $scope.showLoading();
+      /*** Call API: Update the user password ***/
+      /*** Info is updated in database    ***/
+      var saved = UsersService.savePassword($scope, $scope.user);
+      /******************************************/
+      if (saved) {
+        $scope.cancelChangePasswordModal();
+        $timeout(
+          function() {
+            $scope.hideLoading();
+            $state.go($state.current, {}, {reload: true});
+            $rootScope.alerti('Your password has been updated','Success');
+          }, 1000
+        );	
+      }
+    }
+
+    $scope.saveEmail = function() {
+      $scope.showLoading();
+      /*** Call API: Update the user e-mail ***/
+      /*** Info is updated in database    ***/
+      var saved = UsersService.saveEmail($scope, $scope.user);
+      /******************************************/
+      if (saved) {
+        $scope.cancelChangeEmailModal();
+        $timeout(
+          function() {
+            $scope.hideLoading();
+            $state.go($state.current, {}, {reload: true});
+            $rootScope.alerti('Your e-mail has been updated','Success');
+          }, 1000
+        );	
+      }
+    }
+
+    $scope.saveStatementEmail = function() {
+      $scope.showLoading();
+      /*** Call API: Update the user statement e-mail ***/
+      /*** Info is updated in database                ***/
+      var saved = UsersService.saveStatementEmail($scope, $scope.user);
+      /**************************************************/
+      if (saved) {
+        $scope.cancelChangeStatementEmailModal();
+        $timeout(
+          function() {
+            $scope.hideLoading();
+            $rootScope.alerti('Your statement e-mail has been updated','Success');
+          }, 1000
+        );	
+      }
+    }
+
+    $scope.savePhone = function() {
+      $scope.showLoading();
+      /*** Call API: Update the user phone ***/
+      /*** Info is updated in database    ***/
+      var saved = UsersService.savePhone($scope, $scope.user);
+      /******************************************/
+      if (saved) {
+        $scope.cancelChangePhoneModal();
+        $timeout(
+          function() {
+            $scope.hideLoading();
+            $state.go($state.current, {}, {reload: true});
+            $rootScope.alerti('Your phone has been updated','Success');
+          }, 1000
+        );	
+      }
+    }
+    
+    $scope.settingAddresses = function() {
+      $state.go('addresses', {}, { reload: true });
+    }
+
+    $scope.settingCreditCards = function() {
+      $state.go('credit_cards', {}, { reload: true });
+    }
+    
+    $scope.updateEmailStatementFrequency = function() {
+      $scope.showLoading();
+      /*** Call API: Update the e-mail statement frequency ***/
+      /*** Info is updated in database                     ***/
+      var saved = UsersService.updateEmailStatementFrequency($scope, $scope.settings.emailStatementFrequency);
+      /*******************************************************/
+      if (saved) {
+        $timeout(
+          function() {
+            $scope.hideLoading();
+            $rootScope.alerti('Your e-mail statement frequency has been updated','Success');
+          }, 1000
+        );	
+      }
+    }
+    
+    $scope.updateToggles = function() {
+      /*** Call API: Update settings quietly when a toggle is changed ***/
+      /*** Info is updated in database                                ***/
+      UsersService.updateToggles($scope, $scope.settings);
+      /*******************************************************/
+    }
+
+    /*** Settings Modals ***/
+    // Change name
+    $ionicModal.fromTemplateUrl('templates/change-name.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.changeName = modal;
+	     }
+    );
+    $scope.showChangeNameModal = function() {
+      $scope.changeName.show();
+    };
+    $scope.cancelChangeNameModal = function() {
+      $scope.changeName.hide();
+    }
+    // Change password
+    $ionicModal.fromTemplateUrl('templates/change-password.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.changePassword = modal;
+	     }
+    );
+    $scope.showChangePasswordModal = function() {
+      $scope.changePassword.show();
+    };
+    $scope.cancelChangePasswordModal = function() {
+      $scope.changePassword.hide();
+    }
+    // Change e-mail
+    $ionicModal.fromTemplateUrl('templates/change-email.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.changeEmail = modal;
+	     }
+    );
+    $scope.showChangeEmailModal = function() {
+      $scope.changeEmail.show();
+    };
+    $scope.cancelChangeEmailModal = function() {
+      $scope.changeEmail.hide();
+    }
+    // Change phone
+    $ionicModal.fromTemplateUrl('templates/change-phone.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.changePhone = modal;
+	     }
+    );
+    $scope.showChangePhoneModal = function() {
+      $scope.changePhone.show();
+    };
+    $scope.cancelChangePhoneModal = function() {
+      $scope.changePhone.hide();
+    }
+    // Change statement email
+    $ionicModal.fromTemplateUrl('templates/change-statement-email.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.changeStatementEmail = modal;
+	     }
+    );
+    $scope.showChangeStatementEmailModal = function() {
+      $scope.changeStatementEmail.show();
+    };
+    $scope.cancelChangeStatementEmailModal = function() {
+      $scope.changeStatementEmail.hide();
+    }
+
+  }       
 
 )
 /**********************************/
@@ -1228,7 +1468,7 @@ angular.module('starter.controllers',['ngCordova'])
 /**********************************************/
 .controller('OrderConfirmationCtrl',                                    
   
-  function ($scope, $ionicLoading, $ionicPlatform, $stateParams, $ionicModal, $timeout, $rootScope, $state, UsersService, StoreService) {
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $stateParams, $ionicModal, $timeout, $state, UsersService, StoreService) {
     $scope.storeID = $stateParams.storeID.toString();
     $scope.cartLength = 0;
     $scope.userAddresses = [];
@@ -1236,6 +1476,7 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.latestIdent = 0;
     $scope.addressColorSelected = 0;
     $scope.cardColorSelected = 0;
+    $scope.CCTypeImg = 'generic';
     $scope.order = {
       deliverTo:null,
       creditCard: null,
@@ -1388,7 +1629,8 @@ angular.module('starter.controllers',['ngCordova'])
           var saved = UsersService.saveNewAddress($scope, $scope.newAddress, $scope.userID);
           if (saved) {
             $scope.hideLoading();
-            $scope.alerti('Your new address have been saved','Success');
+            $state.go($state.current, {storeID:$scope.storeID}, {reload: true});
+            $rootScope.alerti('Your new address have been saved','Success');
           }
         }, 1000
       );
@@ -1448,7 +1690,8 @@ angular.module('starter.controllers',['ngCordova'])
           var saved = UsersService.saveNewCard($scope, $scope.newCard, $scope.userID);
           if (saved) {
             $scope.hideLoading();
-            $scope.alerti('Your new credit card have been saved','Success');
+            $state.go($state.current, {storeID:$scope.storeID}, {reload: true});
+            $rootScope.alerti('Your new credit card have been saved','Success');
           }
         }, 1000
       );
@@ -1480,9 +1723,10 @@ angular.module('starter.controllers',['ngCordova'])
       $state.go('order_processing', {storeID:$scope.storeID, orderTotal: $scope.order.total}, { reload: true });      
     } 
     
-    $scope.cc_format = function () {
+    $scope.cc_format = function() {
       value =  $scope.newCard.number;
-      if (typeof value !== "undefined") {
+      if ( (value !== null) && (typeof value != 'undefined') ) {
+        $scope.CCTypeImg = getCardType($scope.newCard.number);
         var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
         var matches = v.match(/\d{4,16}/g);
         var match = matches && matches[0] || ''
@@ -1500,19 +1744,11 @@ angular.module('starter.controllers',['ngCordova'])
           $scope.newCard.number =  value
         }
       }
-    }    
+    }
     
-    $rootScope.showFooter = true;
-
-    window.addEventListener('native.keyboardshow', function() {
-      $rootScope.showFooter = false;
-      $rootScope.$apply();
-    });
-
-    window.addEventListener('native.keyboardhide', function() {
-      $rootScope.showFooter = true;
-      $rootScope.$apply();
-    });
+    $scope.setGenericCard = function() {
+      $scope.CCTypeImg = 'generic';
+    }
 
   }
 
@@ -1526,7 +1762,7 @@ angular.module('starter.controllers',['ngCordova'])
 /******************************************/                       
 .controller('OrderProcessingCtrl',                                    
   
-  function ($scope, $ionicLoading, $ionicPlatform, $stateParams, $timeout, $state, $rootScope, OrdersService) {
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $stateParams, $timeout, $state, OrdersService) {
     $timeout(
       function() {
         /*** Call API: Process the order                                     ***/
@@ -1550,7 +1786,7 @@ angular.module('starter.controllers',['ngCordova'])
 /***************************************/
 .controller('OrderPlacedCtrl',                                    
   
-  function ($scope, $ionicLoading, $ionicPlatform, $stateParams, $state) {
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $stateParams, $state) {
     $scope.orderTotal = $stateParams.orderTotal.toString();
     
     $scope.goToOrderStatus = function() {
@@ -1578,7 +1814,7 @@ angular.module('starter.controllers',['ngCordova'])
 /****************************************/
 .controller('OrderStatusCtrl',                                    
   
-  function ($scope, $ionicLoading, $ionicPlatform, $stateParams) {
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $stateParams) {
     $scope.orderID = $stateParams.orderID.toString();
   }
 
@@ -1593,13 +1829,615 @@ angular.module('starter.controllers',['ngCordova'])
 /****************************************/
 .controller('OrderReceiptCtrl',                                    
   
-  function ($scope, $ionicLoading, $ionicPlatform, $stateParams) {
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $stateParams) {
     $scope.orderID = $stateParams.orderID.toString();
   }
 
 )
 /**************************************/
 /*** Order Receipt Controller - END  ***/
+/**************************************/
+
+/*************************************/
+/*** Addresses Controller - BEGIN  ***/
+/*************************************/
+.controller('AddressesCtrl',                                    
+  
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $stateParams, $timeout, $ionicModal, $state, UsersService, SearchService) {
+
+    $scope.addressColorSelected = '';
+    $scope.newAddress = {
+    }
+    $scope.userAddresses = {
+    }
+    $scope.homestyle={
+      "opacity": "1",
+      "background": "rgb(255,255,255)"             
+    };
+
+    /*** Call API: Get the ID of logged user ***/
+    $scope.userID = UsersService.getUserID();
+
+    /*** Call API: Get the stored user addresses    ***/
+    /*** Results are stored in $scope.userAddresses ***/
+    UsersService.getAddresses($scope, $scope.userID);
+    /**************************************************/
+
+    /*** Call API: Get the current locations and places ***/
+    /*** Results are stored in $scope.places            ***/
+    SearchService.getLocationsAndPlaces($scope);
+    /******************************************************/
+
+    $scope.showSearchBoxF = function() {
+      $scope.showSearchBox = true;
+      $timeout(                                  
+        function() {
+          document.getElementById("id_searchqResults").val='';
+          document.getElementById("id_searchqResults").focus();
+          if (ionic.Platform.isAndroid()) {
+            cordova.plugins.Keyboard.show();
+          }
+        }, 100
+      );
+    }
+
+    $scope.addNewUserAddress = function() {
+      $scope.showAddNewAddressModal();
+      $scope.addressColorSelected = '';
+      $scope.newAddress = {};
+      $timeout(
+        function() {
+          document.getElementById('label_addressName').style.display = 'none';
+          document.getElementById('label_address').style.display = 'none';
+          document.getElementById('label_specifications').style.display = 'none';
+        }, 100
+      );	
+    }
+    
+    $scope.setNewAddressColor = function(color, id) {
+      $timeout(
+        function() {
+          $scope.addressColorSelected = id;
+          $scope.newAddress.color = color;
+        }, 100
+      );
+    }
+
+    $scope.saveNewAddress = function() {
+      $scope.cancelAddNewAddressModal();
+      $scope.showLoading();
+      $timeout(
+        function() {
+          /*** Call API: Save new user address in database ***/
+          /*** It saves info in database       ***/
+          var saved = UsersService.saveNewAddress($scope, $scope.newAddress, $scope.userID);
+          if (saved) {
+            $scope.hideLoading();
+            $state.go($state.current, {}, {reload: true});
+            $rootScope.alerti('Your new address have been saved','Success');
+          }
+        }, 1000
+      );
+    }
+    
+    $scope.editAddress = function(addressID) {
+      $state.go('edit_address', {addressID:addressID}, { reload: true });
+    } 
+
+    $ionicModal.fromTemplateUrl('templates/add-new-address.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.addNewAddress = modal;
+	     }
+    );
+	
+    $scope.showAddNewAddressModal = function() {
+      $scope.addNewAddress.show();
+    }
+  
+    $scope.cancelAddNewAddressModal = function() {
+      $scope.addNewAddress.hide();
+    }
+
+    $scope.showSearchOverlay = function() {
+      $scope.homestyle = {                                 
+        "opacity": "0.5",
+        "background": "rgb(143,130,130)"
+      }
+    } 
+
+    $scope.hideSearchOverlay = function() {
+      $scope.homestyle={
+        "opacity": "1",
+        "background": "rgb(255,255,255)"
+      };
+    } 
+
+  }
+
+)
+/**********************************/
+/*** Addresses Controller - END  **/
+/**********************************/
+
+/*************************************/
+/*** Credit Cards Controller - BEGIN  ***/
+/*************************************/
+.controller('CreditCardsCtrl',                                    
+  
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $stateParams, $state, $timeout, $ionicModal, UsersService, SearchService) {
+    $scope.cardColorSelected = '';
+    $scope.CCTypeImg = 'generic';
+    $scope.newCard = {
+    }
+    $scope.userCards = {
+    }
+    $scope.homestyle={
+      "opacity": "1",
+      "background": "rgb(255,255,255)"             
+    };
+
+    /*** Call API: Get the ID of logged user ***/
+    $scope.userID = UsersService.getUserID();
+
+    /*** Call API: Get the stored user credit cards ***/
+    /*** Results are stored in $scope.userCards ***/
+    UsersService.getCards($scope, $scope.userID);
+
+    /*** Call API: Get the current locations and places ***/
+    /*** Results are stored in $scope.places            ***/
+    SearchService.getLocationsAndPlaces($scope);
+    /******************************************************/
+
+    $scope.showSearchBoxF = function() {
+      $scope.showSearchBox = true;
+      $timeout(                                  
+        function() {
+          document.getElementById("id_searchqResults").val='';
+          document.getElementById("id_searchqResults").focus();
+          if (ionic.Platform.isAndroid()) {
+            cordova.plugins.Keyboard.show();
+          }
+        }, 100
+      );
+    }
+
+    $scope.selectThisCard = function(card) {
+      $scope.order.creditCard = card;
+      $scope.cancelSelectCardModal();
+    }
+
+    $ionicModal.fromTemplateUrl('templates/select-card.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.selectCard = modal;
+	     }
+    );
+	
+    $scope.showSelectCardModal = function() {
+      $scope.selectCard.show();
+    }
+  
+    $scope.cancelSelectCardModal = function() {
+      $scope.selectCard.hide();
+    }
+
+
+    $scope.addNewUserCard = function() {
+      $scope.cancelSelectCardModal();
+      $scope.showAddNewCardModal();
+      $scope.newCard = {};
+      $timeout(
+        function() {
+          document.getElementById('label_cardName').style.display = 'none';
+          document.getElementById('label_cardNumber').style.display = 'none';
+          document.getElementById('label_expiration').style.display = 'none';
+          document.getElementById('label_ccv').style.display = 'none';
+        }, 100
+      );	
+    }
+    
+    $scope.setNewCardColor = function(color, id) {
+      $timeout(
+        function() {
+          $scope.cardColorSelected = id;
+          $scope.newCard.color = color;
+        }, 100
+      );
+    }
+    
+    $scope.saveNewCard = function() {
+      $scope.cancelAddNewCardModal();
+      $scope.showLoading();
+      /*** Call API: Save new user card in database ***/
+      /*** It saves info in database       ***/
+      $timeout(
+        function() {
+          var saved = UsersService.saveNewCard($scope, $scope.newCard, $scope.userID);
+          if (saved) {
+            $scope.hideLoading();
+            $state.go($state.current, {}, {reload: true});
+            $rootScope.alerti('Your new credit card have been saved','Success');
+          }
+        }, 1000
+      );
+      /**************************************************/
+    }
+    
+    $scope.editCreditCard = function(creditCardID) {
+      $state.go('edit_credit_card', {creditCardID:creditCardID}, { reload: true });
+    } 
+
+    $ionicModal.fromTemplateUrl('templates/add-new-card.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.addNewCard = modal;
+	     }
+    );
+	
+    $scope.showAddNewCardModal = function() {
+      $scope.addNewCard.show();
+    }
+  
+    $scope.cancelAddNewCardModal = function() {
+      $scope.addNewCard.hide();
+    }
+
+    $scope.processOrder = function() {
+      $rootScope.orderToProcess = $scope.order;
+      $state.go('order_processing', {storeID:$scope.storeID, orderTotal: $scope.order.total}, { reload: true });      
+    } 
+    
+    $scope.cc_format = function () {
+      $scope.CCTypeImg = getCardType($scope.newCard.number);
+      value =  $scope.newCard.number;
+      if ( (value !== null) && (typeof value != 'undefined') ) {
+        var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        var matches = v.match(/\d{4,16}/g);
+        var match = matches && matches[0] || ''
+        var parts = []
+
+        for (i=0, len=match.length; i<len; i+=4) {
+          parts.push(match.substring(i, i+4))
+        }
+
+        if (parts.length) {
+          $scope.newCard.number = parts.join(' ')
+        } 
+        
+        else {
+          $scope.newCard.number =  value
+        }
+      }
+    }    
+
+    $scope.setGenericCard = function() {
+      $scope.CCTypeImg = 'generic';
+    }
+
+    $scope.showSearchOverlay = function() {
+      $scope.homestyle = {                                 
+        "opacity": "0.5",
+        "background": "rgb(143,130,130)"
+      }
+    } 
+
+    $scope.hideSearchOverlay = function() {
+      $scope.homestyle={
+        "opacity": "1",
+        "background": "rgb(255,255,255)"
+      };
+    } 
+
+  }
+
+)
+/**************************************/
+/*** Credit Cards Controller - END  **/
+/*************************************/
+
+/*****************************************/
+/*** Edit Address Controller - BEGIN  ***/
+/****************************************/
+.controller('EditAddressCtrl',                                    
+  
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $stateParams, $ionicModal, $timeout, $state, $ionicPopup, UsersService) {
+    $scope.addressID = $stateParams.addressID;
+    $scope.address = {
+    };
+
+    /*** Call API: Get the ID of logged user ***/
+    $scope.userID = UsersService.getUserID();
+
+    /*** Call API: Get the address details    ***/
+    /*** Results are stored in $scope.address ***/
+    UsersService.getAddressData($scope, $scope.addressID);
+    /********************************************/
+
+    $scope.deleteAddress = function() {
+      var confirmPopup = $ionicPopup.confirm(
+        {
+          title: 'Confirm this action',
+          template: 'Are you sure you want to delete this address?'
+        }
+      );
+      confirmPopup.then(
+        function(res) {
+          if (res) {
+            $scope.showLoading();
+            $timeout(
+              function() {
+                /*** Call API: Delete specific user address ***/
+                /*** It deletes from database               ***/
+                var deleted = UsersService.deleteAddress($scope, $scope.address.id);
+                if (deleted) {                                                             
+                  $scope.hideLoading();
+                  $scope.cancelEditAddressModal();
+                  $state.go($state.current, {addressID:$scope.addressID}, {reload: true});
+                  $rootScope.alerti('The address have been deleted','Success');
+                  $state.go('addresses', {}, { reload: true });
+                }
+              }, 1000
+            );
+            /**************************************************/
+          } 
+        }
+      );
+    }
+    
+    $scope.setAddressColor = function(color, id) {
+      $timeout(
+        function() {
+          $scope.address.color = color;
+        }, 100                    
+      );
+    }
+
+    $scope.saveAddress = function(quiet) {
+      $scope.cancelEditAddressModal();
+      if (!quiet) {
+        $scope.showLoading();
+      }
+      $timeout(
+        function() {
+          /*** Call API: Save updated user address in database ***/
+          /*** It saves info in database                       ***/
+          var saved = UsersService.saveAddress($scope, $scope.address, $scope.userID);
+          if (saved && !quiet) {
+            $scope.hideLoading();
+            $state.go($state.current, {addressID:$scope.addressID}, {reload: true});
+            $rootScope.alerti('Your address have been updated','Success');
+          }
+        }, 1000
+      );
+      /**************************************************/
+    }
+
+    $ionicModal.fromTemplateUrl('templates/edit-address-modal.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.editAddress = modal;
+	     }
+    );
+	
+    $scope.showEditAddressModal = function() {
+      $scope.editAddress.show();
+    }
+  
+    $scope.cancelEditAddressModal = function() {
+      $scope.editAddress.hide();
+    }
+
+  }
+
+)
+/**************************************/
+/*** Edit Address Controller - END  ***/
+/**************************************/
+
+
+/*******************************************/
+/*** Edit Credit Card Controller - BEGIN ***/
+/*******************************************/
+.controller('EditCreditCardCtrl',                                    
+  
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $stateParams, $ionicModal, $timeout, $state, $ionicPopup, UsersService) {
+    $scope.creditCardID = $stateParams.creditCardID;
+    $scope.CCTypeImg = 'generic';
+    $scope.creditCard = {
+    };
+    
+    /*** Call API: Get the ID of logged user ***/
+    $scope.userID = UsersService.getUserID();
+
+    /*** Call API: Get the credit card details   ***/
+    /*** Results are stored in $scope.credit car ***/
+    UsersService.getCreditCardData($scope, $scope.creditCardID);
+    /**********************************************/
+
+    $scope.cc_format = function () {
+      value =  $scope.creditCard.newNumber;
+      if ( (value !== null) && (typeof value != 'undefined') ) {
+        $scope.CCTypeImg = getCardType($scope.creditCard.newNumber);
+        var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        var matches = v.match(/\d{4,16}/g);
+        var match = matches && matches[0] || ''
+        var parts = []
+
+        for (i=0, len=match.length; i<len; i+=4) {
+          parts.push(match.substring(i, i+4))
+        }
+
+        if (parts.length) {
+          $scope.creditCard.newNumber = parts.join(' ')
+        } 
+        
+        else {
+          $scope.creditCard.newNumber =  value
+        }
+      }
+    }    
+
+    $scope.deleteCreditCard = function() {
+      var confirmPopup = $ionicPopup.confirm(
+        {
+          title: 'Confirm this action',
+          template: 'Are you sure you want to delete this address?'
+        }
+      );
+      confirmPopup.then(
+        function(res) {
+          if (res) {
+            $scope.showLoading();
+            $timeout(
+              function() {
+                /*** Call API: Delete specific user credit card ***/
+                /*** It deletes from database                   ***/
+                var deleted = UsersService.deleteCreditCard($scope, $scope.creditCard.id);
+                if (deleted) {                                                             
+                  $scope.hideLoading();
+                  $scope.cancelEditCreditCardModal();
+                  $state.go($state.current, {creditCadID: $scope.creditCardID}, {reload: true});
+                  $rootScope.alerti('The credit card have been deleted','Success');
+                  $state.go('credit_cards', {}, { reload: true });
+                }
+              }, 1000
+            );
+            /**************************************************/
+          } 
+        }
+      );
+    }
+    
+    $scope.setCreditCardColor = function(color, id) {
+      $timeout(
+        function() {
+          $scope.creditCard.color = color;
+        }, 100                    
+      );
+    }
+
+    $scope.saveCreditCard = function(quiet) {
+      $scope.cancelEditCreditCardModal();
+      if (!quiet) {
+        $scope.showLoading();
+      }
+      $timeout(
+        function() {
+          /*** Call API: Save updated user credit card in database ***/
+          /*** It saves info in database                           ***/
+          var saved = UsersService.saveCreditCard($scope, $scope.creditCard, $scope.userID);
+          if (saved && !quiet) {
+            $scope.hideLoading();
+            $state.go($state.current, {creditCadID: $scope.creditCardID}, {reload: true});
+            $rootScope.alerti('Your credit card have been updated','Success');
+          }
+        }, 1000
+      );
+      /**************************************************/
+    }
+
+    $ionicModal.fromTemplateUrl('templates/edit-credit-card-modal.html', 
+      {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+      }
+    ).
+    then(
+      function (modal) {
+		    $scope.editCreditCard = modal;
+	     }
+    );
+	
+    $scope.showEditCreditCardModal = function() {
+      $scope.creditCard.newNumber = null;
+      $scope.creditCard.ccv = null;
+      $scope.editCreditCard.show();
+    }
+  
+    $scope.cancelEditCreditCardModal = function() {
+      $scope.editCreditCard.hide();
+    }
+
+    $scope.setGenericCard = function() {
+      $scope.CCTypeImg = 'generic';
+    }
+
+  }
+
+)
+/******************************************/
+/*** Edit Credit Card Controller - END ****/
+/******************************************/
+
+/*****************************************/
+/*** Favorites Controller - BEGIN  ***/
+/****************************************/
+.controller('FavoritesCtrl',                                    
+  
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $timeout, UsersService, SearchService) {
+
+    /*** Call API: Get the ID of logged user ***/
+    $scope.userID = UsersService.getUserID();
+
+    /*** Call API: Get the current locations and places ***/
+    /*** Results are stored in $scope.places            ***/
+    SearchService.getLocationsAndPlaces($scope);
+    /******************************************************/
+
+    $scope.showSearchBoxF = function() {
+      $scope.showSearchBox = true;
+      $timeout(                                  
+        function() {
+          document.getElementById("id_searchqResults").val='';
+          document.getElementById("id_searchqResults").focus();
+          if (ionic.Platform.isAndroid()) {
+            cordova.plugins.Keyboard.show();
+          }
+        }, 100
+      );
+    }
+    
+    $scope.showSearchOverlay = function() {
+      $scope.homestyle = {
+        "opacity": "0.5",
+        "background": "rgb(143,130,130)"
+      }
+    } 
+
+    $scope.hideSearchOverlay = function() {
+      $scope.homestyle={
+        "opacity": "1",
+        "background": "rgb(255,255,255)"
+      };
+      $scope.showSearchBox = false;
+    } 
+
+  }
+
+)
+/**************************************/
+/*** Favorites Controller - END  ***/
 /**************************************/
 
 ;

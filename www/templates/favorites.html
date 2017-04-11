@@ -1,0 +1,45 @@
+<ion-header-bar class="bar-light bar-header" align-title="center" on-swipe-down="showFiltersModal()">
+    <div class="buttons">
+      <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
+      </button>
+    </div>
+    <h1 class="title grayText" ng-if="!showSearchBox">Favorites</h1>
+    <div class="buttons" ng-if="!showSearchBox">
+      <img src="img/glass.gif" class="rightButton1" ng-click="showSearchBoxF()">
+      <img src="img/gear.gif" class="rightButton2" ng-click="goToSettings()">
+    </div>
+    <div searchid="id_searchqResults" class="searchContainer float_left" angucomplete pause="300" url="" searchfields="name" titlefield="name" minlength="1" dist="" ng-if="showSearchBox" localdata="places" callbackfn="selectedPlace(store)" selectedobject="dummy" callbackfnfocus="showSearchOverlay()" callbackfnblur="hideSearchOverlay()"></div>
+</ion-header-bar>
+
+<ion-view>
+  <ion-content scroll="false" class="has-header" has-header="true" has-bouncing="true" ng-style="homestyle">
+    <div id="wrapper">
+      <div class="center fontSize18">
+          CONTENT
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
+
+<ion-footer-bar class="footerBar2" ng-if="showFooter" ng-hide="!showFooter">
+  <div class="footerIcon" ng-click="goToHome()">
+    <img src="img/footer-home.gif" align="middle">
+    <div class="overlay"></div>       
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-schedule.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-notifications.gif" align="middle">
+    <div class="overlay"></div>                           
+  </div>
+  <div class="footerIcon" ng-click="goToFavorites()">
+    <img src="img/footer-favorites.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-search.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+</ion-footer-bar>

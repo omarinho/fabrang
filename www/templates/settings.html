@@ -7,28 +7,194 @@
 </ion-header-bar>
 
 <ion-view>
-<ion-content scroll="false" class="has-header" has-header="true" has-bouncing="true">
-  <div id="wrapper">
-    <div class="center">
+  <ion-content scroll="true" ng-class="showFooter ? 'has-header has-footer' : 'has-header'" has-header="true" has-bouncing="true">
+    <div id="wrapper">
+      <div class="center">
       
-      <div class="float_left settingIcon">
-        <img src="img/generalSettings.png" class="settingIconImage">
-      </div>      
-      <div class="float_left settingIcon">
-        <img src="img/orderHistory.png" class="settingIconImage">
-      </div>      
-      <div class="float_left settingIcon">
-        <img src="img/notifications.png" class="settingIconImage">
-      </div>
-      <br clear="all"/>
+        <div ng-class="tabSelected == 'generalSettings' ? 'float_left settingIconSelected' : 'float_left settingIcon'" ng-click="activateTab('generalSettings')">
+          <img src="img/generalSettings.png" class="settingIconImage">
+        </div>      
+        <div ng-class="tabSelected == 'orderHistory' ? 'float_left settingIconSelected' : 'float_left settingIcon'" ng-click="activateTab('orderHistory')">
+          <img src="img/orderHistory.png" class="settingIconImage">
+        </div>      
+        <div ng-class="tabSelected == 'notifications' ? 'float_left settingIconSelected' : 'float_left settingIcon'" ng-click="activateTab('notifications')">
+          <img src="img/notifications.png" class="settingIconImage">
+        </div>
+        <br clear="all"/>
       
-      <div class="float_left settingsContent grayText">
-        <span class="settingsSectionTitle">General Settings</span>
-        <br>
-        <span class="settingsSectionSubtitle">Personal</span>        
-      </div>
+        <div id="GeneralSettings" class="float_left settingsContent grayText width100 textAlignLeft" ng-if="tabSelected == 'generalSettings'">
+          <div class="settingsSectionTitle">General Settings</div>
+
+          <div class="settingsSectionSubtitle">Personal</div>
+          <hr>        
+          <div class="settings_basicData"  ng-click='showChangeNameModal()'>
+            <span class="RobotoBold fontSize15">
+              <div class="float_left blackText">
+                Name
+              </div>
+              <div class="float_right">
+                {{ user.name }}
+              </div>
+            </span>
+          </div>
+          <div class="settings_basicData" ng-click='showChangePasswordModal()'>
+            <span class="RobotoBold fontSize15">
+              <div class="float_left blackText">
+                Password
+              </div>
+              <div class="float_right">
+                *********
+              </div>
+            </span>
+          </div>
+          <div class="settings_basicData" ng-click='showChangeEmailModal()'>
+            <span class="RobotoBold fontSize15">
+              <div class="float_left blackText">
+                Email
+              </div>
+              <div class="float_right">
+                {{ user.email }}
+              </div>
+            </span>
+          </div>
+          <div class="settings_basicData" ng-click='showChangePhoneModal()'>
+            <span class="RobotoBold fontSize15">
+              <div class="float_left blackText">
+                Phone
+              </div>
+              <div class="float_right">
+                {{ user.phone }}
+              </div>
+            </span>
+          </div>                                        
+
+          <div class="settingsSectionSubtitle">Billing & Delivery</div>
+          <hr>
+          <div class="settingsItem fontSize15 RobotoBold" ng-click="settingAddresses()">
+            Addresses
+          </div>
+          <div class="settingsSeparator">&nbsp;</div>        
+          <div class="settingsItem fontSize15  RobotoBold" ng-click="settingCreditCards()">
+            Credit Cards
+          </div>        
+
+        </div>
+      
+        <div class="float_left settingsContent grayText width100 textAlignLeft" ng-if="tabSelected == 'orderHistory'">
+          <div class="settingsSectionTitle">Order History</div>
+
+          <div class="settingsSectionSubtitle">Preferences</div>
+          <hr>        
+          
+          <div>
+            <div ng-class="settings.emailReceipts ? 'toggleLabelActive' : 'toggleLabel'">
+              Email Receipts
+            </div>
+            <div class="float_right">
+              <ion-toggle ng-model="settings.emailReceipts" toggle-class="toggle-positive" class="theToggle" ng-change="updateToggles()"></ion-toggle>
+            </div>
+          </div>
+          <br clear="all"/>
+          
+          <div>
+            <div ng-class="settings.emailStatement ? 'toggleLabelActive' : 'toggleLabel'">
+              Email Statement
+            </div>
+            <div class="float_right">
+              <ion-toggle ng-model="settings.emailStatement" toggle-class="toggle-positive" class="theToggle" ng-change="updateToggles()"></ion-toggle>
+            </div>
+          </div>
+
+          <div>
+            <select ng-model="settings.emailStatementFrequency" class="settingsDropdown" ng-change="updateEmailStatementFrequency()">
+              <option value="monthly">Once a month</option>
+              <option value="weekly">Once a week</option>
+              <option value="daily">Once a day</option>
+            </select>
+          </div>
+
+          <div class="settings_basicData center grayBackground"  ng-click='showChangeStatementEmailModal()'>
+            <span class="RobotoBold fontSize15 center">
+              {{ user.statementEmail }}
+            </span>
+          </div>
+
+        </div>
             
+        <div class="float_left settingsContent grayText width100 textAlignLeft" ng-if="tabSelected == 'notifications'">
+          <div class="settingsSectionTitle">Notifications</div>
+
+          <div class="settingsSectionSubtitle">Favorites</div>
+          <hr>        
+          <div>
+            <div ng-class="settings.liveDeals ? 'toggleLabelActive' : 'toggleLabel'">
+              Live Deals
+            </div>
+            <div class="float_right">
+              <ion-toggle ng-model="settings.liveDeals" toggle-class="toggle-positive" class="theToggle" ng-change="updateToggles()"></ion-toggle>
+            </div>
+          </div>
+          <br clear="all"/>
+          <div>
+            <div ng-class="settings.stuff ? 'toggleLabelActive' : 'toggleLabel'">
+              Stuff
+            </div>
+            <div class="float_right">
+              <ion-toggle ng-model="settings.stuff" toggle-class="toggle-positive" class="theToggle" ng-change="updateToggles()"></ion-toggle>
+            </div>
+          </div>
+          <br clear="all"/>
+
+          <div class="settingsSectionSubtitle">Search</div>
+          <hr>        
+          <div>
+            <div ng-class="settings.notifyDisBoy ? 'toggleLabelActive' : 'toggleLabel'">
+              Notify Dis Boy
+            </div>
+            <div class="float_right">
+              <ion-toggle ng-model="settings.notifyDisBoy" toggle-class="toggle-positive" class="theToggle" ng-change="updateToggles()"></ion-toggle>
+            </div>
+          </div>
+          <br clear="all"/>
+          <div>
+            <div ng-class="settings.gimmeNotifications ? 'toggleLabelActive' : 'toggleLabel'">
+              Gimme Notifications
+            </div>
+            <div class="float_right">
+              <ion-toggle ng-model="settings.gimmeNotifications" toggle-class="toggle-positive" class="theToggle" ng-change="updateToggles()"></ion-toggle>
+            </div>
+          </div>
+          <br clear="all"/>
+
+        </div>
+        
+        <br clear="all"/><br>
+      
+      </div>
     </div>
-  </div>
-</ion-content>                                                       
+  </ion-content>                                                       
 </ion-view>
+
+<ion-footer-bar class="footerBar2" ng-if="showFooter" ng-hide="!showFooter">
+  <div class="footerIcon" ng-click="goToHome()">
+    <img src="img/footer-home.gif" align="middle">
+    <div class="overlay"></div>       
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-schedule.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-notifications.gif" align="middle">
+    <div class="overlay"></div>                           
+  </div>
+  <div class="footerIcon" ng-click="goToFavorites()">
+    <img src="img/footer-favorites.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-search.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+</ion-footer-bar>
+
