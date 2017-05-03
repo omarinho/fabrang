@@ -1,0 +1,147 @@
+<ion-modal-view class="repeatModal background-color_EAEAEA">
+  <ion-content scroll="true" has-header="false" has-bouncing="true">
+    <div class="center">
+      <div class="grayText">
+        <div class="center repeatTitle">
+          <div class="float_left paddingTop12">
+            Repeat
+          </div> 
+          <div class="float_right">
+            <ion-toggle ng-model="scheduleRepeat.enabled" toggle-class="toggle-positive" class="float_right repeatToggle"></ion-toggle>
+          </div>
+          <br clear="all"/>
+        </div>                          
+      </div>
+      <div class="content grayText center">
+        
+        <div class="center" ng-show="!scheduleRepeat.enabled">
+          Schedule this order for<br>
+          <input type="text" ng-model="schedule.text" class="center scheduleDate" name="so_date" id="id_so_date" ng-click="openDatePicker()" ng-readonly="true"><br>
+          by (approximately)<br>
+          <div class="center scheduleTime">
+            <div class="float_left scheduleTimeHour">
+              <select type="text" class="center scheduleTimeHourSelect" name="so_timeHour" id="id_so_timeHour" ng-model="schedule.timeHour">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </div>
+            <div class="float_left margin3">
+              <b>:</b>
+            </div>
+            <div class="float_left scheduleTimeMinutes">
+              <select type="text" class="center scheduleTimeMinutesSelect" name="so_timeMinutes" id="id_so_timeMinutes" ng-model="schedule.timeMinutes">
+                <option value="00">00</option>
+                <option value="05">05</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+              </select>
+            </div>
+            <div class="float_left scheduleTimeAMPM">                                                                                                                                                                     
+              <select type="text" class="center scheduleTimeAMPMSelect" name="so_timeAMPM" id="id_so_timeAMPM" ng-model="schedule.timeAMPM">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="center scheduleRepeat" ng-show="scheduleRepeat.enabled">
+          <span class="fontSize12">Schedule this order to deliver</span> 
+          <select type="text" class="center scheduleRepeatFrequency" name="sor_frequency" id="id_sor_frequency" ng-model="scheduleRepeat.frequency" ng-change="checkDailyCondition()">
+            <option value="weekly">weekly</option>
+            <option value="daily">daily</option>
+          </select>
+          <br clear="all"/><br>
+          
+          <div class="marginLeft9">
+            <div ng-class="{'circleDivBlue float_left' : scheduleRepeat.days.indexOf('SUNDAY') !== -1, 'circleDiv float_left' : scheduleRepeat.days.indexOf('SUNDAY') === -1}" ng-click="toggleRepeatDay('SUNDAY')">SUN</div>
+            <div ng-class="{'circleDivBlue float_left' : scheduleRepeat.days.indexOf('MONDAY') !== -1, 'circleDiv float_left' : scheduleRepeat.days.indexOf('MONDAY') === -1}" ng-click="toggleRepeatDay('MONDAY')">MON</div>
+            <div ng-class="{'circleDivBlue float_left' : scheduleRepeat.days.indexOf('TUESDAY') !== -1, 'circleDiv float_left' : scheduleRepeat.days.indexOf('TUESDAY') === -1}" ng-click="toggleRepeatDay('TUESDAY')">TUE</div>
+            <div ng-class="{'circleDivBlue float_left' : scheduleRepeat.days.indexOf('WEDNESDAY') !== -1, 'circleDiv float_left' : scheduleRepeat.days.indexOf('WEDNESDAY') === -1}" ng-click="toggleRepeatDay('WEDNESDAY')">WED</div>
+            <div ng-class="{'circleDivBlue float_left' : scheduleRepeat.days.indexOf('THURSDAY') !== -1, 'circleDiv float_left' : scheduleRepeat.days.indexOf('THURSDAY') === -1}" ng-click="toggleRepeatDay('THURSDAY')">THU</div>
+            <div ng-class="{'circleDivBlue float_left' : scheduleRepeat.days.indexOf('FRIDAY') !== -1, 'circleDiv float_left' : scheduleRepeat.days.indexOf('FRIDAY') === -1}" ng-click="toggleRepeatDay('FRIDAY')">FRI</div>
+            <div ng-class="{'circleDivBlue float_left' : scheduleRepeat.days.indexOf('SATURDAY') !== -1, 'circleDiv float_left' : scheduleRepeat.days.indexOf('SATURDAY') === -1}" ng-click="toggleRepeatDay('SATURDAY')">SAT</div>
+          </div>
+          
+          <br clear="all"/><br>
+          by (give or take 5 minutes)<br>
+          <div class="center scheduleRepeatTime">
+            <div class="float_left scheduleRepeatTimeHours">
+              <select type="text" class="center scheduleRepeatTimeHoursSelect" name="sor_timeHour" id="id_sor_timeHour" ng-model="scheduleRepeat.timeHour">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </div>
+            <div class="float_left margin3">
+              <b>:</b>
+            </div>
+            <div class="float_left scheduleRepeatTimeMinutes">
+              <select type="text" class="center scheduleRepeatTimeMinutesSelect" name="sor_timeMinutes" id="id_sor_timeMinutes" ng-model="scheduleRepeat.timeMinutes">
+                <option value="00">00</option>
+                <option value="05">05</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+              </select>
+            </div>
+            <div class="float_left scheduleRepeatTimeAMPM">                                                                                                                                                                     
+              <select type="text" class="center scheduleRepeatTimeAMPMSelect" name="sor_timeAMPM" id="id_sor_timeAMPM" ng-model="scheduleRepeat.timeAMPM">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </ion-content>
+  
+  <ion-footer-bar class="reviewsFooter" ng-show="!submittedReview">
+    <div class="center scheduleCancel" ng-click="cancelRepeatModal()">
+      Cancel
+    </div>
+    <div class="center scheduleSchedule" ng-click="scheduleOrder()" ng-show="!scheduleRepeat.enabled">
+      Schedule
+    </div>
+    <div class="center scheduleSchedule" ng-click="scheduleRepeatOrder()" ng-show="scheduleRepeat.enabled">
+      Schedule
+    </div>
+  </ion-footer-bar>  
+  
+</ion-modal-view>

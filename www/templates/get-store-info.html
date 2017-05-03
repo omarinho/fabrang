@@ -1,0 +1,41 @@
+<ion-modal-view class="infoModal">
+  <div class="center">
+    <div class="titlex">
+      Information
+      <div class="float_right closex" ng-click="cancelInfoModal()"><i class="icon ion-close"></i></div>
+    </div>
+    <div class="content">                      
+      <div class="modalText">
+        <div class="float_left">
+          <b class="hoursOperation">Hours of operation</b>
+        </div>
+      </div>
+      <br clear="all"/>
+      <div ng-repeat="aDay in store.weekSchedule" ng-class="todayWeekDay == aDay.dayIndex ? 'todayclass' : ''">
+        <div class="modalText">
+          <div class="float_left">{{ aDay.dayName }}</div>
+          <div class="float_right">{{ aDay.hours }}</div>
+          <br clear="all"/>
+        </div>
+      </div>
+
+      <div class="modalText">
+        <br clear="all"/>
+        <hr>
+        <div class="float_left address">
+          <b>Address</b>
+          <br clear="all"/>
+          {{ store.address }},<br>
+          {{ store.location }}, {{ store.state }},<br>
+          {{ store.zipCode }}
+        </div>
+        <div class="float_right phone">
+          <b>Phone</b>
+          <br clear="all"/>
+          {{ store.phone }}
+        </div>
+        <br clear="all"/>
+      </div>
+    </div>
+  </div>
+</ion-modal-view>

@@ -1,0 +1,129 @@
+<ion-header-bar class="bar-light bar-header" align-title="center" on-swipe-down="showFiltersModal()">
+    <div class="buttons">
+      <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
+      </button>
+    </div>
+    <h1 class="title grayText" ng-if="!showSearchBox">Receipt</h1>
+    <div class="buttons" ng-if="!showSearchBox">
+      <img src="img/share.gif" class="rightButton1">
+      <img src="img/more.gif" class="rightButton3">
+    </div>
+    <div searchid="id_searchqResults" class="searchContainer float_left" angucomplete pause="300" url="" searchfields="name" titlefield="name" minlength="1" dist="" ng-if="showSearchBox" localdata="places" callbackfn="selectedPlace(store)" selectedobject="dummy" callbackfnfocus="showSearchOverlay()" callbackfnblur="hideSearchOverlay()"></div>
+</ion-header-bar>
+
+<ion-view>
+  <ion-content scroll="true" class="has-header has-footer" has-header="true" has-bouncing="true" ng-style="homestyle">
+    <div id="wrapper">
+      <div class="center fontSize15 historyContent">
+        <div class="receiptHead">
+          <div class="float_left textAlignLeft orderNamePlace">
+            <div>
+              <span class="fontSize12">{{ order.date }}</span>
+              <br clear="all"/> 
+              <span class="RobotoBold fontSize18">{{ order.storeName }}</span>
+            </div>
+          </div>
+          <div class="float_right moveToCard">
+            <div class="float_left moveToCardLabel">
+              <span class="fontSize12">Move to cart</span>
+              <br>
+              <span class="fontSize18">{{ order.total }}</span>
+            </div>
+            <div class="float_right">
+              <button class="button button-icon ion-chevron-right moveToCardArrow"></button>
+            </div>
+            <br clear="all">
+          </div>
+          <br clear="all"/>
+        </div>
+        <br clear="all"/>
+        
+        <div class="degrade">
+          <div class="float_right fontSize9 grayText">
+            ORDER # {{ order.id }}
+          </div>
+          <br clear="all"/>
+        </div>
+        
+        <div>  
+          <div ng-repeat="cartItem in order.cart track by $index" style="border:1px #99e58a solid; margin:9px; height:100px; padding:9px;">
+            <div class="float_left RobotoBold fontSize18 cartItemDescription">
+              x{{ cartItem.quantity }}
+            </div>
+            <div class="float_left cartItemDescription">
+              <span class="RobotoBold">{{ cartItem.name }}</span>
+              <br clear="all"/>
+              <span class="grayText">
+                {{ cartItem.description }} 
+                <span ng-repeat="option in cartItem.options">
+                  {{ option.desc }}{{$last ? '' : ', '}} 
+                </span> 
+              </span>
+            </div>
+            <div class="float_right grayText cartItemPrice">
+              <br>
+              <b>{{ cartItem.price | currency }}</b>
+              <br>
+              <span ng-if="cartItem.quantity > 1">each {{ cartItem.price/cartItem.quantity | currency }}</span>
+            </div>
+            <br clear="all"/>
+          </div>          
+        </div>
+        <br clear="all"/>
+        
+        <div>
+          <div class="float_left grayText" style="padding-left:27px;">Delivered to</div>
+          <br clear="all"/>
+          <hr>
+          <div style="padding-left:9px;">
+            <div class="float_left oc_addressCircle">
+              <div class="circleOptions" style="background-color:{{ order.addressDetails.color }} !important;">&nbsp;</div>
+            </div>
+            <div class="overflowHidden">
+              <input type="text" ng-model="order.addressDetails.desc" class="center pickAddress textAlignLeft" ng-readonly="true">
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="float_left grayText" style="padding-left:27px;">Delivered to</div>
+          <br clear="all"/>
+          <hr>
+          <div style="padding-left:9px;">
+            <div class="float_left oc_addressCircle">
+              <div class="circleOptions" style="background-color:{{ order.addressDetails.color }} !important;">&nbsp;</div>
+            </div>
+            <div class="overflowHidden">
+              <input type="text" ng-model="order.addressDetails.desc" class="center pickAddress textAlignLeft" ng-readonly="true">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <br clear="all"/><br><br>
+  </ion-content>
+</ion-view>
+
+<ion-footer-bar class="footerBar2" ng-if="showFooter" ng-hide="!showFooter">
+  <div class="footerIcon" ng-click="goToHome()">
+    <img src="img/footer-home.gif" align="middle">
+    <div class="overlay"></div>       
+  </div>
+  <div class="footerIcon" ng-click="goToHistory()">
+    <img src="img/footer-schedule.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-notifications.gif" align="middle">
+    <div class="overlay"></div>                           
+  </div>
+  <div class="footerIcon" ng-click="goToFavorites()">
+    <img src="img/footer-favorites.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+  <div class="footerIcon" ng-click="goToResults()">
+    <img src="img/footer-search.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+</ion-footer-bar>

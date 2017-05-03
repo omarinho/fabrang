@@ -1,0 +1,101 @@
+<ion-header-bar class="bar-light bar-header" align-title="center" on-swipe-down="showFiltersModal()">
+    <div class="buttons">
+      <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
+      </button>
+    </div>
+    <h1 class="title grayText" ng-if="!showSearchBox">Addresses</h1>
+    <div class="buttons" ng-if="!showSearchBox">
+      <img src="img/gear.gif" class="rightButton2" ng-click="goToSettings()">
+    </div>
+</ion-header-bar>
+
+<ion-view>
+  <ion-content scroll="false" class="has-header" has-header="true" has-bouncing="true" ng-style="homestyle">
+    <div id="wrapper">
+      
+      <div class="fontSize18">
+        
+        <div class="ea_title">
+          <div class="float_left sa_circle">
+            <div class="circleOptions" style="background-color:{{ address.color }} !important;">&nbsp;</div>
+          </div>
+          <div class="sa_addressDesc transparent">
+            <span class="RobotoBold">{{ address.desc }}</span>
+          </div>
+        </div>
+        
+        <div class="degrade">
+          <span class="fontSize9 grayText">Address</span>  
+          <br>
+          {{ address.address }}                   
+          <br clear="all"/><br>        
+          
+          <span class="fontSize9 grayText">Specifications</span>  
+          <br>
+          {{ address.specifications }}
+          <br clear="all"/><br>                           
+        
+        </div>
+        
+      </div>
+
+      <div class="ea_bottom grayText">
+        <div class="fontSize15 ea_moreOptions">More options</div>
+
+        <div class="ea_moreOptionsItem">
+          <div class="width100">
+            <div ng-class="address.isDefault ? 'toggleLabelActive' : 'toggleLabel'">
+              Set as default
+            </div>
+            <div class="float_right">
+              <ion-toggle ng-model="address.isDefault" toggle-class="toggle-positive" class="theToggle" ng-change="saveAddress(true)"></ion-toggle>
+            </div>
+            <br clear="all"/>
+          </div>
+        </div>
+
+        <div class="ea_moreOptionsItem" ng-click="showEditAddressModal()">
+          <div class="width100">
+            <div class="float_left ea_editLink">
+              Edit Address
+            </div>
+            <div class="float_right">
+              <button class="button button-icon ion-chevron-right ea_editArrow" ng-click="goback()"></button>              
+            </div>
+           <br clear="all"/>
+          </div>
+        </div>
+        
+        <div class="ea_moreOptionsItem noBorderBottom" ng-click="deleteAddress()">
+          <div class="width100">
+            <div>Delete this address</div>
+          </div>
+        </div>
+
+    </div>
+
+  </ion-content>
+</ion-view>
+
+<ion-footer-bar class="footerBar2" ng-if="showFooter" ng-hide="!showFooter">
+  <div class="footerIcon" ng-click="goToHome()">
+    <img src="img/footer-home.gif" align="middle">
+    <div class="overlay"></div>       
+  </div>
+  <div class="footerIcon" ng-click="goToHistory()">
+    <img src="img/footer-schedule.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+  <div class="footerIcon">
+    <img src="img/footer-notifications.gif" align="middle">
+    <div class="overlay"></div>                           
+  </div>
+  <div class="footerIcon" ng-click="goToFavorites()">
+    <img src="img/footer-favorites.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+  <div class="footerIcon" ng-click="goToResults()">
+    <img src="img/footer-search.gif" align="middle">
+    <div class="overlay"></div>
+  </div>
+</ion-footer-bar>

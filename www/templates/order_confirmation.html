@@ -1,0 +1,119 @@
+<ion-header-bar class="bar-light bar-header" align-title="center">
+    <div class="buttons">
+      <button class="button button-icon ion-chevron-left backbutton" ng-click="goback()">
+      </button>
+    </div>
+    <h1 class="title">Order Confirmation</h1>
+</ion-header-bar>
+
+<ion-view>
+  <ion-content scroll="true" class="has-header" has-header="true" has-bouncing="true">
+    <div id="wrapper">
+      <div class="center">
+        <br clear="all"/>        
+
+        <div>
+          <div class="background-color_EAEAEA grayText textAlignLeft oc_yourOrder">Your order:</div>
+        </div>
+        <div class="textAlignLeft oc_repeatCart" ng-repeat="cartItem in cart track by $index" ng-if="cartItem.storeID==storeID">
+          <span class="RobotoBold">{{ cartItem.quantity }}&nbsp;&nbsp;&nbsp;{{ cartItem.name }}</span>
+          <hr ng-show="!$last && cart.length > 1 && cartItem.ident != latestIdent">
+        </div>
+        <br clear="all"/>
+
+        <div>
+          <div class="background-color_EAEAEA grayText textAlignLeft paddingLeft27">Delivering to:</div>
+        </div>
+        <div class="oc_pickAddress" ng-if="order.deliverTo">
+          <div class="float_left oc_addressCircle">
+            <div class="circleOptions" style="background-color:{{ order.deliverTo.color }} !important;">&nbsp;</div>
+          </div>
+          <div class="overflowHidden">
+            <input type="text" ng-model="order.deliverTo.desc" class="center pickAddress textAlignLeft" ng-readonly="true" ng-click="showSelectAddressModal()">
+          </div>
+        </div>
+        <div class="oc_pickCard" ng-if="!order.deliverTo">
+          <div class="float_left oc_addIcon">
+            <img src="img/add_icon.png" align="middle">
+          </div>
+          <div class="overflowHidden">
+            <input type="text" class="center pickAddress textAlignLeft" ng-readonly="true" placeholder="Select an address"  ng-click="showSelectAddressModal()">
+          </div>
+        </div>
+
+        <div>
+          <div class="background-color_EAEAEA grayText textAlignLeft paddingLeft27">Paying with:</div>
+        </div>
+        <div class="oc_cc" ng-if="order.creditCard">
+          <div class="float_left oc_addressCircle">
+            <div class="circleOptions" style="background-color:{{ order.creditCard.color }} !important;">&nbsp;</div>
+          </div>
+          <div class="overflowHidden">
+            <input type="text" ng-model="order.creditCard.desc" class="center pickCC textAlignLeft" ng-readonly="true" ng-click="showSelectCardModal()">
+          </div>
+        </div>
+        <div class="oc_cc2" ng-if="!order.creditCard">
+          <div class="float_left oc_addIcon">
+            <img src="img/add_icon.png" align="middle">
+          </div>
+          <div class="overflowHidden">
+            <input type="text" ng-model="order.creditCard" class="center pickCC textAlignLeft" ng-readonly="true" placeholder="Select a credit card" ng-click="showSelectCardModal()">
+          </div>
+        </div>
+        <br clear="all"/>
+
+        <div class="textAlignLeft grayText oc_tipPercent">
+          Tip percent: <b class="oc_tipColor">{{ order.tip }}%</b>
+        </div>
+        <div class="item range border0">
+          0&nbsp;<input type="range" ng-model="order.tip" min="0" max="20" ng-change="updateTip()">&nbsp;20
+        </div>
+
+        <div class="oc_totalization">
+          <div class="float_left">
+            Delivery Fee:
+          </div>
+          <div class="float_right">
+            {{ store.deliveryFee | currency }}
+          </div>
+          <br clear="all"/>
+          <div class="float_left">
+            Subtotal:
+          </div>
+          <div class="float_right">
+            {{ order.subtotal | currency }}
+          </div>
+          <br clear="all"/><br>
+          <div class="float_left">
+            Discount:
+          </div>
+          <div class="float_right redText">
+            ({{ order.discount }}%) -{{ order.discountValue | currency }}
+          </div>
+          <br clear="all"/>
+          <div class="float_left">
+            Tip:
+          </div>
+          <div class="float_right">
+            ({{ order.tip }}%) <span ng-bind="order.tipValue | currency"></span>
+          </div>
+          <br clear="all"/>
+          <div class="float_left RobotoBold">
+            Total:
+          </div>
+          <div class="float_right RobotoBold fontSize18">
+            <span ng-bind="order.total | currency"></span>
+          </div>
+          <br clear="all"/>
+        </div>
+
+        <div class="width100">
+          <button class="fgbuttongreen width100" ng-click="processOrder()">Checkout</button>
+        </div>
+        <br clear="all"/><br>
+
+      </div>
+    </div>
+  </ion-content>   
+  
+</ion-view>

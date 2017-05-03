@@ -1,12 +1,14 @@
-<ion-content has-header="true" has-bouncing="false">
+<ion-view>
+<ion-content scroll="true" has-header="false" has-bouncing="true">
   <div id="wrapper">
     <div id="signinct">
+      <br clear="all"/><br><br>
       <img src="img/logo.png" id="logo1">
       <div class="fgfieldlabel" id="label_emailphone">Email or Phone Number</div>
       <input class="fgfield" type="text" name="emailphone" id="id_emailphone" placeholder="Email or Phone Number" ng-model="user.emailphone" advancenext>
       <br>
       <div class="fgfieldlabel" id="label_password">Password</div>
-      <input class="fgfield" type="password" name="password" id="id_password" placeholder="Password" ng-model="user.password" advancenext>
+      <input class="fgfield" type="password" name="password" id="id_password" placeholder="Password" advancenext>
       <br>
       <div class="initialscreenbuttons">
         <button class="fgbutton float_left loginbutton" ng-click="login()">Login</button>
@@ -20,3 +22,4 @@
     </div>
   </div>
 </ion-content>
+</ion-view>

@@ -1,0 +1,65 @@
+<ion-modal-view class="addNewAddressModal">
+
+  <ion-header-bar align-title="center" class="grayText">
+    <div class="buttons">
+      <button class="button button-icon ion-chevron-left backbutton" ng-click="cancelAddNewAddressModal()">
+      </button>
+    </div>
+    <h1 class="title grayText">Addresses</h1>
+  </ion-header-bar>
+
+  <ion-content scroll="true" has-header="false" has-bouncing="true">
+    <div id="wrapper">
+      <div class="center">
+        <div class="grayText">  
+          New address
+        </div>
+        <div class="center width100 newAddressColors">
+          <div ng-class="addressColorSelected == 'color1' ? 'colorOptionChecked backgroundColorC7272F' : 'colorOption backgroundColorC7272F'" id="color1" ng-click="setNewAddressColor('#C7272F', 'color1')">&nbsp;</div>
+          <div ng-class="addressColorSelected == 'color2' ? 'colorOptionChecked backgroundColorCE6345' : 'colorOption backgroundColorCE6345'" id="color2" ng-click="setNewAddressColor('#CE6345', 'color2')">&nbsp;</div>
+          <div ng-class="addressColorSelected == 'color3' ? 'colorOptionChecked backgroundColorE87F27' : 'colorOption backgroundColorE87F27'" id="color3" ng-click="setNewAddressColor('#E87F27', 'color3')">&nbsp;</div>
+          <div ng-class="addressColorSelected == 'color4' ? 'colorOptionChecked backgroundColorE3A52D' : 'colorOption backgroundColorE3A52D'" id="color4" ng-click="setNewAddressColor('#E3A52D', 'color4')">&nbsp;</div>
+          <div ng-class="addressColorSelected == 'color5' ? 'colorOptionChecked backgroundColor42C98B' : 'colorOption backgroundColor42C98B'" id="color5" ng-click="setNewAddressColor('#42C98B', 'color5')">&nbsp;</div>
+          <div ng-class="addressColorSelected == 'color6' ? 'colorOptionChecked backgroundColor78C635' : 'colorOption backgroundColor78C635'" id="color6" ng-click="setNewAddressColor('#78C635', 'color6')">&nbsp;</div>
+        </div>
+        <br clear="all"/><br>
+      
+        <div class="textAlignLeft">
+          <div class="fgfieldlabel" id="label_addressName">Give this address a name</div>
+          <input class="fgfield" type="text" name="addressName" id="id_addressName" placeholder="Give this address a name" ng-model="newAddress.desc" advancenext>
+          <br>
+          <div class="fgfieldlabel" id="label_address">What's is your address?</div>
+          <input class="fgfield" type="text" name="address" id="id_address" placeholder="What's is your address?" ng-model="newAddress.address" advancenext>
+          <br>
+          <div class="fgfieldlabel" id="label_specifications">Specifications</div>
+          <input class="fgfield" type="text" name="specifications" id="id_specifications" placeholder="Specifications" ng-model="newAddress.specifications" advancenext>
+          <br>
+        </div>
+        <br clear="all"/>
+      
+        <div class="width100" ng-show="!showFooter">
+          <button class="fgbuttongreen width100" ng-click="saveNewAddress()">Save</button>
+        </div>
+        <br clear="all"/>
+        <div class="width100" ng-show="!showFooter">
+          <button class="fgbuttonwhite width100" ng-click="cancelAddNewAddressModal()">Cancel</button>
+        </div>
+        <br clear="all"/><br><br>
+
+      </div>
+    </div>
+  </ion-content>
+  
+  <ion-footer-bar class="bar-subfooter width100" ng-show="showFooter" ng-hide="!showFooter">
+    <div class="width100">
+      <button class="fgbuttongreen width100" ng-click="saveNewAddress()">Save</button>
+    </div>
+  </ion-footer-bar>
+  
+  <ion-footer-bar class="width100" ng-show="showFooter" ng-hide="!showFooter">
+    <div class="width100">
+      <button class="fgbuttonwhite width100" ng-click="cancelAddNewAddressModal()">Cancel</button>
+    </div>
+  </ion-footer-bar>  
+  
+</ion-modal-view>

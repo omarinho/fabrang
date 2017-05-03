@@ -23,7 +23,7 @@
     border-width: 1px;
     border-style: solid;
     border-radius: 2px;
-    width: 100%;
+    width: 80%;
     padding: 6px;
     cursor: pointer;
     z-index: 9999;
@@ -31,7 +31,6 @@
     margin-top: 0px;
     background-color:#FFFFFF;
     font-size:18px;
-    font-weight:bold;
     font-family: 'RobotoRegular';
 }
 
@@ -46,9 +45,15 @@
 
 .angucomplete-row {
     padding: 5px;
-    color: #000000;
+    color:#9b9b9b;
     margin-bottom: 4px;
 }
+
+.coincidence {
+  color:#000000;
+  font-weight:bold;
+}
+
 
 .angucomplete-selected-row, .angucomplete-row:hover {
     background-color: lightblue;
