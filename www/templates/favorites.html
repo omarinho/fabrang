@@ -12,12 +12,44 @@
 </ion-header-bar>
 
 <ion-view>
-  <ion-content scroll="false" class="has-header" has-header="true" has-bouncing="true" ng-style="homestyle">
+  <ion-content scroll="true" class="has-header has-footer" has-header="true" has-bouncing="true" ng-style="homestyle">
     <div id="wrapper">
-      <div class="center fontSize18">
-          CONTENT
+      <div class="fontSize15 grayText">
+        
+        <div class="favNearYou">
+          <span class="float_left nearYouLabel fontSize14">Near You ({{ nearFavs.length }})</span>
+          <span class="float_right locIcon"><img src="img/location-dist.gif" height="18"></span>
+          <span class="float_right fontSize14">{{ userLocation }}</span>
+          <br clear="all"/>
+          <hr>
+          <ion-scroll zooming="true" direction="x" scrollbar-x="false" class="favsScroll">
+            <div class="favBox" ng-repeat="fav in nearFavs track by $index" ng-click="goToStore(fav.id)">
+              <span class="RobotoBold fontSize15 blackText whiteSpaceNormal">{{ fav.name | limitTo: 27 }}</span>
+              <br>
+              Open Until
+              <br>
+              {{ fav.todaySchedule | lowercase }}
+            </div>                                     
+          </ion-scroll>
+          <br clear="all"/>
+        </div>
+        
+        <div class="allFavorites">
+          <span class="float_left fontSize14">All favorites</span>
+          <br clear="all"/>
+          <hr>
+          <div class="favBox2" ng-repeat="fav2 in favs track by $index" ng-click="goToStore(fav2.id)">
+            <span class="RobotoBold fontSize15 blackText whiteSpaceNormal">{{ fav2.name | limitTo: 27 }}</span>
+            <br>
+            Open Until
+            <br>
+            {{ fav2.todaySchedule | lowercase }}
+          </div>
+        </div>
+        
       </div>
     </div>
+    <br clear="all"/><br><br>
   </ion-content>
 </ion-view>
 
@@ -26,7 +58,7 @@
     <img src="img/footer-home.gif" align="middle">
     <div class="overlay"></div>       
   </div>
-  <div class="footerIcon">
+  <div class="footerIcon" ng-click="goToHistory()">
     <img src="img/footer-schedule.gif" align="middle">
     <div class="overlay"></div>
   </div>
@@ -38,7 +70,7 @@
     <img src="img/footer-favorites.gif" align="middle">
     <div class="overlay"></div>
   </div>
-  <div class="footerIcon">
+  <div class="footerIcon" ng-click="goToResults()">
     <img src="img/footer-search.gif" align="middle">
     <div class="overlay"></div>
   </div>

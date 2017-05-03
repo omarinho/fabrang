@@ -452,6 +452,10 @@ a, a:hover, a:active {
   vertical-align:middle;
 }
 
+.verticalAlignTop {
+  vertical-align:top;
+}
+
 .modal {
   top: 0px;
   bottom: 0;
@@ -764,6 +768,10 @@ a, a:hover, a:active {
 
 .fontSize12 {
   font-size:12px;
+}
+
+.fontSize14 {
+  font-size:14px;
 }
 
 .fontSize15 {
@@ -1671,6 +1679,59 @@ ul.rating li i {
   font-size:15px;
 }
 
+.historyContent {
+  width:95%;
+}
+
+.historyContentDate {
+  margin-right:9px;
+  width:15%;
+}
+
+.historyContentPlace {
+  margin-right:9px;
+  margin-left:9px;
+  width:50%;
+}
+
+.historyContentPlaceList {
+  white-space: normal;  
+}
+
+.historyContentPrice {
+  padding-top:9px;
+  margin-left:9px;
+  width:20%;
+}
+
+.historyItem {
+  border-bottom:1px #C0BFBF solid;
+  padding-top:9px;
+  min-height:73px;
+  white-space: nowrap;  
+}
+
+.historyIcon {
+  width:49%;
+  color:#9b9b9b !important;
+  padding-bottom:9px;  
+}
+
+.historyIconSelected {
+  width:49%;
+  border-bottom:3px #C0BFBF solid;
+  color:#9b9b9b !important;
+  padding-bottom:9px;
+}
+
+.historyIconImage {
+  max-width:15%;
+}
+
+.historyContent {
+  margin-top:9px;
+}
+
 .ea_title {
   padding-top:9px;
   padding-left:18px;
@@ -1770,6 +1831,93 @@ ul.rating li i {
 .anc_ccv {
   text-align:left; 
   width:29%;
+}
+
+.favNearYou {
+  margin-top:9px;
+  background-color:#F8F8F8;
+  padding:9px;
+  width:100%;
+}
+
+.allFavorites {
+  margin-top:9px;
+  background-color:#FFFFFF;
+  padding:9px;
+  width:100%;
+}
+
+.favBox {
+  background-color:#EAEAEA;
+  width:126px;
+  height:108px;
+  border-radius:0px 6px 6px 6px;
+  padding:9px;   
+  margin:9px;
+  display:inline-block;
+  vertical-align:middle;
+}
+
+.favBox2 {
+  background-color:#EAEAEA;
+  width:126px;
+  height:108px;
+  border-radius:0px 6px 6px 6px;
+  padding:9px;   
+  margin:9px;
+  float:left;
+}
+
+.favsScroll {
+  width:100%; 
+  min-height:144px; 
+  float:left; 
+  white-space: nowrap; 
+  margin-left:3px; 
+  margin-right:3px; 
+  margin-top:9px;
+  background-color:#F8F8F8;
+}
+
+.nearYouLabel {
+  padding-left:9px;
+  font-style: italic;
+}
+
+.locIcon {
+  padding-right:9px;
+  margin-left:9px;
+}
+
+.whiteSpaceNormal {
+  white-space:normal;
+}
+
+.receiptHead .orderNamePlace {
+  width:60%;
+  height:63px;
+  display: flex; 
+  align-items: center;
+}
+
+.receiptHead .moveToCard {
+  width:40%;
+  background-color:#5975DD;
+  color:#FFFFFF;
+  font-weight:bold;
+  padding:3px;
+  height:63px;  
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+
+.moveToCardLabel {
+  margin-right:9px;
+}
+
+.moveToCardArrow {
+  color:#FFFFFF;
 }
 
 body.keyboard-open .has-footer{

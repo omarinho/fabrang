@@ -146,6 +146,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'FavoritesCtrl'
       })
 
+      .state('history', {
+        cache: false,
+        url: "/history",
+        templateUrl: "templates/history.html",
+        controller: 'HistoryCtrl'
+      })
+
+      .state('receipt', {
+        cache: false,
+        url: "/receipt/:orderID",
+        templateUrl: "templates/receipt.html",
+        controller: 'ReceiptCtrl'
+      })
+
     $urlRouterProvider.otherwise("/");      
     
     $ionicConfigProvider.views.swipeBackEnabled(false);    

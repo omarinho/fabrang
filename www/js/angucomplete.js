@@ -35,7 +35,36 @@ angular.module('angucomplete', [] )
             callBackFnFocus: "&callbackfnfocus",
             callBackFnBlur: "&callbackfnblur"
         },
-        template: '<div class="angucomplete-holder"><input class="fgfield float_left" style="width:85% !important;" type="text" name="searchq" id="{{searchID}}" placeholder="Enter the place name here" advancenext ng-model="searchStr" onmouseup="this.select();" ng-focus="resetHideResults()" ng-blur="hideResults()"><button class="button button-icon ion-android-close input-button float_left" ng-click="clearSearch()"></button><br clear="all"/><div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown"><div class="angucomplete-searching" ng-show="searching">Searching...</div><div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No matches</div><div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}"><div ng-if="imageField" class="angucomplete-image-holder"><img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/><div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div></div><div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div><div class="angucomplete-title" ng-if="!matchClass"><div ng-bind-html="result.title | matchformat:searchStr"></div></div><div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div></div></div></div>',
+        template: '<div class="angucomplete-holder">' +
+                  '<input class="fgfield float_left" style="width:85% !important;" type="text" name="searchq" id="{{searchID}}" placeholder="Enter the place name here" advancenext ng-model="searchStr" onmouseup="this.select();" ng-focus="resetHideResults()" ng-blur="hideResults()">' +
+                  '<button class="button button-icon ion-android-close input-button float_left" ng-click="clearSearch()">' +
+                  '</button>' + 
+                  '<br clear="all"/>' + 
+                  '<div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">' + 
+                  '<div class="angucomplete-searching" ng-show="searching">' + 
+                  'Searching...' +
+                  '</div>' + 
+                  '<div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">' +
+                  'No matches' + 
+                  '</div>' + 
+                  '<div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
+                  '<div ng-if="imageField" class="angucomplete-image-holder">' + 
+                  '<img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' + 
+                  '<div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default">' + 
+                  '</div>' + 
+                  '</div>' + 
+                  '<div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title">' + 
+                  '</div>' + 
+                  '<div class="angucomplete-title" ng-if="!matchClass">' + 
+                  '<div ng-bind-html="result.title | matchformat:searchStr">' + 
+                  '</div>' + 
+                  '</div>' + 
+                  '<div ng-if="result.description && result.description != \'\'" class="angucomplete-description">' + 
+                  '{{result.description}}' + 
+                  '</div>' + 
+                  '</div>' + 
+                  '</div>' + 
+                  '</div>',
         link: function($scope, elem, attrs) {
             $scope.lastSearchTerm = null;
             $scope.currentIndex = null;
@@ -220,6 +249,7 @@ angular.module('angucomplete', [] )
                 $scope.selectedObject = result;
                 $scope.showDropdown = false;
                 $scope.results = [];
+                $scope.searchStr = null;
                 $scope.callBackFn({store:result.originalObject});
             }
 

@@ -6,11 +6,19 @@ angular.module('starter.controllers',['ngCordova'])
 .run(                                      
   
   function($rootScope, $ionicHistory, $ionicPopup, $timeout, $state, $ionicModal, $ionicLoading, $ionicPlatform, SessionService, SearchService) {
-  
+   
+    $rootScope.goToHistory = function() {
+      $state.go('history', {}, { reload: true });
+    }
+
     $rootScope.goToHome = function() {
       $state.go('home', {}, { reload: true });
     } 
     
+    $rootScope.goToResults = function() {
+      $state.go('results', {}, { reload: true });
+    } 
+   
     $rootScope.goToFavorites = function() {
       $state.go('favorites', {}, { reload: true });
     } 
@@ -361,7 +369,7 @@ angular.module('starter.controllers',['ngCordova'])
       "opacity": "1",
       "background": "rgb(255,255,255)"             
     };
-                      
+
     $scope.gobackhome = function() {
       if ($scope.showSearchBox) {
          $scope.showSearchBox = false;
@@ -396,7 +404,7 @@ angular.module('starter.controllers',['ngCordova'])
     }
     
     $scope.enableLocation = function() {
-      $scope.showLoading();
+      $rootScope.showLoading();
       $scope.cancelLocationModal();
       $state.go('results', {}, { reload: true });          
     }
@@ -653,7 +661,7 @@ angular.module('starter.controllers',['ngCordova'])
 
   function ($rootScope, $scope, $ionicPlatform, $state, $timeout, ResultsService, SearchService) {
 
-    $scope.hideLoading();
+    $rootScope.hideLoading();
     
     /*** Call API: Get the current locations and places ***/
     /*** Results are stored in $scope.places            ***/
@@ -949,7 +957,7 @@ angular.module('starter.controllers',['ngCordova'])
     }
     
     $scope.scheduleOrder = function() {
-      $scope.showLoading();
+      $rootScope.showLoading();
       /*** Call API: Schedule order  ***/
       /*** It saves info in database ***/
       var scheduled = StoreService.scheduleOrder($scope, $stateParams.storeID.toString(), $scope.userID, $scope.cart, $scope.cartTip, $scope.schedule);
@@ -959,7 +967,7 @@ angular.module('starter.controllers',['ngCordova'])
           if (scheduled) {
             var el = document.getElementById('tab_' + $scope.store.categories[0].id);
             angular.element(el).triggerHandler('click');
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $rootScope.alerti('Your order has been scheduled','Success');
           }
         }, 1000
@@ -967,7 +975,7 @@ angular.module('starter.controllers',['ngCordova'])
     }
     
     $scope.scheduleRepeatOrder = function() {
-      $scope.showLoading();
+      $rootScope.showLoading();
       /*** Call API: Schedule repeat order ***/
       /*** It saves info in database       ***/
       var scheduled = StoreService.scheduleRepeatOrder($scope, $stateParams.storeID.toString(), $scope.userID, $scope.cart, $scope.cartTip, $scope.scheduleRepeat);
@@ -977,7 +985,7 @@ angular.module('starter.controllers',['ngCordova'])
           if (scheduled) {
             var el = document.getElementById('tab_' + $scope.store.categories[0].id);
             angular.element(el).triggerHandler('click');
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $rootScope.alerti('Your order has been scheduled to repeat on selected days and times','Success');
           }
         }, 1000
@@ -1244,7 +1252,7 @@ angular.module('starter.controllers',['ngCordova'])
     }
     
     $scope.saveName = function() {
-      $scope.showLoading();
+      $rootScope.showLoading();
       /*** Call API: Update the user name ***/
       /*** Info is updated in database    ***/
       var saved = UsersService.saveName($scope, $scope.user);
@@ -1253,7 +1261,7 @@ angular.module('starter.controllers',['ngCordova'])
         $scope.cancelChangeNameModal();
         $timeout(
           function() {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $state.go($state.current, {}, {reload: true});
             $rootScope.alerti('Your name has been updated','Success');
           }, 1000
@@ -1262,7 +1270,7 @@ angular.module('starter.controllers',['ngCordova'])
     }
     
     $scope.savePassword = function() {
-      $scope.showLoading();
+      $rootScope.showLoading();
       /*** Call API: Update the user password ***/
       /*** Info is updated in database    ***/
       var saved = UsersService.savePassword($scope, $scope.user);
@@ -1271,7 +1279,7 @@ angular.module('starter.controllers',['ngCordova'])
         $scope.cancelChangePasswordModal();
         $timeout(
           function() {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $state.go($state.current, {}, {reload: true});
             $rootScope.alerti('Your password has been updated','Success');
           }, 1000
@@ -1280,7 +1288,7 @@ angular.module('starter.controllers',['ngCordova'])
     }
 
     $scope.saveEmail = function() {
-      $scope.showLoading();
+      $rootScope.showLoading();
       /*** Call API: Update the user e-mail ***/
       /*** Info is updated in database    ***/
       var saved = UsersService.saveEmail($scope, $scope.user);
@@ -1289,7 +1297,7 @@ angular.module('starter.controllers',['ngCordova'])
         $scope.cancelChangeEmailModal();
         $timeout(
           function() {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $state.go($state.current, {}, {reload: true});
             $rootScope.alerti('Your e-mail has been updated','Success');
           }, 1000
@@ -1298,7 +1306,7 @@ angular.module('starter.controllers',['ngCordova'])
     }
 
     $scope.saveStatementEmail = function() {
-      $scope.showLoading();
+      $rootScope.showLoading();
       /*** Call API: Update the user statement e-mail ***/
       /*** Info is updated in database                ***/
       var saved = UsersService.saveStatementEmail($scope, $scope.user);
@@ -1307,7 +1315,7 @@ angular.module('starter.controllers',['ngCordova'])
         $scope.cancelChangeStatementEmailModal();
         $timeout(
           function() {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $rootScope.alerti('Your statement e-mail has been updated','Success');
           }, 1000
         );	
@@ -1315,7 +1323,7 @@ angular.module('starter.controllers',['ngCordova'])
     }
 
     $scope.savePhone = function() {
-      $scope.showLoading();
+      $rootScope.showLoading();
       /*** Call API: Update the user phone ***/
       /*** Info is updated in database    ***/
       var saved = UsersService.savePhone($scope, $scope.user);
@@ -1324,7 +1332,7 @@ angular.module('starter.controllers',['ngCordova'])
         $scope.cancelChangePhoneModal();
         $timeout(
           function() {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $state.go($state.current, {}, {reload: true});
             $rootScope.alerti('Your phone has been updated','Success');
           }, 1000
@@ -1341,7 +1349,7 @@ angular.module('starter.controllers',['ngCordova'])
     }
     
     $scope.updateEmailStatementFrequency = function() {
-      $scope.showLoading();
+      $rootScope.showLoading();
       /*** Call API: Update the e-mail statement frequency ***/
       /*** Info is updated in database                     ***/
       var saved = UsersService.updateEmailStatementFrequency($scope, $scope.settings.emailStatementFrequency);
@@ -1349,7 +1357,7 @@ angular.module('starter.controllers',['ngCordova'])
       if (saved) {
         $timeout(
           function() {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $rootScope.alerti('Your e-mail statement frequency has been updated','Success');
           }, 1000
         );	
@@ -1621,14 +1629,14 @@ angular.module('starter.controllers',['ngCordova'])
     
     $scope.saveNewAddress = function() {
       $scope.cancelAddNewAddressModal();
-      $scope.showLoading();
+      $rootScope.showLoading();
       $timeout(
         function() {
           /*** Call API: Save new user address in database ***/
           /*** It saves info in database       ***/
           var saved = UsersService.saveNewAddress($scope, $scope.newAddress, $scope.userID);
           if (saved) {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $state.go($state.current, {storeID:$scope.storeID}, {reload: true});
             $rootScope.alerti('Your new address have been saved','Success');
           }
@@ -1682,14 +1690,14 @@ angular.module('starter.controllers',['ngCordova'])
     
     $scope.saveNewCard = function() {
       $scope.cancelAddNewCardModal();
-      $scope.showLoading();
+      $rootScope.showLoading();
       /*** Call API: Save new user card in database ***/
       /*** It saves info in database       ***/
       $timeout(
         function() {
           var saved = UsersService.saveNewCard($scope, $scope.newCard, $scope.userID);
           if (saved) {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $state.go($state.current, {storeID:$scope.storeID}, {reload: true});
             $rootScope.alerti('Your new credit card have been saved','Success');
           }
@@ -1905,14 +1913,14 @@ angular.module('starter.controllers',['ngCordova'])
 
     $scope.saveNewAddress = function() {
       $scope.cancelAddNewAddressModal();
-      $scope.showLoading();
+      $rootScope.showLoading();
       $timeout(
         function() {
           /*** Call API: Save new user address in database ***/
           /*** It saves info in database       ***/
           var saved = UsersService.saveNewAddress($scope, $scope.newAddress, $scope.userID);
           if (saved) {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $state.go($state.current, {}, {reload: true});
             $rootScope.alerti('Your new address have been saved','Success');
           }
@@ -2058,14 +2066,14 @@ angular.module('starter.controllers',['ngCordova'])
     
     $scope.saveNewCard = function() {
       $scope.cancelAddNewCardModal();
-      $scope.showLoading();
+      $rootScope.showLoading();
       /*** Call API: Save new user card in database ***/
       /*** It saves info in database       ***/
       $timeout(
         function() {
           var saved = UsersService.saveNewCard($scope, $scope.newCard, $scope.userID);
           if (saved) {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $state.go($state.current, {}, {reload: true});
             $rootScope.alerti('Your new credit card have been saved','Success');
           }
@@ -2179,14 +2187,14 @@ angular.module('starter.controllers',['ngCordova'])
       confirmPopup.then(
         function(res) {
           if (res) {
-            $scope.showLoading();
+            $rootScope.showLoading();
             $timeout(
               function() {
                 /*** Call API: Delete specific user address ***/
                 /*** It deletes from database               ***/
                 var deleted = UsersService.deleteAddress($scope, $scope.address.id);
                 if (deleted) {                                                             
-                  $scope.hideLoading();
+                  $rootScope.hideLoading();
                   $scope.cancelEditAddressModal();
                   $state.go($state.current, {addressID:$scope.addressID}, {reload: true});
                   $rootScope.alerti('The address have been deleted','Success');
@@ -2211,7 +2219,7 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.saveAddress = function(quiet) {
       $scope.cancelEditAddressModal();
       if (!quiet) {
-        $scope.showLoading();
+        $rootScope.showLoading();
       }
       $timeout(
         function() {
@@ -2219,7 +2227,7 @@ angular.module('starter.controllers',['ngCordova'])
           /*** It saves info in database                       ***/
           var saved = UsersService.saveAddress($scope, $scope.address, $scope.userID);
           if (saved && !quiet) {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $state.go($state.current, {addressID:$scope.addressID}, {reload: true});
             $rootScope.alerti('Your address have been updated','Success');
           }
@@ -2308,14 +2316,14 @@ angular.module('starter.controllers',['ngCordova'])
       confirmPopup.then(
         function(res) {
           if (res) {
-            $scope.showLoading();
+            $rootScope.showLoading();
             $timeout(
               function() {
                 /*** Call API: Delete specific user credit card ***/
                 /*** It deletes from database                   ***/
                 var deleted = UsersService.deleteCreditCard($scope, $scope.creditCard.id);
                 if (deleted) {                                                             
-                  $scope.hideLoading();
+                  $rootScope.hideLoading();
                   $scope.cancelEditCreditCardModal();
                   $state.go($state.current, {creditCadID: $scope.creditCardID}, {reload: true});
                   $rootScope.alerti('The credit card have been deleted','Success');
@@ -2340,7 +2348,7 @@ angular.module('starter.controllers',['ngCordova'])
     $scope.saveCreditCard = function(quiet) {
       $scope.cancelEditCreditCardModal();
       if (!quiet) {
-        $scope.showLoading();
+        $rootScope.showLoading();
       }
       $timeout(
         function() {
@@ -2348,7 +2356,7 @@ angular.module('starter.controllers',['ngCordova'])
           /*** It saves info in database                           ***/
           var saved = UsersService.saveCreditCard($scope, $scope.creditCard, $scope.userID);
           if (saved && !quiet) {
-            $scope.hideLoading();
+            $rootScope.hideLoading();
             $state.go($state.current, {creditCadID: $scope.creditCardID}, {reload: true});
             $rootScope.alerti('Your credit card have been updated','Success');
           }
@@ -2395,16 +2403,38 @@ angular.module('starter.controllers',['ngCordova'])
 /****************************************/
 .controller('FavoritesCtrl',                                    
   
-  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $timeout, UsersService, SearchService) {
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $timeout,$state, UsersService, SearchService, FavoritesService) {
+    $scope.favs = {
+    }
+    $scope.nearFavs = {
+    }
 
     /*** Call API: Get the ID of logged user ***/
     $scope.userID = UsersService.getUserID();
+
+    /*** Call API: Get current user location ***/
+    $scope.userLocation = UsersService.getUserLocation();
 
     /*** Call API: Get the current locations and places ***/
     /*** Results are stored in $scope.places            ***/
     SearchService.getLocationsAndPlaces($scope);
     /******************************************************/
 
+    /*** Call API: Get all favorites locations ***/
+    /*** Results are stored in $scope.favs     ***/
+    FavoritesService.getAllFavs($scope, $scope.userLocation);
+    /*********************************************/
+
+
+    /*** Call API: Get favorites locations near to user location ***/
+    /*** Results are stored in $scope.nearFavs                   ***/
+    FavoritesService.getNearFavs($scope, $scope.userLocation);
+    /***************************************************************/
+
+    $scope.goToStore = function(storeID) {
+      $state.go('store', {storeID:storeID}, { reload: true });
+    }
+    
     $scope.showSearchBoxF = function() {
       $scope.showSearchBox = true;
       $timeout(                                  
@@ -2439,5 +2469,110 @@ angular.module('starter.controllers',['ngCordova'])
 /**************************************/
 /*** Favorites Controller - END  ***/
 /**************************************/
+
+
+/*****************************************/
+/*** History Controller - BEGIN  ***/
+/****************************************/
+.controller('HistoryCtrl',                                    
+  
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $timeout, $state, UsersService, SearchService, OrdersService) {
+    
+    $scope.tabSelected = 'history';
+    $scope.history = {
+    }
+
+    /*** Call API: Get the ID of logged user ***/
+    $scope.userID = UsersService.getUserID();
+
+    /*** Call API: Get the current locations and places ***/
+    /*** Results are stored in $scope.places            ***/
+    SearchService.getLocationsAndPlaces($scope);
+    /******************************************************/
+
+    /*** Call API: Get the current locations and places ***/
+    /*** Results are stored in $scope.places            ***/
+    SearchService.getLocationsAndPlaces($scope);
+    /******************************************************/
+
+    /*** Call API: Get the orders history    ***/
+    /*** Results are stored in $scope.history ***/
+    OrdersService.getOrdersHistory($scope, $scope.userID);
+    /*******************************************/
+
+    /*** Call API: Get the scheduled orders    ***/
+    /*** Results are stored in $scope.scheduled ***/
+    OrdersService.getScheduledOrders($scope, $scope.userID);
+    /*******************************************/
+
+    $scope.getReceipt = function (orderID) {
+      $state.go('receipt', {orderID:orderID}, { reload: true });
+    }
+    
+    $scope.activateTab = function (tab) {
+      $scope.tabSelected = tab;
+    }
+
+    $scope.showSearchBoxF = function() {
+      $scope.showSearchBox = true;
+      $timeout(                                  
+        function() {
+          document.getElementById("id_searchqResults").val='';
+          document.getElementById("id_searchqResults").focus();
+          if (ionic.Platform.isAndroid()) {
+            cordova.plugins.Keyboard.show();
+          }
+        }, 100
+      );
+    }
+    
+    $scope.showSearchOverlay = function() {
+      $scope.homestyle = {
+        "opacity": "0.5",
+        "background": "rgb(143,130,130)"
+      }
+    } 
+
+    $scope.hideSearchOverlay = function() {
+      $scope.homestyle={
+        "opacity": "1",
+        "background": "rgb(255,255,255)"
+      };
+      $scope.showSearchBox = false;
+    } 
+
+  }
+
+)
+/**************************************/
+/*** History Controller - END  ***/
+/**************************************/
+
+
+/*****************************************/
+/*** Receipt Controller - BEGIN  ***/
+/****************************************/
+.controller('ReceiptCtrl',                                    
+  
+  function ($rootScope, $scope, $ionicLoading, $ionicPlatform, $stateParams, UsersService, OrdersService) {
+    $scope.OrderID = $stateParams.OrderID;
+    $scope.order = {
+    }
+
+    /*** Call API: Get the ID of logged user ***/
+    $scope.userID = UsersService.getUserID();
+    
+    /*** Call API: Get details of the order ***/
+    /*** Results are stored in $scope.order ***/
+    OrdersService.getOrderDetails($scope, $scope.userID, $scope.OrderID);
+    /******************************************/
+  
+  }
+
+)
+/**************************************/
+/*** Receip Controller - END  ***/
+/**************************************/
+
 
 ;

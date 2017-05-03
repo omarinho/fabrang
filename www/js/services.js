@@ -86,13 +86,7 @@ angular.module('starter.services',[])
         * @param filterRating - Active filter for ratings (get only places with 'n' stars with 'n' = filterRating)
         * @returns {*} - will return an array of objects. Each object is a place or location and has an id, a name, distance, wait time, cuisine types, minimum price, prices level, rating, if ending, and endingTime   
         */       
-        getLocationsByProximity: function(
-          $scope,
-          activeFilters, 
-          activeServiceType, 
-          activePriceRange, 
-          filterRating          
-        ) {
+        getLocationsByProximity: function($scope,activeFilters, activeServiceType, activePriceRange, filterRating ) {
           $scope.closePlaces = HARDCODED_DATABASE_PLACES.slice(0, 10);;
         }
       
@@ -118,7 +112,23 @@ angular.module('starter.services',[])
         */       
         saveStore: function($scope, storeID) {
           return true; 
-        }
+        },
+        
+        /**
+        * getAllFavs - Get all favorites locations
+        * @returns {*} - Return current user ID   
+        */       
+        getAllFavs: function($scope, location) {
+          $scope.favs = HARDCODED_DATABASE_PLACES.slice(0,10);;
+        },
+
+        /**
+        * getNearFavs - Get favorites locations near to user location 
+        * @returns {*} - Return current user ID   
+        */       
+        getNearFavs: function($scope, location) {
+          $scope.nearFavs = HARDCODED_DATABASE_PLACES.slice(5,10);;
+        },
       
       }
       
@@ -408,6 +418,14 @@ angular.module('starter.services',[])
         },
       
         /**
+        * getUserLocation - Get the current location of logged user
+        * @returns {*} - Return current user ID   
+        */       
+        getUserLocation: function() {
+          return "625 Rupert Blvd, CT"; 
+        },
+
+        /**
         * getUserBasicData - Get the logged user data
         * @param scope - Ionic scope 
         * @param userID  - ID of user
@@ -645,9 +663,58 @@ angular.module('starter.services',[])
         * @returns {*} - It saves info in database. Order ID is stored in $scope.orderID 
         */       
         processOrder: function($scope, order, userID) {
-          $scope.orderID = 'FB54654543';
+          $scope.orderID = 'FB000000001';
           return true; 
         },
+
+        /**
+        * getOrdersHistory - Get the orders history for a users
+        * @param scope - Ionic scope 
+        * @param userID  - ID of user
+        * @returns {*} - Results are stored in $scope.history
+        */       
+        getOrdersHistory: function($scope, userID) {
+          $scope.history = [
+            HARDCODED_ORDER_OBJECT,
+            HARDCODED_ORDER_OBJECT,
+            HARDCODED_ORDER_OBJECT,
+            HARDCODED_ORDER_OBJECT,
+            HARDCODED_ORDER_OBJECT,
+            HARDCODED_ORDER_OBJECT
+          ]
+          return true; 
+        },
+
+        /**
+        * getScheduledOrders - Get the scheduled orders for a users
+        * @param scope - Ionic scope 
+        * @param userID  - ID of user
+        * @returns {*} - Results are stored in $scope.history
+        */       
+        getScheduledOrders: function($scope, userID) {
+          $scope.history = [
+            HARDCODED_ORDER_OBJECT,
+            HARDCODED_ORDER_OBJECT,
+            HARDCODED_ORDER_OBJECT,
+            HARDCODED_ORDER_OBJECT,
+            HARDCODED_ORDER_OBJECT,
+            HARDCODED_ORDER_OBJECT
+          ]
+          return true; 
+        },
+        
+        /**
+        * getOrderDetails - Get the scheduled orders for a users
+        * @param scope - Ionic scope 
+        * @param userID  - ID of user
+        * @param orderID  - ID of order
+        * @returns {*} - Results are stored in $scope.order
+        */       
+        getOrderDetails: function($scope, userID, orderID) {
+          $scope.order = HARDCODED_ORDER_OBJECT;
+          $scope.order.addressDetails = searchObjectByID($scope.order.addressID, HARDCODED_ADDRESSES_DATABASE); 
+          $scope.order.creditCardDetails = searchObjectByID($scope.order.creditCardID, HARDCODED_CREDIT_CARDS_DATABASE); 
+        }
 
       }
       
@@ -685,9 +752,9 @@ var HARDCODED_ADDRESSES_DATABASE = [
 ] 
 
 var HARDCODED_CREDIT_CARDS_DATABASE = [
-    {id:"1", desc:"My Visa", number:"XXXX 1111", expiration:"01/21", color:"#C7272F", type:"visa", isDefault:true},
-    {id:"2", desc:"My Mastercard", number:"XXXX 2222", expiration:"02/22", color:"#CE6345", type:"mastercard", isDefault:false},
-    {id:"3", desc:"My American Express", number:"XXXX 333", expiration:"03/23", color:"#E87F27", type:"amex", isDefault:false}
+  {id:"1", desc:"My Visa", number:"XXXX 1111", expiration:"01/21", color:"#C7272F", type:"visa", isDefault:true},
+  {id:"2", desc:"My Mastercard", number:"XXXX 2222", expiration:"02/22", color:"#CE6345", type:"mastercard", isDefault:false},
+  {id:"3", desc:"My American Express", number:"XXXX 333", expiration:"03/23", color:"#E87F27", type:"amex", isDefault:false}
 ]
 
 var HARDCODED_DATABASE_PLACES = [
@@ -972,3 +1039,181 @@ var HARDCODED_DATABASE_PLACES = [
   {id:"282", name:"Zaxby's", waitTime:"15", cuisineTypes:"Chassidic", minimunPrice:"7.70", pricesLevel:"2", rating:"1.6", live_deal:false, endingTime:'', distance:'5.2', todaySchedule:"6AM-7PM", categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]},
   {id:"283", name:"Zip's drive-in", waitTime:"15", cuisineTypes:"Chassidic", minimunPrice:"7.70", pricesLevel:"2", rating:"1.6", live_deal:false, endingTime:'', distance:'5.2', todaySchedule:"6AM-7PM",  categories:[{id:1, name:"Israeli"}, {id:2, name:"Rolls"}, {id:3, name:"Soups"}, {id:4, name:"Salads"}, {id:5, name:"Desserts"}, {id:6, name:"Drinks"}, {id:7, name:"Snacks"}, {id:8, name:"Meat"}]}
 ]
+
+var HARDCODED_ORDER_OBJECT = {
+  "id":"FB000000009",
+  "date":"March 27",
+  "year":"2017",
+  "hour":"04:12 PM",
+  "storeName":"Farbeissen",
+  "shortDescription":"Falafell Balls, Jachnon",
+  "delivery_fee":"3.00",
+  "subtotal":"56.25",
+  "discountPercent":"15",
+  "discountValue":"8.44",
+  "tipPercent":"10",
+  "tipValue":"5.63",
+  "total":"53.44",
+  "addressID":"1",
+  "creditCardID":"3",
+	"cart":[
+    {
+      "ident":1491959208698,
+      "storeID":"51",
+      "id":6,
+      "name":"Falafel Balls",
+      "price":"9",
+      "description":"",
+      "options":[],
+      "quantity":"3",
+      "source":"nooptions"
+    },
+    {
+      "ident":1491999820451,
+      "storeID":"98",
+      "id":5,
+      "name":"Jachnon",
+      "price":"3.75",
+      "description":"",
+      "options":[
+        {
+          "id":2,
+          "desc":"Olives",
+          "inc":"0.0",
+          "type":"topping"
+        },
+        {
+          "id":8,
+          "desc":"Whole Wheat",
+          "inc":"0.75",
+          "type":"bread"
+        }
+      ],
+      "quantity":"1",
+      "source":"multioptions"
+    },
+    {
+      "ident":1492005733984,
+      "storeID":"98",
+      "id":4,
+      "name":"Tomato Malauach",
+      "price":"12",
+      "description":"",
+      "options":[],
+      "quantity":"3",
+      "source":"nooptions"
+    },
+    {
+      "ident":1492005741704,
+      "storeID":"98",
+      "id":1,
+      "name":"Hummus Plate",
+      "price":"37.5",
+      "description":"Salads, etc.",
+      "options":[
+        {
+          "id":1,
+          "desc":"Tomatoes",
+          "inc":"0.75",
+          "type":"topping"
+        },
+        {
+          "id":8,
+          "desc":"Whole Wheat",
+          "inc":"0.75",
+          "type":"bread"
+        }
+      ],
+      "quantity":"3",
+      "source":"multioptions"
+    }
+  ]
+}
+
+var HARDCODED_SCHEDULE_ORDER_OBJECT = {
+  "id":"1",
+  "date":"Mayo 27",
+  "year":"2017",
+  "hour":"04:12 PM",
+  "storeName":"Farbeissen",
+  "shortDescription":"Falafell Balls, Jachnon",
+  "delivery_fee":"3.00",
+  "subtotal":"56.25",
+  "discountPercent":"15",
+  "discountValue":"8.44",
+  "tipPercent":"10",
+  "tipValue":"5.63",
+  "total":"53.44",
+	"cart":[
+    {
+      "ident":1491959208698,
+      "storeID":"51",
+      "id":6,
+      "name":"Falafel Balls",
+      "price":"9",
+      "description":"",
+      "options":[],
+      "quantity":"3",
+      "source":"nooptions"
+    },
+    {
+      "ident":1491999820451,
+      "storeID":"51",
+      "id":5,
+      "name":"Jachnon",
+      "price":"3.75",
+      "description":"",
+      "options":[
+        {
+          "id":2,
+          "desc":"Olives",
+          "inc":"0.0",
+          "type":"topping"
+        },
+        {
+          "id":8,
+          "desc":"Whole Wheat",
+          "inc":"0.75",
+          "type":"bread"
+        }
+      ],
+      "quantity":"1",
+      "source":"multioptions"
+    },
+    {
+      "ident":1492005733984,
+      "storeID":"51",
+      "id":4,
+      "name":"Tomato Malauach",
+      "price":"12",
+      "description":"",
+      "options":[],
+      "quantity":"3",
+      "source":"nooptions"
+    },
+    {
+      "ident":1492005741704,
+      "storeID":"51",
+      "id":1,
+      "name":"Hummus Plate",
+      "price":"37.5",
+      "description":"Salads, etc.",
+      "options":[
+        {
+          "id":1,
+          "desc":"Tomatoes",
+          "inc":"0.75",
+          "type":"topping"
+        },
+        {
+          "id":8,
+          "desc":"Whole Wheat",
+          "inc":"0.75",
+          "type":"bread"
+        }
+      ],
+      "quantity":"3",
+      "source":"multioptions"
+    }
+  ]
+}
